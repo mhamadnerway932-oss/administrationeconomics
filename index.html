@@ -14,7 +14,7 @@
         body {
             font-family: 'Vazirmatn', sans-serif;
             background-color: #eff3f6;
-            overflow: hidden; /* ڕێگری ل سکرۆلێ دکەین تا دەسپێک نەهێتە لێدان */
+            overflow: hidden; 
             height: 100vh;
         }
 
@@ -50,7 +50,7 @@
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            animation: pulse 2s infinite; /* ئەنیمەیشنا لێدانێ */
+            animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
@@ -80,6 +80,7 @@
             gap: 15px;
             width: 100%;
             max-width: 500px;
+            padding-bottom: 40px;
         }
 
         button.dept-btn {
@@ -111,8 +112,7 @@
             left: 0; top: 0;
             width: 100%; height: 100%;
             background-color: rgba(0,0,0,0.9);
-
-}
+        }
         .modal-content { position: relative; margin: 15% auto; width: 90%; max-width: 700px; }
         video { width: 100%; border-radius: 15px; }
         .close-btn { position: absolute; top: -50px; right: 0; color: white; font-size: 40px; cursor: pointer; }
@@ -120,7 +120,7 @@
 </head>
 <body>
 
-    <div id="welcome-screen">
+<div id="welcome-screen">
         <div class="welcome-content">
             <i class="fas fa-graduation-cap"></i>
             <h1>بەخێربێن بۆ ڕێبەرێ زانکۆیا<br>کارگێڕی و ئابووری</h1>
@@ -136,6 +136,8 @@
         </header>
 
         <div class="buttons-grid">
+            <button class="dept-btn" onclick="playVideo('accounting.mp4')"><i class="fas fa-calculator"></i>پشکا ژمێریاری</button>
+            
             <button class="dept-btn" onclick="playVideo('stat.mp4')"><i class="fas fa-chart-line"></i>پشکا ئامارێ</button>
             <button class="dept-btn" onclick="playVideo('economics.mp4')"><i class="fas fa-coins"></i>پشکا ئابوورێ</button>
             <button class="dept-btn" onclick="playVideo('finance.mp4')"><i class="fas fa-vault"></i>دارای و بانک</button>
@@ -156,9 +158,7 @@
 
     <script>
         function startApp() {
-            // ونداکرنا شاشەیا بخێرهاتنێ
             document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
-            // دیارکرنا ناڤەڕۆکێ
             setTimeout(() => {
                 document.getElementById('app-content').style.opacity = '1';
                 document.body.style.overflow = 'auto';
