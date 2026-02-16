@@ -18,12 +18,16 @@
             height: 100vh;
         }
 
-        /* شاشەیا بخێرهاتنێ */
+        /* لێرە وێنەیێ پاشبنەمایێ (Background) هاتە زێدەکرن */
         #welcome-screen {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            /* ل ڤێرێ لینکێ وێنەی بگوهۆڕە ئەگەر تە وێنەیەکێ دی دڤێت */
+            background: linear-gradient(rgba(13, 71, 161, 0.7), rgba(13, 71, 161, 0.7)), 
+                        url('https://images.unsplash.com/photo-1523050853063-bd8012fec21b?q=80&w=2000');
+            background-size: cover;
+            background-position: center;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -35,21 +39,21 @@
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .welcome-content h1 { font-size: 32px; margin-bottom: 15px; }
-        .welcome-content i { font-size: 80px; margin-bottom: 20px; opacity: 0.9; }
+        .welcome-content h1 { font-size: 32px; margin-bottom: 15px; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); }
+        .welcome-content i { font-size: 80px; margin-bottom: 20px; color: #ffd700; text-shadow: 2px 2px 10px rgba(0,0,0,0.3); }
 
         .start-btn {
             margin-top: 40px;
-            padding: 15px 40px;
+            padding: 15px 45px;
             font-size: 22px;
             font-family: 'Vazirmatn', sans-serif;
             font-weight: bold;
-            color: #1a73e8;
+            color: #0d47a1;
             background: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             animation: pulse 2s infinite;
         }
 
@@ -59,7 +63,7 @@
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255, 0); }
         }
 
-        /* شاشەیا سەرەکی یا پشکان */
+        /* ناڤەڕۆکا سەرەکی */
         .main-content {
             height: 100vh;
             overflow-y: auto;
@@ -104,23 +108,38 @@
         button.dept-btn i { font-size: 30px; margin-bottom: 10px; }
         button.dept-btn:active { transform: scale(0.95); background: #1a73e8; color: white; }
 
-        /* Modal Style */
-        .modal {
+.modal {
             display: none;
             position: fixed;
             z-index: 3000;
             left: 0; top: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.9);
+            background-color: rgba(0,0,0,0.95);
         }
-        .modal-content { position: relative; margin: 15% auto; width: 90%; max-width: 700px; }
-        video { width: 100%; border-radius: 15px; }
-        .close-btn { position: absolute; top: -50px; right: 0; color: white; font-size: 40px; cursor: pointer; }
+        .modal-content { 
+            position: relative; 
+            margin: 5% auto; 
+            width: 90%; 
+            max-width: 700px; 
+            text-align: center;
+            color: white;
+        }
+        video { width: 100%; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .close-btn { position: absolute; top: -50px; right: 0; color: white; font-size: 45px; cursor: pointer; }
+        
+        .video-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+        .video-info h2 { color: #ffd700; margin-bottom: 8px; font-size: 20px; }
+        .video-info p { line-height: 1.6; font-size: 15px; opacity: 0.9; }
     </style>
 </head>
 <body>
 
-<div id="welcome-screen">
+    <div id="welcome-screen">
         <div class="welcome-content">
             <i class="fas fa-graduation-cap"></i>
             <h1>بەخێربێن بۆ ڕێبەرێ زانکۆیا<br>کارگێڕی و ئابووری</h1>
@@ -136,16 +155,16 @@
         </header>
 
         <div class="buttons-grid">
-            <button class="dept-btn" onclick="playVideo('accounting.mp4')"><i class="fas fa-calculator"></i>پشکا ژمێریاری</button>
-            
-            <button class="dept-btn" onclick="playVideo('stat.mp4')"><i class="fas fa-chart-line"></i>پشکا ئامارێ</button>
-            <button class="dept-btn" onclick="playVideo('economics.mp4')"><i class="fas fa-coins"></i>پشکا ئابوورێ</button>
-            <button class="dept-btn" onclick="playVideo('finance.mp4')"><i class="fas fa-vault"></i>دارای و بانک</button>
-            <button class="dept-btn" onclick="playVideo('marketing.mp4')"><i class="fas fa-bullhorn"></i>بازارگەری</button>
-            <button class="dept-btn" onclick="playVideo('admin.mp4')"><i class="fas fa-briefcase"></i>کارگێڕی کار</button>
-            <button class="dept-btn" onclick="playVideo('deanery.mp4')"><i class="fas fa-building-columns"></i>ڕاگریا کۆلێژێ</button>
-            <button class="dept-btn" onclick="playVideo('azadi_hall.mp4')"><i class="fas fa-masks-theater"></i>هۆلا ئازادی</button>
-            <button class="dept-btn" onclick="playVideo('library.mp4')"><i class="fas fa-book"></i>کتێبخانە</button>
+            <button class="dept-btn" onclick="playVideo('registration.mp4', 'تۆمارا گشتی', 'پشکا تۆمارێ بەرپرسە ل سەر کاروبارێن قوتابیان، وەک وەرگرتن و ناڤ نڤیسین و دەرچوونێ.')"><i class="fas fa-address-card"></i>تۆمارا گشتی</button>
+            <button class="dept-btn" onclick="playVideo('accounting.mp4', 'پشکا ژمێریاری', 'ئەڤ بەشە گرنگیێ ددەتە تۆمارکرن و شیکارکرنا داتایێن دارایی و وردبینیێ.')"><i class="fas fa-calculator"></i>پشکا ژمێریاری</button>
+            <button class="dept-btn" onclick="playVideo('stat.mp4', 'پشکا ئامارێ', 'ل ڤێرێ قوتابی فێری کومکرن و شیکارکرنا داتایێن ئاماری بۆ بڕیاردانێ دبیت.')"><i class="fas fa-chart-line"></i>پشکا ئامارێ</button>
+            <button class="dept-btn" onclick="playVideo('economics.mp4', 'پشکا ئابوورێ', 'خواندنا سیستەمێن دارایی و بازار و دابەشکرنا ژێدەرێن ولاتی.')"><i class="fas fa-coins"></i>پشکا ئابوورێ</button>
+            <button class="dept-btn" onclick="playVideo('finance.mp4', 'دارای و بانک', 'تایبەتە ب بڕێڤەبرنا پارەی و کارێن بانکی و وەبەرهێنانێ.')"><i class="fas fa-vault"></i>دارای و بانک</button>
+            <button class="dept-btn" onclick="playVideo('marketing.mp4', 'بازارگەری', 'هونەرێ ناساندن و فرۆتنا بەرهەمان و تێگەهشتن ل داخوازیا بازاری.')"><i class="fas fa-bullhorn"></i>بازارگەری</button>
+            <button class="dept-btn" onclick="playVideo('admin.mp4', 'کارگێڕی کار', 'ئامادەکرنا سەرکردەیان بۆ بڕێڤەبرنا کومپانی و پڕۆژەیان.')"><i class="fas fa-briefcase"></i>کارگێڕی کار</button>
+            <button class="dept-btn" onclick="playVideo('deanery.mp4', 'ڕاگریا کۆلێژێ', 'ناڤەندا بڕێڤەبرنا کارێن زانستی و کارگێڕی یێن کۆلێژێ.')"><i class="fas fa-building-columns"></i>ڕاگریا کۆلێژێ</button>
+            <button class="dept-btn" onclick="playVideo('azadi_hall.mp4', 'هۆلا ئازادی', 'هۆلا سەرەکی یا کۆلێژێ بۆ کۆنفرانس و بۆنەیێن فەرمی.')"><i class="fas fa-masks-theater"></i>هۆلا ئازادی</button>
+            <button class="dept-btn" onclick="playVideo('library.mp4', 'کتێبخانە', 'ژێدەرێ سەرەکی یێ زانست و پەرتووکان بۆ قوتابیان.')"><i class="fas fa-book"></i>کتێبخانە</button>
         </div>
     </div>
 
@@ -153,10 +172,14 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closeVideo()">&times;</span>
             <video id="myVideo" controls><source src="" type="video/mp4"></video>
+            <div class="video-info">
+                <h2 id="dept-name"></h2>
+                <p id="dept-desc"></p>
+            </div>
         </div>
     </div>
 
-    <script>
+<script>
         function startApp() {
             document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
             setTimeout(() => {
@@ -165,12 +188,18 @@
             }, 300);
         }
 
-        function playVideo(videoFile) {
+        function playVideo(videoFile, name, desc) {
             const modal = document.getElementById('videoModal');
             const videoTag = document.getElementById('myVideo');
+            const nameTag = document.getElementById('dept-name');
+            const descTag = document.getElementById('dept-desc');
+
             videoTag.src = "videos/" + videoFile; 
+            nameTag.innerText = name;
+            descTag.innerText = desc;
+            
             modal.style.display = "block";
-            videoTag.play();
+            videoTag.play().catch(e => console.log("Video not ready"));
         }
 
         function closeVideo() {
@@ -178,6 +207,13 @@
             const videoTag = document.getElementById('myVideo');
             videoTag.pause();
             modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('videoModal');
+            if (event.target == modal) {
+                closeVideo();
+            }
         }
     </script>
 </body>
