@@ -18,14 +18,14 @@
             height: 100vh;
         }
 
-        /* لێرە وێنەیێ پاشبنەمایێ (Background) هاتە زێدەکرن */
+        /* لێرە Background و Effect هاتنە زێدەکرن */
         #welcome-screen {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            /* ل ڤێرێ لینکێ وێنەی بگوهۆڕە ئەگەر تە وێنەیەکێ دی دڤێت */
-            background: linear-gradient(rgba(13, 71, 161, 0.7), rgba(13, 71, 161, 0.7)), 
-                        url('https://images.unsplash.com/photo-1523050853063-bd8012fec21b?q=80&w=2000');
+            /* ل ڤێرێ ناڤێ وێنەیێ خۆ یان لینکێ وی دانی */
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(26, 35, 126, 0.7)), 
+                        url('images/zanko.png.jpg');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -36,34 +36,64 @@
             color: white;
             text-align: center;
             padding: 20px;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .welcome-content h1 { font-size: 32px; margin-bottom: 15px; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); }
-        .welcome-content i { font-size: 80px; margin-bottom: 20px; color: #ffd700; text-shadow: 2px 2px 10px rgba(0,0,0,0.3); }
+        /* ئەنیمەیشنا ئایکۆنێ دەسپێکێ */
+        .welcome-content i { 
+            font-size: 90px; 
+            margin-bottom: 20px; 
+            color: #ffd700; 
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .welcome-content h1 { 
+            font-size: 36px; 
+            margin-bottom: 15px; 
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8); 
+        }
+
+        .welcome-content p {
+            font-size: 18px;
+            opacity: 0.9;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+        }
 
         .start-btn {
             margin-top: 40px;
-            padding: 15px 45px;
-            font-size: 22px;
+            padding: 18px 50px;
+            font-size: 24px;
             font-family: 'Vazirmatn', sans-serif;
             font-weight: bold;
-            color: #0d47a1;
+            color: #1a237e;
             background: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            transition: 0.3s;
             animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255,255,255, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255, 0); }
+        .start-btn:hover {
+            transform: scale(1.1);
+            background: #ffd700;
+            color: #1a237e;
         }
 
-        /* ناڤەڕۆکا سەرەکی */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255,255,255, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(255,255,255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,255,255, 0); }
+        }
+
+        /* شاشەیا سەرەکی */
         .main-content {
             height: 100vh;
             overflow-y: auto;
@@ -72,11 +102,11 @@
             flex-direction: column;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.8s ease;
+            transition: opacity 1s ease;
         }
 
         header { margin-bottom: 35px; margin-top: 20px; text-align: center; }
-        h1.main-title { color: #1a73e8; font-size: 28px; margin-bottom: 10px; }
+        h1.main-title { color: #1a237e; font-size: 28px; margin-bottom: 10px; }
 
         .buttons-grid {
             display: grid;
@@ -87,7 +117,7 @@
             padding-bottom: 40px;
         }
 
-        button.dept-btn {
+button.dept-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -99,22 +129,25 @@
             border: none;
             border-radius: 20px;
             background: white;
-            color: #1a73e8;
+            color: #1a237e;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.3s ease;
         }
 
-        button.dept-btn i { font-size: 30px; margin-bottom: 10px; }
-        button.dept-btn:active { transform: scale(0.95); background: #1a73e8; color: white; }
+        button.dept-btn i { font-size: 30px; margin-bottom: 10px; color: #1a73e8; }
+        button.dept-btn:hover { background: #1a237e; color: white; transform: translateY(-5px); }
+        button.dept-btn:hover i { color: #ffd700; }
 
-.modal {
+        /* Modal Style */
+        .modal {
             display: none;
             position: fixed;
             z-index: 3000;
             left: 0; top: 0;
             width: 100%; height: 100%;
             background-color: rgba(0,0,0,0.95);
+            backdrop-filter: blur(5px);
         }
         .modal-content { 
             position: relative; 
@@ -124,17 +157,18 @@
             text-align: center;
             color: white;
         }
-        video { width: 100%; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .close-btn { position: absolute; top: -50px; right: 0; color: white; font-size: 45px; cursor: pointer; }
+        video { width: 100%; border-radius: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        .close-btn { position: absolute; top: -60px; right: 0; color: white; font-size: 50px; cursor: pointer; }
         
         .video-info {
-            margin-top: 15px;
-            padding: 15px;
+            margin-top: 20px;
+            padding: 20px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
         }
-        .video-info h2 { color: #ffd700; margin-bottom: 8px; font-size: 20px; }
-        .video-info p { line-height: 1.6; font-size: 15px; opacity: 0.9; }
+        .video-info h2 { color: #ffd700; margin-bottom: 10px; font-size: 22px; }
+        .video-info p { line-height: 1.8; font-size: 16px; opacity: 0.95; }
     </style>
 </head>
 <body>
@@ -155,14 +189,15 @@
         </header>
 
         <div class="buttons-grid">
-            <button class="dept-btn" onclick="playVideo('registration.mp4', 'تۆمارا گشتی', 'پشکا تۆمارێ بەرپرسە ل سەر کاروبارێن قوتابیان، وەک وەرگرتن و ناڤ نڤیسین و دەرچوونێ.')"><i class="fas fa-address-card"></i>تۆمارا کولیژێ </button>
+            <button class="dept-btn" onclick="playVideo('registration.mp4', 'تۆمارا گشتی', 'پشکا تۆمارێ بەرپرسە ل سەر کاروبارێن قوتابیان، وەک وەرگرتن و ناڤ نڤیسین و دەرچوونێ.')"><i class="fas fa-address-card"></i>تۆمارا گشتی</button>
             <button class="dept-btn" onclick="playVideo('accounting.mp4', 'پشکا ژمێریاری', 'ئەڤ بەشە گرنگیێ ددەتە تۆمارکرن و شیکارکرنا داتایێن دارایی و وردبینیێ.')"><i class="fas fa-calculator"></i>پشکا ژمێریاری</button>
             <button class="dept-btn" onclick="playVideo('stat.mp4', 'پشکا ئامارێ', 'ل ڤێرێ قوتابی فێری کومکرن و شیکارکرنا داتایێن ئاماری بۆ بڕیاردانێ دبیت.')"><i class="fas fa-chart-line"></i>پشکا ئامارێ</button>
             <button class="dept-btn" onclick="playVideo('economics.mp4', 'پشکا ئابوورێ', 'خواندنا سیستەمێن دارایی و بازار و دابەشکرنا ژێدەرێن ولاتی.')"><i class="fas fa-coins"></i>پشکا ئابوورێ</button>
-            <button class="dept-btn" onclick="playVideo('finance.mp4', 'پشکا دارای و بانک', 'تایبەتە ب بڕێڤەبرنا پارەی و کارێن بانکی و وەبەرهێنانێ.')"><i class="fas fa-vault"></i> پشکا دارای و بانک</button>
-            <button class="dept-btn" onclick="playVideo('marketing.mp4', 'پشکا بازارگەری ', 'هونەرێ ناساندن و فرۆتنا بەرهەمان و تێگەهشتن ل داخوازیا بازاری.')"><i class="fas fa-bullhorn"></i>پشکا بازارگەری</button>
-            <button class="dept-btn" onclick="playVideo('admin.mp4', 'پشکا  کارگێڕی کار', 'ئامادەکرنا سەرکردەیان بۆ بڕێڤەبرنا کومپانی و پڕۆژەیان.')"><i class="fas fa-briefcase"></i>پشکا کارگێڕی کار </button>
-            <button class="dept-btn" onclick="playVideo('deanery.mp4', 'ڕاگریا کۆلێژێ', 'ناڤەندا بڕێڤەبرنا کارێن زانستی و کارگێڕی یێن کۆلێژێ.')"><i class="fas fa-building-columns"></i>ڕاگریا کۆلێژێ</button>
+            <button class="dept-btn" onclick="playVideo('finance.mp4', 'پشکا دارای و بانک', 'تایبەتە ب بڕێڤەبرنا پارەی و کارێن بانکی و وەبەرهێنانێ.')"><i class="fas fa-vault"></i>پشکا دارای و بانک</button>
+            <button class="dept-btn" onclick="playVideo('marketing.mp4', 'بازارگەری', 'هونەرێ ناساندن و فرۆتنا بەرهەمان و تێگەهشتن ل داخوازیا بازاری.')"><i class="fas fa-bullhorn"></i>بازارگەری</button>
+            <button class="dept-btn" onclick="playVideo('admin.mp4', 'کارگێڕی کار', 'ئامادەکرنا سەرکردەیان بۆ بڕێڤەبرنا کومپانی و پڕۆژەیان.')"><i class="fas fa-briefcase"></i>کارگێڕی کار</button>
+
+<button class="dept-btn" onclick="playVideo('deanery.mp4', 'ڕاگریا کۆلێژێ', 'ناڤەندا بڕێڤەبرنا کارێن زانستی و کارگێڕی یێن کۆلێژێ.')"><i class="fas fa-building-columns"></i>ڕاگریا کۆلێژێ</button>
             <button class="dept-btn" onclick="playVideo('azadi_hall.mp4', 'هۆلا ئازادی', 'هۆلا سەرەکی یا کۆلێژێ بۆ کۆنفرانس و بۆنەیێن فەرمی.')"><i class="fas fa-masks-theater"></i>هۆلا ئازادی</button>
             <button class="dept-btn" onclick="playVideo('library.mp4', 'کتێبخانە', 'ژێدەرێ سەرەکی یێ زانست و پەرتووکان بۆ قوتابیان.')"><i class="fas fa-book"></i>کتێبخانە</button>
         </div>
@@ -179,7 +214,7 @@
         </div>
     </div>
 
-<script>
+    <script>
         function startApp() {
             document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
             setTimeout(() => {
@@ -199,7 +234,7 @@
             descTag.innerText = desc;
             
             modal.style.display = "block";
-            videoTag.play().catch(e => console.log("Video not ready"));
+            videoTag.play().catch(e => console.log("Video playback failed"));
         }
 
         function closeVideo() {
