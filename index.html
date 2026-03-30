@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ku" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -8,8 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
         body {
             font-family: 'Vazirmatn', sans-serif;
@@ -22,7 +26,6 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            /* ل ڤێرێ من ڕێکا وێنەی ب درستی دانا بۆ GitHub */
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(26, 35, 126, 0.7)), 
                         url('zanko.jpg');
             background-size: cover;
@@ -39,142 +42,95 @@
         }
 
         .welcome-content i { 
-            font-size: 90px; 
-            margin-bottom: 20px; 
-            color: #ffd700; 
-            filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.5));
+            font-size: 90px; margin-bottom: 20px; color: #ffd700; 
             animation: bounce 2s infinite ease-in-out;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .welcome-content h1 { 
-            font-size: 36px; 
-            margin-bottom: 15px; 
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.8); 
-        }
-
-        .welcome-content p {
-            font-size: 18px;
-            opacity: 0.9;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-        }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
         .start-btn {
-            margin-top: 40px;
-            padding: 18px 50px;
-            font-size: 24px;
-            font-family: 'Vazirmatn', sans-serif;
-            font-weight: bold;
-            color: #1a237e;
-            background: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            transition: 0.3s;
+            margin-top: 40px; padding: 18px 60px; font-size: 26px; font-weight: bold;
+            color: #1a237e; background: white; border: none; border-radius: 50px;
+            cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.4);
             animation: pulse 2s infinite;
         }
 
-        .start-btn:hover {
-            transform: scale(1.1);
-            background: #ffd700;
-            color: #1a237e;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255,255,255, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(255,255,255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255,255,255, 0); }
-        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(255,255,255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255, 0); } }
 
         .main-content {
-            height: 100vh;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 1s ease;
+            height: 100vh; overflow-y: auto; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; transition: opacity 1s ease;
         }
 
-        header { margin-bottom: 35px; margin-top: 20px; text-align: center; }
-        h1.main-title { color: #1a237e; font-size: 28px; margin-bottom: 10px; }
+        header { margin-bottom: 30px; margin-top: 20px; text-align: center; }
+        .main-title { color: #1a237e; font-size: 32px; margin-bottom: 5px; }
 
         .buttons-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            width: 100%;
-            max-width: 500px;
-            padding-bottom: 40px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+            width: 100%; max-width: 600px; padding-bottom: 50px;
         }
 
-        button.dept-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 25px 10px;
-
-font-size: 16px;
-            font-family: 'Vazirmatn', sans-serif;
-            font-weight: 600;
-            border: none;
-            border-radius: 20px;
-            background: white;
-            color: #1a237e;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        /* لێرە گۆڕانکاری لۆ شین بوون هاتە کرن */
+        .dept-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 30px 10px; font-size: 18px; font-family: 'Vazirmatn'; font-weight: 600;
+            border: none; border-radius: 20px; background: white; color: #1a237e;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: all 0.3s ease;
             cursor: pointer;
-            transition: 0.3s ease;
         }
 
-        button.dept-btn i { font-size: 30px; margin-bottom: 10px; color: #1a73e8; }
-        button.dept-btn:hover { background: #1a237e; color: white; transform: translateY(-5px); }
-        button.dept-btn:hover i { color: #ffd700; }
+        .dept-btn i { font-size: 35px; margin-bottom: 12px; color: #1a73e8; transition: all 0.3s ease; }
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 3000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.95);
-            backdrop-filter: blur(5px);
-        }
-        .modal-content { 
-            position: relative; 
-            margin: 5% auto; 
-            width: 90%; 
-            max-width: 700px; 
-            text-align: center;
+        /* دەمێ دەست یان ماوس دچیتە سەر دوگمێ دێ شین بیت */
+        .dept-btn:hover {
+            background-color: #1a237e;
             color: white;
+            transform: translateY(-5px);
         }
-        video { width: 100%; border-radius: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
-        .close-btn { position: absolute; top: -60px; right: 0; color: white; font-size: 50px; cursor: pointer; }
-        
-        .video-info {
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.2);
+
+        .dept-btn:hover i {
+            color: #ffd700; /* ئایکۆن دبیتە زەرد ل سەر شینی */
         }
-        .video-info h2 { color: #ffd700; margin-bottom: 10px; font-size: 22px; }
-        .video-info p { line-height: 1.8; font-size: 16px; opacity: 0.95; }
+
+        .dept-btn:active { transform: scale(0.95); }
+
+        /* Modal for Video - Responsive Design */
+        .modal {
+            display: none; position: fixed; z-index: 3000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+        }
+
+        .video-container { 
+            width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        #youtubePlayer {
+            width: 90%; max-width: 800px; aspect-ratio: 16 / 9;
+            border: none; border-radius: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .video-info { 
+            width: 100%;
+            padding: 20px; color: white; background: #1a237e;
+            border-top: 3px solid #ffd700; text-align: center;
+        }
+
+        .close-btn {
+            position: absolute; top: 20px; left: 20px; color: white; 
+            font-size: 30px; z-index: 4000; background: rgba(255,255,255,0.2);
+            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
     </style>
 </head>
-<body>
+<body onclick="resetTimer()">
 
     <div id="welcome-screen">
         <div class="welcome-content">
             <i class="fas fa-graduation-cap"></i>
             <h1>بەخێربێن بۆ ڕێبەرێ زانکۆیا<br>کارگێڕی و ئابووری</h1>
-            <p>گەشتەکا کورت د ناڤ کۆلێژێ دا</p>
+            <p>بۆ دەسپێکرن، کلیک ل سەر دوگمێ بکە</p>
             <button class="start-btn" onclick="startApp()">دەسپێک</button>
         </div>
     </div>
@@ -185,67 +141,101 @@ font-size: 16px;
             <p>تکایە جهێ مەبەست هەلبژێرە</p>
         </header>
 
-        <div class="buttons-grid">
-            <button class="dept-btn" onclick="playVideo('registration.mp4', 'تۆمارا گشتی', 'پشکا تۆمارێ بەرپرسە ل سەر کاروبارێن قوتابیان، وەک وەرگرتن و ناڤ نڤیسین و دەرچوونێ.')"><i class="fas fa-address-card"></i>تومارا کولیژێ </button>
-            <button class="dept-btn" onclick="playVideo('accounting.mp4', 'پشکا ژمێریاری', 'ئەڤ بەشە گرنگیێ ددەتە تۆمارکرن و شیکارکرنا داتایێن دارایی و وردبینیێ.')"><i class="fas fa-calculator"></i>پشکا ژمێریاری</button>
-            <button class="dept-btn" onclick="playVideo('stat.mp4', 'پشکا ئامارێ', 'ل ڤێرێ قوتابی فێری کومکرن و شیکارکرنا داتایێن ئاماری بۆ بڕیاردانێ دبیت.')"><i class="fas fa-chart-line"></i>پشکا ئامارێ</button>
-            <button class="dept-btn" onclick="playVideo('economics.mp4', 'پشکا ئابوورێ', 'خواندنا سیستەمێن دارایی و بازار و دابەشکرنا ژێدەرێن ولاتی.')"><i class="fas fa-coins"></i>پشکا ئابوورێ</button>
-            <button class="dept-btn" onclick="playVideo('finance.mp4', 'پشکا دارای و بانک', 'تایبەتە ب بڕێڤەبرنا پارەی و کارێن بانکی و وەبەرهێنانێ.')"><i class="fas fa-vault"></i>پشکا دارایی و بانک</button>
-            <button class="dept-btn" onclick="playVideo('marketing.mp4', 'بازارگەری', 'هونەرێ ناساندن و فرۆتنا بەرهەمان و تێگەهشتن ل داخوازیا بازاری.')"><i class="fas fa-bullhorn"></i> پشکا بازارگەری</button>
-            <button class="dept-btn" onclick="playVideo('admin.mp4', 'کارگێڕی کار', 'ئامادەکرنا سەرکردەیان بۆ بڕێڤەبرنا کومپانی و پڕۆژەیان.')"><i class="fas fa-briefcase"></i> پشکا کارگێڕی کار</button>
-            <button class="dept-btn" onclick="playVideo('deanery.mp4', 'ڕاگریا کۆلێژێ', 'ناڤەندا بڕێڤەبرنا کارێن زانستی و کارگێڕی یێن کۆلێژێ.')"><i class="fas fa-building-columns"></i>ڕاگریا کۆلێژێ</button>
-
-<button class="dept-btn" onclick="playVideo('azadi_hall.mp4', 'هۆلا ئازادی', 'هۆلا سەرەکی یا کۆلێژێ بۆ کۆنفرانس و بۆنەیێن فەرمی.')"><i class="fas fa-masks-theater"></i>هۆلا ئازادی</button>
-            <button class="dept-btn" onclick="playVideo('library.mp4', 'کتێبخانە', 'ژێدەرێ سەرەکی یێ زانست و پەرتووکان بۆ قوتابیان.')"><i class="fas fa-book"></i>کتێبخانە</button>
+        <div class="buttons-grid" id="buttonsGrid">
+            <!-- Buttons will be loaded from Firebase -->
         </div>
     </div>
 
     <div id="videoModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeVideo()">&times;</span>
-            <video id="myVideo" controls><source src="" type="video/mp4"></video>
+        <span class="close-btn" onclick="closeVideo()"><i class="fas fa-times"></i></span>
+        <div class="video-container">
+            <iframe id="youtubePlayer" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             <div class="video-info">
-                <h2 id="dept-name"></h2>
-                <p id="dept-desc"></p>
+                <h2 id="dept-name" style="color: #ffd700; margin-bottom: 5px;"></h2>
+                <p id="dept-desc" style="font-size: 18px;"></p>
             </div>
         </div>
     </div>
 
     <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAdBRnoL2f8XEPBhSmuc58C-LPpCtjc_Ik",
+            authDomain: "administrationeconomics.firebaseapp.com",
+            projectId: "administrationeconomics",
+            storageBucket: "administrationeconomics.firebasestorage.app",
+            messagingSenderId: "45463459254",
+            appId: "1:45463459254:web:f9137c2700634eecf51d17",
+            measurementId: "G-65M4ET0ZGP"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let idleTimer;
+
         function startApp() {
             document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
             setTimeout(() => {
                 document.getElementById('app-content').style.opacity = '1';
-                document.body.style.overflow = 'auto';
+                loadDepartments();
+                resetTimer();
             }, 300);
         }
 
-        function playVideo(videoFile, name, desc) {
-            const modal = document.getElementById('videoModal');
-            const videoTag = document.getElementById('myVideo');
-            const nameTag = document.getElementById('dept-name');
-            const descTag = document.getElementById('dept-desc');
-
-            videoTag.src = "videos/" + videoFile; 
-            nameTag.innerText = name;
-            descTag.innerText = desc;
+        async function loadDepartments() {
+            const grid = document.getElementById('buttonsGrid');
+            grid.innerHTML = '<p style="color: #1a237e; grid-column: 1 / span 2;">لێگەریان ل داتایان دکەت...</p>';
             
+            try {
+                const snapshot = await db.collection('departments').get();
+                grid.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const btn = document.createElement('button');
+                    btn.className = 'dept-btn';
+                    btn.onclick = () => playVideo(data.youtubeUrl, data.name, data.desc);
+                    btn.innerHTML = `<i class="${data.icon || 'fas fa-graduation-cap'}"></i>${data.name}`;
+                    grid.appendChild(btn);
+                });
+            } catch (error) {
+                console.error("Error loading docs: ", error);
+                grid.innerHTML = '<p>خەلەتیەک ڕوویدا لە کاتی بارکردنی زانیارییەکان</p>';
+            }
+        }
+
+        function playVideo(url, name, desc) {
+            const modal = document.getElementById('videoModal');
+            const player = document.getElementById('youtubePlayer');
+            
+            // Convert YouTube URL to Embed format
+            let videoId = "";
+            if (url.includes("v=")) {
+                videoId = url.split("v=")[1].split("&")[0];
+            } else if (url.includes("youtu.be/")) {
+                videoId = url.split("youtu.be/")[1];
+            }
+            
+            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            document.getElementById('dept-name').innerText = name;
+            document.getElementById('dept-desc').innerText = desc;
             modal.style.display = "block";
-            videoTag.play().catch(e => console.log("Video playback failed"));
         }
 
         function closeVideo() {
-            const modal = document.getElementById('videoModal');
-            const videoTag = document.getElementById('myVideo');
-            videoTag.pause();
-            modal.style.display = "none";
+            const player = document.getElementById('youtubePlayer');
+            player.src = ""; // Stop video
+            document.getElementById('videoModal').style.display = "none";
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('videoModal');
-            if (event.target == modal) {
+        function resetTimer() {
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(() => {
                 closeVideo();
-            }
+                document.getElementById('welcome-screen').style.transform = 'translateY(0)';
+                document.getElementById('app-content').style.opacity = '0';
+            }, 120000); 
         }
     </script>
 </body>
