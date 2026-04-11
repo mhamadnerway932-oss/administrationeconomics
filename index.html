@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ku" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -17,9 +16,10 @@
         
         body {
             font-family: 'Vazirmatn', sans-serif;
-            background-color: #eff3f6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             overflow: hidden; 
             height: 100vh;
+            position: relative;
         }
 
         #welcome-screen {
@@ -32,13 +32,21 @@
             background-position: center;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            overflow-y: auto;
             z-index: 2000;
             color: white;
-            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+            scroll-behavior: smooth;
+        }
+
+        .welcome-content {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
         }
 
         .welcome-content i { 
@@ -61,6 +69,8 @@
             height: 100vh; overflow-y: auto; padding: 20px;
             display: flex; flex-direction: column; align-items: center;
             opacity: 0; transition: opacity 1s ease;
+            position: relative;
+            z-index: 10;
         }
 
         header { margin-bottom: 30px; margin-top: 20px; text-align: center; }
@@ -68,63 +78,144 @@
 
         .buttons-grid {
             display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
-            width: 100%; max-width: 600px; padding-bottom: 50px;
+            width: 100%; max-width: 600px; padding-bottom: 40px;
         }
 
-        /* لێرە گۆڕانکاری لۆ شین بوون هاتە کرن */
         .dept-btn {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 30px 10px; font-size: 18px; font-family: 'Vazirmatn'; font-weight: 600;
-            border: none; border-radius: 20px; background: white; color: #1a237e;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 20px; 
+            background: rgba(255, 255, 255, 0.85); color: #1a237e;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
+            z-index: 15;
+            position: relative;
+            touch-action: manipulation;
+            backdrop-filter: blur(5px);
+            opacity: 0;
         }
 
-        .dept-btn i { font-size: 35px; margin-bottom: 12px; color: #1a73e8; transition: all 0.3s ease; }
+        .dept-btn i { font-size: 35px; margin-bottom: 12px; color: #1a73e8; transition: all 0.3s ease; pointer-events: none; }
 
-        /* دەمێ دەست یان ماوس دچیتە سەر دوگمێ دێ شین بیت */
-        .dept-btn:hover {
-            background-color: #1a237e;
-            color: white;
-            transform: translateY(-5px);
-        }
-
-        .dept-btn:hover i {
-            color: #ffd700; /* ئایکۆن دبیتە زەرد ل سەر شینی */
-        }
-
+        .dept-btn:hover { background: linear-gradient(135deg, #1a237e 0%, #283593 100%); color: white; transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 25px rgba(26, 35, 126, 0.3); border-color: transparent; }
+        .dept-btn:hover i { color: #ffd700; transform: scale(1.1); }
         .dept-btn:active { transform: scale(0.95); }
 
-        /* Modal for Video - Responsive Design */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* دیزاینی بەشی فوتەر و سۆشیاڵ میدیا */
+        .site-footer {
+            margin-top: auto;
+            padding: 20px 0 60px 0;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .social-links { display: flex; gap: 15px; }
+        .social-icon {
+            display: flex; align-items: center; justify-content: center;
+            width: 45px; height: 45px; background: white; color: #1a237e;
+            border-radius: 50%; font-size: 22px; text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s ease;
+        }
+        .social-icon:hover {
+            background: #1a237e; color: #ffd700; transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(26, 35, 126, 0.3);
+        }
+        .copyright-text {
+            color: #1a237e; font-size: 15px; font-weight: bold;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        /* بەشی مێژووی کۆلێژ */
+        .history-section {
+            padding: 40px 30px; width: 90%; max-width: 800px;
+            margin: 0 auto 50px auto;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: right; line-height: 1.8; font-size: 17px;
+        }
+        .history-section h2 { color: #ffd700; text-align: center; margin-bottom: 20px; font-size: 26px; }
+
+        .scroll-indicator {
+            margin-top: 60px; color: rgba(255,255,255,0.7); cursor: pointer;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .scroll-indicator i {
+            font-size: 35px !important; margin-bottom: 5px !important; color: rgba(255,255,255,0.7) !important;
+        }
+
+        /* فوتەری شاشەی سەرەتا */
+        .welcome-footer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 30px;
+            margin-top: auto;
+        }
+        .welcome-footer .social-icon {
+            background: rgba(255, 255, 255, 0.15); color: white;
+            backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .welcome-footer .social-icon:hover {
+            background: white; color: #1a237e; transform: translateY(-5px);
+        }
+        .welcome-footer .copyright-text {
+            color: rgba(255, 255, 255, 0.9); font-size: 14px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
         .modal {
             display: none; position: fixed; z-index: 3000;
             left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
         }
-
-        .video-container { 
-            width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;
+           .video-container { 
+            width: 100%; min-height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 15px;
         }
 
         #youtubePlayer {
-            width: 90%; max-width: 800px; aspect-ratio: 16 / 9;
+            width: 100%; max-width: 800px; aspect-ratio: 16 / 9;
             border: none; border-radius: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            background: #000;
         }
 
         .video-info { 
-            width: 100%;
+            width: 95%; max-width: 800px;
             padding: 20px; color: white; background: #1a237e;
             border-top: 3px solid #ffd700; text-align: center;
+            border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
         }
 
         .close-btn {
             position: absolute; top: 20px; left: 20px; color: white; 
             font-size: 30px; z-index: 4000; background: rgba(255,255,255,0.2);
             width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .buttons-grid { gap: 10px; }
+            .dept-btn { padding: 25px 5px; font-size: 16px; min-height: 120px; }
+            .dept-btn i { font-size: 28px; }
+            .main-title { font-size: 24px; }
+            #youtubePlayer { width: 100%; height: 56vw; min-height: 220px; }
         }
     </style>
 </head>
-<body onclick="resetTimer()">
+<body>
 
     <div id="welcome-screen">
         <div class="welcome-content">
@@ -132,6 +223,27 @@
             <h1>بەخێربێن بۆ ڕێبەرێ زانکۆیا<br>کارگێڕی و ئابووری</h1>
             <p>بۆ دەسپێکرن، کلیک ل سەر دوگمێ بکە</p>
             <button class="start-btn" onclick="startApp()">دەسپێک</button>
+
+            <div class="scroll-indicator" onclick="document.getElementById('history').scrollIntoView({behavior: 'smooth'})">
+                <i class="fas fa-chevron-down"></i>
+                <p style="font-size: 14px;">بۆ زانیاری زێدەتر بکێشە خوارێ</p>
+            </div>
+        </div>
+
+        <!-- بەشی مێژووی کۆلێژ -->
+        <div id="history" class="history-section">
+            <h2><i class="fas fa-landmark"></i> مێژویا کۆلیژێ</h2>
+            <p>ل ڤێرە دشیێ کورتەیەکێ ل سەر مێژویا دامەزراندنا کۆلیژێ، پشکێن وێ، و دەستکەفتێن وێ بنڤیسی. ئەڤ بەشە دێ هاریکار بیت بۆ قوتابیێن نووی کو پتر ئاشنا ببن ب زانکۆیێ. کۆلیژا مە ئێکە ژ کۆلیژێن پێشەنگ د بوارێ کارگێڕی و ئابووری دا، کو ب درێژاهیا سالان چەندین کادرێن لێهاتی پێشکێشی جڤاکی کرینە...</p>
+        </div>
+
+        <!-- فوتەری شاشەی سەرەتا -->
+        <div class="welcome-footer">
+            <div class="social-links">
+                <a href="https://instagram.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://facebook.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://youtube.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="copyright-text">© هەمی ماف پاراستینە بۆ زانکۆیێ - ٢٠٢٦</p>
         </div>
     </div>
 
@@ -140,16 +252,23 @@
             <h1 class="main-title"><i class="fas fa-university"></i> ڕێبەرێ زانکۆیێ</h1>
             <p>تکایە جهێ مەبەست هەلبژێرە</p>
         </header>
-
-        <div class="buttons-grid" id="buttonsGrid">
-            <!-- Buttons will be loaded from Firebase -->
-        </div>
+        <div class="buttons-grid" id="buttonsGrid"></div>
+        
+        <!-- بەشی مافەکان و سۆشیاڵ میدیا -->
+        <footer class="site-footer">
+            <div class="social-links">
+                <a href="https://instagram.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://facebook.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://youtube.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="copyright-text">© هەمی ماف پاراستینە بۆ زانکۆیێ - ٢٠٢٦</p>
+        </footer>
     </div>
 
     <div id="videoModal" class="modal">
         <span class="close-btn" onclick="closeVideo()"><i class="fas fa-times"></i></span>
         <div class="video-container">
-            <iframe id="youtubePlayer" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <iframe id="youtubePlayer" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             <div class="video-info">
                 <h2 id="dept-name" style="color: #ffd700; margin-bottom: 5px;"></h2>
                 <p id="dept-desc" style="font-size: 18px;"></p>
@@ -158,7 +277,6 @@
     </div>
 
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAdBRnoL2f8XEPBhSmuc58C-LPpCtjc_Ik",
             authDomain: "administrationeconomics.firebaseapp.com",
@@ -169,63 +287,83 @@
             measurementId: "G-65M4ET0ZGP"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         let idleTimer;
 
         function startApp() {
-            document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
+            const welcome = document.getElementById('welcome-screen');
+            welcome.style.transform = 'translateY(-100%)';
             setTimeout(() => {
+                welcome.style.visibility = 'hidden'; // بۆ هندێ ل سەر مۆبایلێ ڕێگری ل کلیکێ نەکەت
                 document.getElementById('app-content').style.opacity = '1';
                 loadDepartments();
                 resetTimer();
-            }, 300);
+            }, 800);
         }
 
         async function loadDepartments() {
             const grid = document.getElementById('buttonsGrid');
-            grid.innerHTML = '<p style="color: #1a237e; grid-column: 1 / span 2;">لێگەریان ل داتایان دکەت...</p>';
-            
-            try {
-                const snapshot = await db.collection('departments').get();
+            grid.innerHTML = '<p style="color: #1a237e; grid-column: 1 / span 2; text-align: center;">لێگەریان ل داتایان دکەت...</p>';
+              try {
+                const snapshot = await db.collection('departments').orderBy('createdAt', 'desc').get();
                 grid.innerHTML = '';
+                let delay = 0;
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const btn = document.createElement('button');
                     btn.className = 'dept-btn';
-                    btn.onclick = () => playVideo(data.youtubeUrl, data.name, data.desc);
-                    btn.innerHTML = `<i class="${data.icon || 'fas fa-graduation-cap'}"></i>${data.name}`;
+                    btn.style.animation = `fadeInUp 0.6s ease forwards ${delay}s`;
+                    delay += 0.1;
+                    
+                    // ل ڤێرە نیشانا || درست هاتە کرن
+                    const videoToPlay = data.videoID || data.youtubeUrl;
+                    if (!videoToPlay) return;
+
+                    btn.onclick = (e) => {
+                        e.preventDefault();
+                        playVideo(videoToPlay, data.name, data.desc);
+                    };
+                    
+                    const iconClass = data.icon || 'fas fa-graduation-cap';
+                    btn.innerHTML = `<i class="${iconClass}"></i> ${data.name}`;
                     grid.appendChild(btn);
                 });
             } catch (error) {
                 console.error("Error loading docs: ", error);
-                grid.innerHTML = '<p>خەلەتیەک ڕوویدا لە کاتی بارکردنی زانیارییەکان</p>';
+                grid.innerHTML = '<p style="grid-column: 1 / span 2; text-align: center;">خەلەتیەک ڕوویدا لە کاتی بارکردنی زانیارییەکان</p>';
             }
         }
 
-        function playVideo(url, name, desc) {
+        function extractVideoID(url) {
+            if (!url) return null;
+            if (url.length === 11) return url; // ئەگەر تەنێ ID بیت
+            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?v=)|(shorts\/))([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[8].length == 11) ? match[8] : url;
+        }
+
+        function playVideo(videoData, name, desc) {
             const modal = document.getElementById('videoModal');
             const player = document.getElementById('youtubePlayer');
+            const videoId = extractVideoID(videoData);
             
-            // Convert YouTube URL to Embed format
-            let videoId = "";
-            if (url.includes("v=")) {
-                videoId = url.split("v=")[1].split("&")[0];
-            } else if (url.includes("youtu.be/")) {
-                videoId = url.split("youtu.be/")[1];
-            }
+            if (!videoId) return;
+
+            // playsinline بۆ هندێ ل مۆبایلێ د ناڤ سایتێ تە دا کار بکەت
+            player.src = `https://www.youtube.com/embed/${videoId.trim()}?autoplay=1&mute=1&playsinline=1&rel=0&enablejsapi=1`;
             
-            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
             document.getElementById('dept-name').innerText = name;
             document.getElementById('dept-desc').innerText = desc;
-            modal.style.display = "block";
+            modal.style.display = "block"; 
+            
+            resetTimer();
         }
 
         function closeVideo() {
             const player = document.getElementById('youtubePlayer');
-            player.src = ""; // Stop video
+            player.src = ""; 
             document.getElementById('videoModal').style.display = "none";
         }
 
@@ -233,10 +371,16 @@
             clearTimeout(idleTimer);
             idleTimer = setTimeout(() => {
                 closeVideo();
-                document.getElementById('welcome-screen').style.transform = 'translateY(0)';
+                const welcome = document.getElementById('welcome-screen');
+                welcome.style.visibility = 'visible';
+                welcome.style.transform = 'translateY(0)';
                 document.getElementById('app-content').style.opacity = '0';
             }, 120000); 
         }
+
+        // زیادکردنی ڕووداوی کلیک و لەمس بە شێوەیەکی دروستتر بۆ مۆبایل
+        document.addEventListener('click', resetTimer);
+        document.addEventListener('touchstart', resetTimer, { passive: true });
     </script>
 </body>
 </html>
