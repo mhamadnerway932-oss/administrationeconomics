@@ -180,9 +180,7 @@
         .modal {
             display: none; position: fixed; z-index: 3000;
             left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.75);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.95);
             overflow-y: auto;
         }
            .video-container { 
@@ -194,6 +192,8 @@
             width: 100%; max-width: 800px; aspect-ratio: 16 / 9;
             border: none; border-radius: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5);
             background: #000;
+            position: relative;
+            z-index: 10;
         }
 
         .video-info { 
@@ -358,8 +358,10 @@
             document.getElementById('dept-desc').innerText = desc;
             modal.style.display = "block"; 
 
-            // playsinline بۆ هندێ ل مۆبایلێ د ناڤ سایتێ تە دا کار بکەت
-            player.src = `https://www.youtube.com/embed/${videoId.trim()}?autoplay=1&mute=1&playsinline=1&rel=0&enablejsapi=1`;
+            // درەنگخستنەکا کێم بۆ ئایفۆنێ دا شاشە ئامادە بیت بەری لۆدکرنا ڤیدیۆیێ
+            setTimeout(() => {
+                player.src = `https://www.youtube.com/embed/${videoId.trim()}?autoplay=1&mute=1&playsinline=1&rel=0&enablejsapi=1`;
+            }, 100);
             
             resetTimer();
         }
