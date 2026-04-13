@@ -68,12 +68,13 @@
         .main-content {
             height: 100vh; overflow-y: auto; padding: 20px;
             display: flex; flex-direction: column; align-items: center;
-            opacity: 0; transition: opacity 1s ease;
+            opacity: 0; transform: scale(0.95); transition: opacity 1s ease, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             z-index: 10;
         }
 
-        header { margin-bottom: 30px; margin-top: 20px; text-align: center; }
+        header { margin-bottom: 30px; margin-top: 20px; text-align: center; opacity: 0; transform: translateY(-30px); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1.2) 0.3s; }
+        .main-content.active header { opacity: 1; transform: translateY(0); }
         .main-title { color: #1a237e; font-size: 32px; margin-bottom: 5px; }
 
         .buttons-grid {
@@ -84,27 +85,44 @@
         .dept-btn {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 30px 10px; font-size: 18px; font-family: 'Vazirmatn'; font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 20px; 
-            background: rgba(255, 255, 255, 0.85); color: #1a237e;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 20px; 
+            background: rgba(255, 255, 255, 0.65); color: #1a237e;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             z-index: 15;
             position: relative;
             touch-action: manipulation;
-            -webkit-backdrop-filter: blur(5px);
-            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
             opacity: 0;
+            overflow: hidden;
         }
 
-        .dept-btn i { font-size: 35px; margin-bottom: 12px; color: #1a73e8; transition: all 0.3s ease; pointer-events: none; }
+        .dept-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+            transform: skewX(-25deg); transition: 0.5s; z-index: 1;
+        }
+        .dept-btn:hover::before { left: 125%; transition: 0.7s; }
 
-        .dept-btn:hover { background: linear-gradient(135deg, #1a237e 0%, #283593 100%); color: white; transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 25px rgba(26, 35, 126, 0.3); border-color: transparent; }
-        .dept-btn:hover i { color: #ffd700; transform: scale(1.1); }
+        .dept-btn i { font-size: 35px; margin-bottom: 12px; color: #1a73e8; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; position: relative; z-index: 2; }
+        .dept-btn span { position: relative; z-index: 2; }
+
+        .dept-btn:hover { background: linear-gradient(135deg, #1a237e 0%, #283593 100%); color: white; transform: translateY(-12px) scale(1.05); box-shadow: 0 20px 40px rgba(26, 35, 126, 0.4); border-color: rgba(255, 215, 0, 0.6); }
+        .dept-btn:hover i { color: #ffd700; transform: scale(1.2) rotate(10deg); }
         .dept-btn:active { transform: scale(0.95); }
 
+        /* شێوەکانی باکگراوند بۆ جوانی */
+        .bg-shape { position: absolute; filter: blur(80px); z-index: 1; opacity: 0.6; animation: floatShape 12s infinite alternate ease-in-out; pointer-events: none; }
+        .shape1 { top: 5%; left: -10%; width: 350px; height: 350px; background: #ff9a9e; border-radius: 50%; }
+        .shape2 { bottom: 15%; right: -10%; width: 450px; height: 450px; background: #a1c4fd; border-radius: 50%; animation-delay: -5s; }
+        .shape3 { top: 40%; right: 15%; width: 250px; height: 250px; background: #fbc2eb; border-radius: 50%; animation-delay: -2s; }
+
+        @keyframes floatShape { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(60px, 60px) scale(1.2); } }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(40px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         /* دیزاینی بەشی فوتەر و سۆشیاڵ میدیا */
@@ -221,6 +239,11 @@
 </head>
 <body>
 
+    <!-- شێوەکانی باکگراوند -->
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+    <div class="bg-shape shape3"></div>
+
     <div id="welcome-screen">
         <div class="welcome-content">
             <i class="fas fa-graduation-cap"></i>
@@ -301,7 +324,10 @@
             welcome.style.transform = 'translateY(-100%)';
             setTimeout(() => {
                 welcome.style.visibility = 'hidden'; // بۆ هندێ ل سەر مۆبایلێ ڕێگری ل کلیکێ نەکەت
-                document.getElementById('app-content').style.opacity = '1';
+                const appContent = document.getElementById('app-content');
+                appContent.style.opacity = '1';
+                appContent.style.transform = 'scale(1)';
+                appContent.classList.add('active');
                 loadDepartments();
                 resetTimer();
             }, 800);
@@ -330,7 +356,7 @@
                     };
                     
                     const iconClass = data.icon || 'fas fa-graduation-cap';
-                    btn.innerHTML = `<i class="${iconClass}"></i> ${data.name}`;
+                    btn.innerHTML = `<i class="${iconClass}"></i> <span>${data.name}</span>`;
                     grid.appendChild(btn);
                 });
             } catch (error) {
@@ -347,24 +373,28 @@
             return (match && match[8].length == 11) ? match[8] : url;
         }
 
-        function playVideo(videoData, name, desc) {
-            const modal = document.getElementById('videoModal');
-            const player = document.getElementById('youtubePlayer');
-            const videoId = extractVideoID(videoData);
-            
-            if (!videoId) return;
+function playVideo(videoData, name, desc) {
+    const modal = document.getElementById('videoModal');
+    const player = document.getElementById('youtubePlayer');
+    
+    // ئەڤە دێ ID دەربێخیت چ لینکا کورت بیت یان یا Shorts
+    let videoId = "";
+    if (videoData.includes("shorts/")) {
+        videoId = videoData.split("shorts/")[1].split("?")[0];
+    } else if (videoData.includes("v=")) {
+        videoId = videoData.split("v=")[1].split("&")[0];
+    } else if (videoData.includes("youtu.be/")) {
+        videoId = videoData.split("youtu.be/")[1].split("?")[0];
+    } else {
+        videoId = videoData;
+    }
 
-            document.getElementById('dept-name').innerText = name;
-            document.getElementById('dept-desc').innerText = desc;
-            modal.style.display = "block"; 
-
-            // درەنگخستنەکا کێم بۆ ئایفۆنێ دا شاشە ئامادە بیت بەری لۆدکرنا ڤیدیۆیێ
-            setTimeout(() => {
-                player.src = `https://www.youtube.com/embed/${videoId.trim()}?autoplay=1&mute=1&playsinline=1&rel=0&enablejsapi=1`;
-            }, 100);
-            
-            resetTimer();
-        }
+    player.src = player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1`;
+    
+    document.getElementById('dept-name').innerText = name;
+    document.getElementById('dept-desc').innerText = desc;
+    modal.style.display = "flex";
+}
 
         function closeVideo() {
             const player = document.getElementById('youtubePlayer');
@@ -379,7 +409,10 @@
                 const welcome = document.getElementById('welcome-screen');
                 welcome.style.visibility = 'visible';
                 welcome.style.transform = 'translateY(0)';
-                document.getElementById('app-content').style.opacity = '0';
+                const appContent = document.getElementById('app-content');
+                appContent.style.opacity = '0';
+                appContent.style.transform = 'scale(0.95)';
+                appContent.classList.remove('active');
             }, 120000); 
         }
 
