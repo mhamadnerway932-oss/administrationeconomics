@@ -1046,46 +1046,50 @@
         /* چارەسەری تایبەت بۆ شاشە بچووکەکانی ئایفۆن */
         @media (max-width: 400px) {
             .shine-text {
-                font-size: 24px;
-                line-height: 1.5;
+                font-size: 18px;
+                line-height: 1.4;
+            }
+
+            .welcome-content p {
+                font-size: 13px;
             }
 
             .welcome-content i {
-                font-size: 65px;
-                margin-bottom: 15px;
+                font-size: 50px;
+                margin-bottom: 10px;
             }
 
             .start-btn {
-                padding: 10px 35px;
-                font-size: 18px;
+                padding: 10px 30px;
+                font-size: 16px;
                 margin-top: 15px;
             }
 
             .dept-btn {
-                min-height: 90px;
-                padding: 10px 5px;
+                min-height: 80px;
+                padding: 8px 4px;
             }
 
             .dept-btn i {
-                font-size: 22px;
+                font-size: 20px;
                 margin-bottom: 5px;
             }
 
             .dept-btn span {
-                font-size: 13px;
+                font-size: 12px;
             }
 
             .scroll-indicator i {
-                font-size: 20px !important;
+                font-size: 18px !important;
             }
 
             .history-section h2 {
-                font-size: 22px;
-                margin-bottom: 10px;
+                font-size: 18px;
+                margin-bottom: 8px;
             }
 
             .history-section p {
-                font-size: 15px;
+                font-size: 13px;
             }
         }
     </style>
@@ -1304,7 +1308,7 @@
             if (window.location.protocol === "file:" || !hostOrigin || hostOrigin === "null") {
                 hostOrigin = "https://www.youtube.com";
             }
-            player.src = `https://www.youtube.com/embed/${videoId}?playsinline=1&rel=0&modestbranding=1&origin=${hostOrigin}`;
+            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1&origin=${hostOrigin}`;
 
             document.getElementById('dept-name').innerText = name;
             document.getElementById('dept-desc').innerText = desc;
