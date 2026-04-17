@@ -1300,7 +1300,11 @@
 
             let videoId = extractVideoID(videoData);
 
-            player.src = `https://www.youtube.com/embed/${videoId}?playsinline=1&rel=0&modestbranding=1&origin=https://administrationeconomics.firebaseapp.com`;
+            let hostOrigin = window.location.origin;
+            if (window.location.protocol === "file:" || !hostOrigin || hostOrigin === "null") {
+                hostOrigin = "https://www.youtube.com";
+            }
+            player.src = `https://www.youtube.com/embed/${videoId}?playsinline=1&rel=0&modestbranding=1&origin=${hostOrigin}`;
 
             document.getElementById('dept-name').innerText = name;
             document.getElementById('dept-desc').innerText = desc;
