@@ -476,28 +476,30 @@
             return (match && match[8].length == 11) ? match[8] : url;
         }
 
-function playVideo(videoData, name, desc) {
-    const modal = document.getElementById('videoModal');
-    const player = document.getElementById('youtubePlayer');
-    
-    // ئەڤە دێ ID دەربێخیت چ لینکا کورت بیت یان یا Shorts
-    let videoId = "";
-    if (videoData.includes("shorts/")) {
-        videoId = videoData.split("shorts/")[1].split("?")[0];
-    } else if (videoData.includes("v=")) {
-        videoId = videoData.split("v=")[1].split("&")[0];
-    } else if (videoData.includes("youtu.be/")) {
-        videoId = videoData.split("youtu.be/")[1].split("?")[0];
-    } else {
-        videoId = videoData;
-    }
+        function playVideo(videoData, name, desc) {
+            const modal = document.getElementById('videoModal');
+            const player = document.getElementById('youtubePlayer');
+            
+            let cleanVideoData = videoData ? String(videoData).trim() : "";
+            let videoId = "";
+            
+            if (cleanVideoData.includes("shorts/")) {
+                videoId = cleanVideoData.split("shorts/")[1].split("?")[0];
+            } else if (cleanVideoData.includes("v=")) {
+                videoId = cleanVideoData.split("v=")[1].split("&")[0];
+            } else if (cleanVideoData.includes("youtu.be/")) {
+                videoId = cleanVideoData.split("youtu.be/")[1].split("?")[0];
+            } else {
+                videoId = cleanVideoData;
+            }
 
-    player.src = player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1`;
-    
-    document.getElementById('dept-name').innerText = name;
-    document.getElementById('dept-desc').innerText = desc;
-    modal.style.display = "flex";
-}
+            let hostOrigin = (window.location.protocol === "file:") ? "https://www.youtube.com" : window.location.origin;
+            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&origin=${hostOrigin}`;
+            
+            document.getElementById('dept-name').innerText = name;
+            document.getElementById('dept-desc').innerText = desc;
+            modal.style.display = "flex";
+        }
 
         function closeVideo() {
             const player = document.getElementById('youtubePlayer');
