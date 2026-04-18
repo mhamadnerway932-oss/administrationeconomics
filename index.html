@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="ku" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ڕێبەرێ زانکۆیێ</title>
-
+    
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -13,47 +12,26 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html {
-            height: -webkit-fill-available;
-            overflow-x: hidden;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
         body {
             font-family: 'Vazirmatn', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            overflow: hidden;
-            overflow-x: hidden;
-            width: 100%;
+            overflow: hidden; 
             height: 100vh;
-            /* وەکو جێگرەوە بۆ کۆمپیوتەر */
-            height: 100dvh;
-            /* چارەسەری کێشەی بەرزی شاشە لە مۆبایل */
-            min-height: -webkit-fill-available;
             position: relative;
         }
 
         #welcome-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            height: 100dvh;
-            min-height: -webkit-fill-available;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(26, 35, 126, 0.7)),
-                url('zanko.jpg');
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(26, 35, 126, 0.7)), 
+                        url('zanko.jpg');
             background-size: cover;
             background-position: center;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
             overflow-y: auto;
             z-index: 2000;
             color: white;
@@ -63,9 +41,6 @@
 
         .welcome-content {
             min-height: 100vh;
-            min-height: 100dvh;
-            /* ئەڤە دێ وەکەت کو بەشێ مێژوویێ ب تەمامی بچیتە خوارێ */
-            min-height: -webkit-fill-available;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -74,24 +49,12 @@
             text-align: center;
         }
 
-        .welcome-content i {
-            font-size: 90px;
-            margin-bottom: 20px;
-            color: #ffd700;
+        .welcome-content i { 
+            font-size: 90px; margin-bottom: 20px; color: #ffd700; 
             animation: bounce 2s infinite ease-in-out;
         }
 
-        @keyframes bounce {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-15px);
-            }
-        }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
         .shine-text {
             background: linear-gradient(to right, #ffffff 20%, #ffd700 40%, #ffd700 60%, #ffffff 80%);
@@ -105,21 +68,13 @@
         }
 
         @keyframes shine {
-            to {
-                background-position: 200% center;
-            }
+            to { background-position: 200% center; }
         }
 
         .start-btn {
-            margin-top: 40px;
-            padding: 18px 60px;
-            font-size: 26px;
-            font-weight: bold;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            margin-top: 40px; padding: 18px 60px; font-size: 26px; font-weight: bold;
+            color: white; border: none; border-radius: 50px;
+            cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.4);
             background: linear-gradient(45deg, #1a237e, #3949ab, #ffd700, #ff8c00);
             background-size: 300% 300%;
             animation: gradientBG 4s ease infinite, pulse 2s infinite;
@@ -132,142 +87,49 @@
             transform: scale(1.08);
         }
 
-        @keyframes gradientBG {
-            0% {
-                background-position: 0% 50%;
-            }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.8);
-            }
-
-            70% {
-                box-shadow: 0 0 0 20px rgba(255, 215, 0, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
-            }
-        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.8); } 70% { box-shadow: 0 0 0 20px rgba(255, 215, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); } }
 
         .main-content {
-            height: 100vh;
-            overflow-x: hidden;
-            overflow-y: auto;
-            width: 100%;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 1s ease, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100vh; overflow-y: auto; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; transform: scale(0.95); transition: opacity 1s ease, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             z-index: 10;
         }
 
-        header {
-            margin-bottom: 30px;
-            margin-top: 20px;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(-30px);
-            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1.2) 0.3s;
-            width: 100%;
-        }
-
-        .main-content.active header {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .main-title {
-            color: #1a237e;
-            font-size: 32px;
-            margin-bottom: 5px;
-        }
+        header { margin-bottom: 30px; margin-top: 20px; text-align: center; opacity: 0; transform: translateY(-30px); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1.2) 0.3s; width: 100%; }
+        .main-content.active header { opacity: 1; transform: translateY(0); }
+        .main-title { color: #1a237e; font-size: 32px; margin-bottom: 5px; }
 
         /* بەشی گەڕیان */
         .search-container {
-            margin-top: 20px;
-            position: relative;
-            width: 90%;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-top: 20px; position: relative; width: 90%; max-width: 400px; margin-left: auto; margin-right: auto;
         }
-
         .search-container i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #1a237e;
-            font-size: 18px;
-            z-index: 2;
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #1a237e; font-size: 18px; z-index: 2;
         }
-
         #searchInput {
-            width: 100%;
-            padding: 12px 40px 12px 15px;
-            border-radius: 25px;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            background: rgba(255, 255, 255, 0.65);
-            font-family: 'Vazirmatn', sans-serif;
-            font-size: 16px;
-            color: #1a237e;
-            outline: none;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
+            width: 100%; padding: 12px 40px 12px 15px; border-radius: 25px; border: 2px solid rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.65); font-family: 'Vazirmatn', sans-serif; font-size: 16px; color: #1a237e;
+            outline: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s ease;
+            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
         }
-
-        #searchInput:focus {
-            border-color: #ffd700;
-            background: #ffffff;
-            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5);
-            transform: translateY(-2px);
-        }
-
-        #searchInput::placeholder {
-            color: #666;
-        }
+        #searchInput:focus { border-color: #ffd700; background: #ffffff; box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5); transform: translateY(-2px); }
+        #searchInput::placeholder { color: #666; }
 
         .buttons-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            width: 100%;
-            max-width: 600px;
-            padding-bottom: 40px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+            width: 100%; max-width: 600px; padding-bottom: 40px;
         }
 
         .dept-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 30px 10px;
-            font-size: 18px;
-            font-family: 'Vazirmatn';
-            font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.65);
-            color: #1a237e;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 30px 10px; font-size: 18px; font-family: 'Vazirmatn'; font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 20px; 
+            background: rgba(255, 255, 255, 0.65); color: #1a237e;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             z-index: 15;
             position: relative;
@@ -279,336 +141,113 @@
         }
 
         .dept-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.8), transparent);
-            transform: skewX(-25deg);
-            transition: 0.5s;
-            z-index: 1;
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+            transform: skewX(-25deg); transition: 0.5s; z-index: 1;
         }
+        .dept-btn:hover::before { left: 125%; transition: 0.7s; }
 
-        .dept-btn:hover::before {
-            left: 125%;
-            transition: 0.7s;
-        }
-
-        .dept-btn i {
-            font-size: 35px;
-            margin-bottom: 12px;
-            color: #1a73e8;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-            position: relative;
-            z-index: 2;
-        }
-
-        .dept-btn span {
-            position: relative;
-            z-index: 2;
-        }
+        .dept-btn i { font-size: 35px; margin-bottom: 12px; color: #1a73e8; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; position: relative; z-index: 2; }
+        .dept-btn span { position: relative; z-index: 2; }
 
         .dept-btn img {
-            width: 65px;
-            height: 65px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            z-index: 2;
+            width: 65px; height: 65px; object-fit: cover; border-radius: 50%; margin-bottom: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; z-index: 2;
         }
-
         .dept-btn:hover img {
             transform: scale(1.15) rotate(5deg);
             box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
         }
 
-        .dept-btn:hover {
-            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
-            color: white;
-            transform: translateY(-12px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(26, 35, 126, 0.6), 0 0 20px rgba(255, 215, 0, 0.5);
-            border-color: #ffd700;
-        }
-
-        .dept-btn:hover i {
-            color: #ffd700;
-            transform: scale(1.3) rotate(15deg);
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
-        }
-
-        .dept-btn:active {
-            transform: scale(0.95);
-        }
+        .dept-btn:hover { background: linear-gradient(135deg, #1a237e 0%, #283593 100%); color: white; transform: translateY(-12px) scale(1.05); box-shadow: 0 15px 35px rgba(26, 35, 126, 0.6), 0 0 20px rgba(255, 215, 0, 0.5); border-color: #ffd700; }
+        .dept-btn:hover i { color: #ffd700; transform: scale(1.3) rotate(15deg); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
+        .dept-btn:active { transform: scale(0.95); }
 
         /* دوگمەی دارک مۆد */
         .theme-toggle {
-            position: absolute;
-            top: 60px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.65);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #1a237e;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
+            position: absolute; top: 60px; left: 20px;
+            background: rgba(255, 255, 255, 0.65); border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%; width: 45px; height: 45px; display: flex;
+            align-items: center; justify-content: center; font-size: 20px;
+            color: #1a237e; cursor: pointer; z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s ease;
+            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
         }
-
-        .theme-toggle:hover {
-            transform: scale(1.1) rotate(15deg);
-            background: #1a237e;
-            color: #ffd700;
-            box-shadow: 0 8px 20px rgba(26, 35, 126, 0.4);
-        }
+    .theme-toggle:hover { transform: scale(1.1) rotate(15deg); background: #1a237e; color: #ffd700; box-shadow: 0 8px 20px rgba(26, 35, 126, 0.4); }
 
         /* دوگمەی گەڕانەوە */
         .back-btn {
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.65);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #1a237e;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
+            position: absolute; top: 60px; right: 20px;
+            background: rgba(255, 255, 255, 0.65); border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%; width: 45px; height: 45px; display: flex;
+            align-items: center; justify-content: center; font-size: 20px;
+            color: #1a237e; cursor: pointer; z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s ease;
+            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
         }
-
-        .back-btn:hover {
-            transform: scale(1.1) translateX(-3px);
-            background: #1a237e;
-            color: #ffd700;
-            box-shadow: 0 8px 20px rgba(26, 35, 126, 0.4);
-        }
+        .back-btn:hover { transform: scale(1.1) translateX(-3px); background: #1a237e; color: #ffd700; box-shadow: 0 8px 20px rgba(26, 35, 126, 0.4); }
 
         /* ستایلەکانی دارک مۆد */
-        body.dark-mode {
-            background: linear-gradient(135deg, #121212 0%, #2d3436 100%);
-        }
-
-        body.dark-mode .main-title,
-        body.dark-mode header p,
+        body.dark-mode { background: linear-gradient(135deg, #121212 0%, #2d3436 100%); }
+        body.dark-mode .main-title, 
+        body.dark-mode header p, 
         body.dark-mode .copyright-text,
-        body.dark-mode #buttonsGrid p {
-            color: #f5f5f5 !important;
-            text-shadow: none;
-        }
-
-        body.dark-mode .search-container i {
-            color: #ffd700;
-        }
-
-        body.dark-mode #searchInput {
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            border-color: rgba(255, 215, 0, 0.5);
-        }
-
-        body.dark-mode #searchInput:focus {
-            background: rgba(0, 0, 0, 0.8);
-            border-color: #ffd700;
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.2);
-        }
-
-        body.dark-mode #searchInput::placeholder {
-            color: #aaa;
-        }
-
-        body.dark-mode .dept-btn {
-            background: rgba(0, 0, 0, 0.6);
-            color: #fff;
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        body.dark-mode .dept-btn i {
-            color: #ffd700;
-        }
-
-        body.dark-mode .social-icon {
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        body.dark-mode .social-icon:hover {
-            background: #ffd700;
-            color: #121212;
-        }
-
-        body.dark-mode .theme-toggle {
-            background: rgba(0, 0, 0, 0.6);
-            color: #ffd700;
-            border-color: rgba(255, 215, 0, 0.5);
-        }
-
-        body.dark-mode .back-btn {
-            background: rgba(0, 0, 0, 0.6);
-            color: #ffd700;
-            border-color: rgba(255, 215, 0, 0.5);
-        }
-
-        body.dark-mode .loader {
-            border: 4px solid rgba(255, 215, 0, 0.2);
-            border-top: 4px solid #ffd700;
-        }
-
-        body.dark-mode .bg-shape {
-            opacity: 0.2;
-        }
-
-        body.dark-mode .news-ticker {
-            background: rgba(0, 0, 0, 0.85);
-            border-bottom-color: #ffd700;
-        }
-
-        body.dark-mode .ticker-title {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-        }
+        body.dark-mode #buttonsGrid p { color: #f5f5f5 !important; text-shadow: none; }
+        body.dark-mode .search-container i { color: #ffd700; }
+        body.dark-mode #searchInput { background: rgba(0, 0, 0, 0.5); color: #fff; border-color: rgba(255, 215, 0, 0.5); }
+        body.dark-mode #searchInput:focus { background: rgba(0, 0, 0, 0.8); border-color: #ffd700; box-shadow: 0 5px 20px rgba(255, 215, 0, 0.2); }
+        body.dark-mode #searchInput::placeholder { color: #aaa; }
+        body.dark-mode .dept-btn { background: rgba(0, 0, 0, 0.6); color: #fff; border-color: rgba(255, 255, 255, 0.2); }
+        body.dark-mode .dept-btn i { color: #ffd700; }
+        body.dark-mode .social-icon { background: rgba(0, 0, 0, 0.5); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
+        body.dark-mode .social-icon:hover { background: #ffd700; color: #121212; }
+        body.dark-mode .theme-toggle { background: rgba(0, 0, 0, 0.6); color: #ffd700; border-color: rgba(255, 215, 0, 0.5); }
+        body.dark-mode .back-btn { background: rgba(0, 0, 0, 0.6); color: #ffd700; border-color: rgba(255, 215, 0, 0.5); }
+        body.dark-mode .loader { border: 4px solid rgba(255, 215, 0, 0.2); border-top: 4px solid #ffd700; }
+        body.dark-mode .bg-shape { opacity: 0.2; }
+        body.dark-mode .news-ticker { background: rgba(0, 0, 0, 0.85); border-bottom-color: #ffd700; }
+        body.dark-mode .ticker-title { background: linear-gradient(135deg, #ffd700, #ff8c00); }
 
         /* بەشی نووترین ئاگەهداری (News Ticker) */
         .news-ticker {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(26, 35, 126, 0.95);
-            color: #fff;
-            display: none;
-            align-items: flex-start;
-            padding: 10px 15px;
-            z-index: 2500;
-            border-bottom: 2px solid #ffd700;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            direction: rtl;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%;
+        background: rgba(26, 35, 126, 0.95); color: #fff;
+        display: none; align-items: flex-start; padding: 10px 15px;
+            z-index: 2500; border-bottom: 2px solid #ffd700;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+        direction: rtl; cursor: pointer; transition: all 0.3s ease;
         }
-
         .ticker-title {
-            background: linear-gradient(135deg, #ffd700, #ffb74d);
-            color: #1a237e;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 14px;
-            white-space: nowrap;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-            margin-top: -2px;
+            background: linear-gradient(135deg, #ffd700, #ffb74d); color: #1a237e;
+            padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px;
+            white-space: nowrap; z-index: 2; display: flex; align-items: center; gap: 8px;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); margin-top: -2px;
         }
-
         .ticker-content {
-            flex: 1;
-            overflow: hidden;
-            margin-right: 15px;
+        flex: 1; overflow: hidden; margin-right: 15px;
         }
-
         .ticker-text {
-            display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 15px;
-            font-weight: bold;
-            line-height: 1.6;
-            transition: all 0.3s ease;
+        display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        font-size: 15px; font-weight: bold; line-height: 1.6;
+        transition: all 0.3s ease;
         }
-
-        .news-ticker:hover .ticker-text,
-        .news-ticker:active .ticker-text {
-            white-space: normal;
-            overflow: visible;
+    .news-ticker:hover .ticker-text, .news-ticker:active .ticker-text {
+        white-space: normal; overflow: visible;
         }
 
         /* شێوەکانی باکگراوند بۆ جوانی */
-        .bg-shape {
-            position: absolute;
-            filter: blur(80px);
-            z-index: 1;
-            opacity: 0.6;
-            animation: floatShape 12s infinite alternate ease-in-out;
-            pointer-events: none;
-        }
+        .bg-shape { position: absolute; filter: blur(80px); z-index: 1; opacity: 0.6; animation: floatShape 12s infinite alternate ease-in-out; pointer-events: none; }
+    .shape1 { top: 5%; left: -10%; width: 350px; height: 350px; background: rgba(26, 35, 126, 0.5); border-radius: 50%; }
+    .shape2 { bottom: 15%; right: -10%; width: 450px; height: 450px; background: rgba(255, 215, 0, 0.4); border-radius: 50%; animation-delay: -5s; }
+    .shape3 { top: 40%; right: 15%; width: 250px; height: 250px; background: rgba(57, 73, 171, 0.4); border-radius: 50%; animation-delay: -2s; }
 
-        .shape1 {
-            top: 5%;
-            left: -10%;
-            width: 350px;
-            height: 350px;
-            background: rgba(26, 35, 126, 0.5);
-            border-radius: 50%;
-        }
-
-        .shape2 {
-            bottom: 15%;
-            right: -10%;
-            width: 450px;
-            height: 450px;
-            background: rgba(255, 215, 0, 0.4);
-            border-radius: 50%;
-            animation-delay: -5s;
-        }
-
-        .shape3 {
-            top: 40%;
-            right: 15%;
-            width: 250px;
-            height: 250px;
-            background: rgba(57, 73, 171, 0.4);
-            border-radius: 50%;
-            animation-delay: -2s;
-        }
-
-        @keyframes floatShape {
-            0% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            100% {
-                transform: translate(60px, 60px) scale(1.2);
-            }
-        }
+        @keyframes floatShape { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(60px, 60px) scale(1.2); } }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px) scale(0.9);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(40px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         /* دیزاینی بەشی فوتەر و سۆشیاڵ میدیا */
@@ -622,479 +261,161 @@
             align-items: center;
             gap: 15px;
         }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-
+        .social-links { display: flex; gap: 15px; }
         .social-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            background: white;
-            color: #1a237e;
-            border-radius: 50%;
-            font-size: 22px;
-            text-decoration: none;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: center;
+            width: 45px; height: 45px; background: white; color: #1a237e;
+            border-radius: 50%; font-size: 22px; text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s ease;
         }
-
         .social-icon:hover {
-            background: #1a237e;
-            color: #ffd700;
-            transform: translateY(-8px) rotate(360deg);
+            background: #1a237e; color: #ffd700; transform: translateY(-8px) rotate(360deg);
             box-shadow: 0 10px 25px rgba(26, 35, 126, 0.5), 0 0 15px rgba(255, 215, 0, 0.6);
         }
-
         .copyright-text {
-            color: #1a237e;
-            font-size: 15px;
-            font-weight: bold;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+            color: #1a237e; font-size: 15px; font-weight: bold;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
             font-family: 'Vazirmatn', sans-serif;
         }
-
+        
         /* بەشی خوارەوە (مێژوو و سۆشیاڵ میدیا) */
         .bottom-info-section {
             background: linear-gradient(to bottom, rgba(26, 35, 126, 0.8), rgba(10, 15, 40, 0.95));
-            width: 100%;
-            padding: 50px 5%;
-            margin-top: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 30px;
-            border-top: 2px solid #ffd700;
-            position: relative;
-            z-index: 5;
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+            width: 100%; padding: 50px 5%; margin-top: auto;
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 30px; border-top: 2px solid #ffd700;
+            position: relative; z-index: 5;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
         }
-
         .history-section {
-            flex: 1;
-            max-width: 60%;
-            text-align: right;
-            line-height: 1.8;
-            font-size: 17px;
+            flex: 1; max-width: 60%; text-align: right; line-height: 1.8; font-size: 17px;
         }
-
-        .history-section h2 {
-            color: #ffd700;
-            text-align: right;
-            margin-bottom: 15px;
-            font-size: 26px;
-        }
+        .history-section h2 { color: #ffd700; text-align: right; margin-bottom: 15px; font-size: 26px; }
 
         .scroll-indicator {
-            margin-top: 60px;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: color 0.3s ease;
+            margin-top: 60px; color: rgba(255,255,255,0.7); cursor: pointer;
+            display: flex; flex-direction: column; align-items: center;
+        transition: color 0.3s ease;
+    }
+    .scroll-indicator:hover {
+        color: #ffd700;
         }
-
-        .scroll-indicator:hover {
-            color: #ffd700;
-        }
-
         .scroll-indicator i {
-            font-size: 35px !important;
-            margin-bottom: 5px !important;
-            color: rgba(255, 255, 255, 0.7) !important;
-            animation: floatDown 1.5s infinite ease-in-out;
+            font-size: 35px !important; margin-bottom: 5px !important; color: rgba(255,255,255,0.7) !important;
+        animation: floatDown 1.5s infinite ease-in-out;
         }
 
-        @keyframes floatDown {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(10px);
-            }
-        }
+    @keyframes floatDown { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
 
         /* فوتەری شاشەی سەرەتا */
         .welcome-footer {
-            flex: 1;
-            max-width: 35%;
+            flex: 1; max-width: 35%;
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
-            /* لای چەپ بۆ عەرەبی/کوردی */
+            align-items: flex-end; /* لای چەپ بۆ عەرەبی/کوردی */
             gap: 15px;
         }
-
         .welcome-footer .social-icon {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
+            background: rgba(255, 255, 255, 0.15); color: white;
             -webkit-backdrop-filter: blur(5px);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
         .welcome-footer .social-icon:hover {
-            background: white;
-            color: #1a237e;
-            transform: translateY(-8px) rotate(360deg);
+            background: white; color: #1a237e; transform: translateY(-8px) rotate(360deg);
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
         }
-
         .welcome-footer .copyright-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            color: rgba(255, 255, 255, 0.9); font-size: 14px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         /* تەنۆلکەی جووڵاو لە باکگراوندی دەسپێک */
         .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-            pointer-events: none;
-            margin: 0;
-            padding: 0;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; z-index: 1; pointer-events: none; margin: 0; padding: 0;
         }
-
         .particles li {
-            position: absolute;
-            display: block;
-            list-style: none;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            bottom: -150px;
-            animation: animateParticles 15s linear infinite;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            position: absolute; display: block; list-style: none; width: 20px; height: 20px;
+            background: rgba(255, 255, 255, 0.15); border-radius: 50%; bottom: -150px;
+            animation: animateParticles 15s linear infinite; box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
-
-        .particles li:nth-child(1) {
-            left: 15%;
-            width: 40px;
-            height: 40px;
-            animation-delay: 0s;
-            animation-duration: 12s;
-        }
-
-        .particles li:nth-child(2) {
-            left: 35%;
-            width: 80px;
-            height: 80px;
-            animation-delay: 2s;
-            animation-duration: 18s;
-        }
-
-        .particles li:nth-child(3) {
-            left: 55%;
-            width: 30px;
-            height: 30px;
-            animation-delay: 4s;
-        }
-
-        .particles li:nth-child(4) {
-            left: 75%;
-            width: 60px;
-            height: 60px;
-            animation-delay: 0s;
-            animation-duration: 15s;
-            background: rgba(255, 215, 0, 0.15);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-        }
-
-        .particles li:nth-child(5) {
-            left: 90%;
-            width: 50px;
-            height: 50px;
-            animation-delay: 3s;
-            animation-duration: 10s;
-        }
-
-        @keyframes animateParticles {
-            0% {
-                transform: translateY(0) scale(0);
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(-1000px) scale(2);
-                opacity: 0;
-            }
-        }
+        .particles li:nth-child(1) { left: 15%; width: 40px; height: 40px; animation-delay: 0s; animation-duration: 12s; }
+        .particles li:nth-child(2) { left: 35%; width: 80px; height: 80px; animation-delay: 2s; animation-duration: 18s; }
+        .particles li:nth-child(3) { left: 55%; width: 30px; height: 30px; animation-delay: 4s; }
+        .particles li:nth-child(4) { left: 75%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 15s; background: rgba(255, 215, 0, 0.15); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        .particles li:nth-child(5) { left: 90%; width: 50px; height: 50px; animation-delay: 3s; animation-duration: 10s; }
+        @keyframes animateParticles { 0% { transform: translateY(0) scale(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-1000px) scale(2); opacity: 0; } }
 
         /* ئایکۆنی لۆدینگ (Spinner) */
         .loader {
             border: 4px solid rgba(26, 35, 126, 0.2);
             border-top: 4px solid #1a237e;
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
+            width: 45px; height: 45px;
             animation: spin 1s linear infinite;
-            margin: 40px auto;
-            grid-column: 1 / -1;
+            margin: 40px auto; grid-column: 1 / -1;
         }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 3000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
+            display: none; position: fixed; z-index: 3000;
+            left: 0; top: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.95);
             overflow-y: auto;
         }
-
-        .video-container {
-            width: 100%;
-            min-height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+           .video-container { 
+            width: 100%; min-height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;
             padding: 15px;
-            animation: modalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes modalPop {
-            from {
-                transform: scale(0.8) translateY(30px);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-            }
+        animation: modalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes modalPop {
+        from { transform: scale(0.8) translateY(30px); opacity: 0; }
+        to { transform: scale(1) translateY(0); opacity: 1; }
         }
 
         #youtubePlayer {
-            width: 100%;
-            max-width: 800px;
-            aspect-ratio: 16 / 9;
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            width: 100%; max-width: 800px; aspect-ratio: 16 / 9;
+            border: none; border-radius: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5);
             background: #000;
             position: relative;
             z-index: 10;
         }
 
-        .video-info {
-            width: 95%;
-            max-width: 800px;
-            padding: 20px;
-            color: white;
-            background: #1a237e;
-            border-top: 3px solid #ffd700;
-            text-align: center;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
+        .video-info { 
+            width: 95%; max-width: 800px;
+            padding: 20px; color: white; background: #1a237e;
+            border-top: 3px solid #ffd700; text-align: center;
+            border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
         }
 
         .close-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            font-size: 30px;
-            z-index: 4000;
-            background: rgba(255, 255, 255, 0.2);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: absolute; top: 20px; left: 20px; color: white; 
+            font-size: 30px; z-index: 4000; background: rgba(255,255,255,0.2);
+            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .close-btn:hover {
-            background: rgba(244, 67, 54, 0.9);
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 0 15px rgba(244, 67, 54, 0.6);
+        transition: all 0.3s ease;
+    }
+    .close-btn:hover {
+        background: rgba(244, 67, 54, 0.9);
+        transform: scale(1.1) rotate(90deg);
+        box-shadow: 0 0 15px rgba(244, 67, 54, 0.6);
         }
 
         @media (max-width: 800px) {
-            .bottom-info-section {
-                flex-direction: column;
-                padding: 40px 20px;
-            }
-
-            .history-section {
-                max-width: 100%;
-                text-align: center;
-            }
-
-            .history-section h2 {
-                text-align: center;
-            }
-
-            .welcome-footer {
-                max-width: 100%;
-                align-items: center;
-                margin-top: 20px;
-            }
+            .bottom-info-section { flex-direction: column; padding: 40px 20px; }
+            .history-section { max-width: 100%; text-align: center; }
+            .history-section h2 { text-align: center; }
+            .welcome-footer { max-width: 100%; align-items: center; margin-top: 20px; }
         }
 
         @media (max-width: 600px) {
-            .buttons-grid {
-                gap: 10px;
-            }
-
-            .dept-btn {
-                padding: 15px 5px;
-                font-size: 14px;
-                min-height: 100px;
-                border-radius: 15px;
-            }
-
-            .dept-btn i {
-                font-size: 26px;
-                margin-bottom: 8px;
-            }
-
-            .main-title {
-                font-size: 24px;
-            }
-
-            #youtubePlayer {
-                width: 100%;
-                height: 56vw;
-                min-height: 220px;
-            }
-
-            /* ڕێکخستنی قەبارەی شاشەی دەسپێک بۆ مۆبایل */
-            .welcome-content i {
-                font-size: 60px;
-                margin-bottom: 15px;
-            }
-
-            .shine-text {
-                font-size: 22px;
-                line-height: 1.4;
-            }
-
-            .welcome-content p {
-                font-size: 14px;
-            }
-
-            .start-btn {
-                padding: 12px 40px;
-                font-size: 20px;
-                margin-top: 25px;
-            }
-
-            .scroll-indicator {
-                margin-top: 30px;
-            }
-
-            .scroll-indicator i {
-                font-size: 25px !important;
-            }
-
-            /* ڕێکخستنی دوگمەی گەڕانەوە و دارک مۆد تا نەچنە سەر تێکستەکان */
-            .theme-toggle,
-            .back-btn {
-                top: 55px;
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-
-            .theme-toggle {
-                left: 15px;
-            }
-
-            .back-btn {
-                right: 15px;
-            }
-
-            header {
-                margin-top: 45px;
-            }
-        }
-
-        /* چارەسەری تایبەت بۆ شاشە بچووکەکانی ئایفۆن */
-        @media (max-width: 400px) {
-            .shine-text {
-                font-size: 18px;
-                line-height: 1.4;
-            }
-
-            .welcome-content p {
-                font-size: 13px;
-            }
-
-            .welcome-content i {
-                font-size: 50px;
-                margin-bottom: 10px;
-            }
-
-            .start-btn {
-                padding: 10px 30px;
-                font-size: 16px;
-                margin-top: 15px;
-            }
-
-            .dept-btn {
-                min-height: 80px;
-                padding: 8px 4px;
-            }
-
-            .dept-btn i {
-                font-size: 20px;
-                margin-bottom: 5px;
-            }
-
-            .dept-btn span {
-                font-size: 12px;
-            }
-
-            .scroll-indicator i {
-                font-size: 18px !important;
-            }
-
-            .history-section h2 {
-                font-size: 18px;
-                margin-bottom: 8px;
-            }
-
-            .history-section p {
-                font-size: 13px;
-            }
+            .buttons-grid { gap: 10px; }
+            .dept-btn { padding: 25px 5px; font-size: 16px; min-height: 120px; }
+            .dept-btn i { font-size: 28px; }
+            .main-title { font-size: 24px; }
+            #youtubePlayer { width: 100%; height: 56vw; min-height: 220px; }
         }
     </style>
 </head>
-
 <body>
 
     <!-- شریتی نووترین ئاگەهداری (News Ticker) -->
@@ -1113,11 +434,7 @@
     <div id="welcome-screen">
         <!-- تەنۆلکەی جووڵاو بۆ جوانی زیاتر -->
         <ul class="particles">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
+            <li></li><li></li><li></li><li></li><li></li>
         </ul>
 
         <div class="welcome-content" style="position: relative; z-index: 5;">
@@ -1126,8 +443,7 @@
             <p>بۆ دەسپێکرن، کلیک ل سەر دوگمێ بکە</p>
             <button class="start-btn" onclick="startApp()">دەسپێک</button>
 
-            <div class="scroll-indicator"
-                onclick="document.getElementById('history').scrollIntoView({behavior: 'smooth'})">
+            <div class="scroll-indicator" onclick="document.getElementById('history').scrollIntoView({behavior: 'smooth'})">
                 <i class="fas fa-chevron-down"></i>
                 <p style="font-size: 14px;">بۆ زانیاری زێدەتر بکێشە خوارێ</p>
             </div>
@@ -1138,21 +454,15 @@
             <!-- ڕەخێ ڕاستێ: مێژوو -->
             <div class="history-section">
                 <h2><i class="fas fa-landmark"></i> مێژویا کۆلیژێ</h2>
-                <p id="history-text">ل ڤێرە دشیێ کورتەیەکێ ل سەر مێژویا دامەزراندنا کۆلیژێ، پشکێن وێ، و دەستکەفتێن وێ
-                    بنڤیسی. ئەڤ بەشە دێ هاریکار بیت بۆ قوتابیێن نووی کو پتر ئاشنا ببن ب زانکۆیێ. کۆلیژا مە ئێکە ژ
-                    کۆلیژێن پێشەنگ د بوارێ کارگێڕی و ئابووری دا، کو ب درێژاهیا سالان چەندین کادرێن لێهاتی پێشکێشی جڤاکی
-                    کرینە...</p>
+                <p id="history-text">ل ڤێرە دشیێ کورتەیەکێ ل سەر مێژویا دامەزراندنا کۆلیژێ، پشکێن وێ، و دەستکەفتێن وێ بنڤیسی. ئەڤ بەشە دێ هاریکار بیت بۆ قوتابیێن نووی کو پتر ئاشنا ببن ب زانکۆیێ. کۆلیژا مە ئێکە ژ کۆلیژێن پێشەنگ د بوارێ کارگێڕی و ئابووری دا، کو ب درێژاهیا سالان چەندین کادرێن لێهاتی پێشکێشی جڤاکی کرینە...</p>
             </div>
 
             <!-- ڕەخێ چەپێ: سۆشیاڵ میدیا و مافەکان -->
             <div class="welcome-footer">
                 <div class="social-links">
-                    <a href="https://www.instagram.com/administration_economics?igsh=djllcWJubW4zcXRh" target="_blank"
-                        class="social-icon"><i class="fab fa-instagram"></i></a>
-                    <a href="https://facebook.com/YourUsername" target="_blank" class="social-icon"><i
-                            class="fab fa-facebook-f"></i></a>
-                    <a href="https://youtube.com/YourUsername" target="_blank" class="social-icon"><i
-                            class="fab fa-youtube"></i></a>
+                    <a href="https://www.instagram.com/administration_economics?igsh=djllcWJubW4zcXRh" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://youtube.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
                 </div>
                 <p class="copyright-text">© هەمی ماف پاراستینە بۆ زانکۆیێ - ٢٠٢٦</p>
             </div>
@@ -1176,16 +486,13 @@
             </div>
         </header>
         <div class="buttons-grid" id="buttonsGrid"></div>
-
+        
         <!-- بەشی مافەکان و سۆشیاڵ میدیا -->
         <footer class="site-footer">
             <div class="social-links">
-                <a href="https://www.instagram.com/administration_economics?igsh=djllcWJubW4zcXRh" target="_blank"
-                    class="social-icon"><i class="fab fa-instagram"></i></a>
-                <a href="https://facebook.com/YourUsername" target="_blank" class="social-icon"><i
-                        class="fab fa-facebook-f"></i></a>
-                <a href="https://youtube.com/YourUsername" target="_blank" class="social-icon"><i
-                        class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/administration_economics?igsh=djllcWJubW4zcXRh" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://facebook.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://youtube.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
             </div>
             <p class="copyright-text">© هەمی ماف پاراستینە بۆ زانکۆیێ - ٢٠٢٦</p>
         </footer>
@@ -1194,9 +501,7 @@
     <div id="videoModal" class="modal">
         <span class="close-btn" onclick="closeVideo()"><i class="fas fa-times"></i></span>
         <div class="video-container">
-            <iframe id="youtubePlayer" src=""
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
+            <iframe id="youtubePlayer" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             <div class="video-info">
                 <h2 id="dept-name" style="color: #ffd700; margin-bottom: 5px;"></h2>
                 <p id="dept-desc" style="font-size: 18px;"></p>
@@ -1257,7 +562,7 @@
         async function loadDepartments() {
             const grid = document.getElementById('buttonsGrid');
             grid.innerHTML = '<div class="loader"></div>';
-            try {
+              try {
                 const snapshot = await db.collection('departments').orderBy('createdAt', 'desc').get();
                 grid.innerHTML = '';
                 let delay = 0;
@@ -1267,7 +572,7 @@
                     btn.className = 'dept-btn';
                     btn.style.animation = `fadeInUp 0.6s ease forwards ${delay}s`;
                     delay += 0.1;
-
+                    
                     // ل ڤێرە نیشانا || درست هاتە کرن
                     const videoToPlay = data.videoID || data.youtubeUrl;
                     if (!videoToPlay) return;
@@ -1275,7 +580,7 @@
                     btn.onclick = (e) => {
                         playVideo(videoToPlay, data.name, data.desc);
                     };
-
+                    
                     const iconClass = data.icon || 'fas fa-graduation-cap';
                     btn.innerHTML = `<i class="${iconClass}"></i> <span>${data.name}</span>`;
                     grid.appendChild(btn);
@@ -1289,27 +594,24 @@
         function extractVideoID(url) {
             if (!url) return null;
             let cleanUrl = String(url).trim();
-            if (cleanUrl.length === 11) return cleanUrl;
-
-            let match = cleanUrl.match(/[?&]v=([^&#]+)/) ||
-                cleanUrl.match(/youtu\.be\/([^?#]+)/) ||
-                cleanUrl.match(/shorts\/([^?#]+)/) ||
-                cleanUrl.match(/embed\/([^?#]+)/);
+            if (cleanUrl.length === 11) return cleanUrl; 
+            
+            let match = cleanUrl.match(/[?&]v=([^&#]+)/) || 
+                        cleanUrl.match(/youtu\.be\/([^?#]+)/) || 
+                        cleanUrl.match(/shorts\/([^?#]+)/) || 
+                        cleanUrl.match(/embed\/([^?#]+)/);
             return (match && match[1]) ? match[1].substring(0, 11) : cleanUrl;
         }
 
         function playVideo(videoData, name, desc) {
             const modal = document.getElementById('videoModal');
             const player = document.getElementById('youtubePlayer');
-
+            
             let videoId = extractVideoID(videoData);
 
-            let hostOrigin = window.location.origin;
-            if (window.location.protocol === "file:" || !hostOrigin || hostOrigin === "null") {
-                hostOrigin = "https://www.youtube.com";
-            }
+            let hostOrigin = (window.location.protocol === "file:") ? "https://www.youtube.com" : window.location.origin;
             player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1&origin=${hostOrigin}`;
-
+            
             document.getElementById('dept-name').innerText = name;
             document.getElementById('dept-desc').innerText = desc;
             modal.style.display = "flex";
@@ -1317,14 +619,14 @@
 
         function closeVideo() {
             const player = document.getElementById('youtubePlayer');
-            player.src = "";
+            player.src = ""; 
             document.getElementById('videoModal').style.display = "none";
         }
 
         function filterDepartments() {
             const input = document.getElementById('searchInput').value;
             const buttons = document.getElementsByClassName('dept-btn');
-
+            
             for (let i = 0; i < buttons.length; i++) {
                 const name = buttons[i].getElementsByTagName('span')[0].innerText;
                 if (name.includes(input)) {
@@ -1339,7 +641,7 @@
             const body = document.body;
             const icon = document.querySelector('#themeToggle i');
             body.classList.toggle('dark-mode');
-
+            
             if (body.classList.contains('dark-mode')) {
                 icon.className = 'fas fa-sun';
             } else {
@@ -1368,8 +670,23 @@
         function resetTimer() {
             clearTimeout(idleTimer);
             idleTimer = setTimeout(() => {
+                closeVideo();
+                const welcome = document.getElementById('welcome-screen');
+                welcome.style.visibility = 'visible';
+                welcome.style.transform = 'translateY(0)';
+                const appContent = document.getElementById('app-content');
+                appContent.style.opacity = '0';
+                appContent.style.transform = 'scale(0.95)';
+                appContent.classList.remove('active');
+
+                // پاککردنەوەی بۆکسی گەڕیان لە کاتی گەڕانەوە بۆ شاشەی سەرەتا
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.value = '';
+                    filterDepartments();
+                }
                 goHome();
-            }, 120000);
+            }, 120000); 
         }
 
         // زیادکردنی ڕووداوی کلیک و لەمس بە شێوەیەکی دروستتر بۆ مۆبایل
@@ -1377,5 +694,4 @@
         document.addEventListener('touchstart', resetTimer, { passive: true });
     </script>
 </body>
-
 </html>
