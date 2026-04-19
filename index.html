@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ڕێبەرێ زانکۆیێ</title>
+    <title>خێربێن بۆ ڕێبەرێ کۆلێژا کارگێڕی و ئابووری</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -214,35 +214,67 @@
         body.dark-mode .back-btn { background: rgba(0, 0, 0, 0.6); color: #ffd700; border-color: rgba(255, 215, 0, 0.5); }
         body.dark-mode .loader { border: 4px solid rgba(255, 215, 0, 0.2); border-top: 4px solid #ffd700; }
         body.dark-mode .bg-shape { opacity: 0.2; }
-        body.dark-mode .news-ticker { background: rgba(0, 0, 0, 0.85); border-bottom-color: #ffd700; }
-        body.dark-mode .ticker-title { background: linear-gradient(135deg, #ffd700, #ff8c00); }
+        body.dark-mode .news-fab { background: rgba(0, 0, 0, 0.85); border-color: #ffd700; }
 
-        /* بەشی نووترین ئاگەهداری (News Ticker) */
-        .news-ticker {
-            position: fixed; top: 0; left: 0; width: 100%;
-        background: rgba(26, 35, 126, 0.95); color: #fff;
-        display: none; align-items: flex-start; padding: 10px 15px;
-            z-index: 2500; border-bottom: 2px solid #ffd700;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        /* دیزاینی نوێی گۆڕینی زمان */
+        .lang-switcher {
+            position: absolute; top: 20px; left: 20px; z-index: 3000;
+            display: flex; background: rgba(0, 0, 0, 0.5);
+            border-radius: 30px; padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-        direction: rtl; cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .ticker-title {
-            background: linear-gradient(135deg, #ffd700, #ffb74d); color: #1a237e;
-            padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px;
-            white-space: nowrap; z-index: 2; display: flex; align-items: center; gap: 8px;
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); margin-top: -2px;
+        .lang-switcher button {
+            background: transparent; border: none; color: #fff;
+            padding: 8px 16px; border-radius: 20px; cursor: pointer;
+            font-weight: bold; font-family: 'Vazirmatn', sans-serif; font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .ticker-content {
-        flex: 1; overflow: hidden; margin-right: 15px;
+        .lang-switcher button.active {
+            background: linear-gradient(135deg, #ffd700, #ffb300); color: #1a237e;
+            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
         }
-        .ticker-text {
-        display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        font-size: 15px; font-weight: bold; line-height: 1.6;
-        transition: all 0.3s ease;
+        .lang-switcher button:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.15);
         }
-    .news-ticker:hover .ticker-text, .news-ticker:active .ticker-text {
-        white-space: normal; overflow: visible;
+
+        /* ڕێکخستنی شێواز بۆ زمانی ئینگلیزی (LTR) */
+        html[dir="ltr"] .search-container i { right: auto; left: 15px; }
+        html[dir="ltr"] #searchInput { padding: 12px 15px 12px 40px; }
+        html[dir="ltr"] .theme-toggle { left: auto; right: 20px; }
+        html[dir="ltr"] .back-btn { right: auto; left: 20px; }
+        html[dir="ltr"] .welcome-footer { align-items: flex-start; }
+        html[dir="ltr"] .history-section, html[dir="ltr"] .history-section h2 { text-align: left; }
+
+        /* ئاگەهداری بۆ شاشەی دەسپێک (News Fab) */
+        .news-fab {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(26, 35, 126, 0.85); color: #fff;
+            border: 2px solid #ffd700; border-radius: 25px;
+            width: 50px; max-height: 50px;
+            display: none; flex-direction: row; align-items: flex-start;
+            cursor: pointer; overflow: hidden; z-index: 2500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: max-height 0.5s ease, width 0.5s ease, border-radius 0.5s ease;
+            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+        }
+        .news-fab.expanded {
+            width: calc(100% - 40px); max-width: 400px;
+            max-height: 300px; border-radius: 15px;
+        }
+        .news-fab .fab-icon {
+            flex: 0 0 46px; height: 46px;
+            display: flex; align-items: center; justify-content: center;
+            color: #ffd700; font-size: 22px;
+        }
+        .news-fab .fab-content {
+            flex: 1; padding: 12px 10px 12px 15px;
+            white-space: pre-wrap; font-size: 15px; line-height: 1.6;
+            opacity: 0; transition: opacity 0.4s ease 0.2s;
+        }
+        .news-fab.expanded .fab-content {
+            opacity: 1;
         }
 
         /* شێوەکانی باکگراوند بۆ جوانی */
@@ -426,20 +458,27 @@
 </head>
 <body>
 
-    <!-- شریتی نووترین ئاگەهداری (News Ticker) -->
-    <div class="news-ticker">
-        <div class="ticker-title"><i class="fas fa-bell fa-shake"></i> نووترین ئاگەهداری</div>
-        <div class="ticker-content">
-            <span class="ticker-text">ئاگەهداری دهێتە بارکرن...</span>
-        </div>
-    </div>
-
     <!-- شێوەکانی باکگراوند -->
     <div class="bg-shape shape1"></div>
     <div class="bg-shape shape2"></div>
     <div class="bg-shape shape3"></div>
 
     <div id="welcome-screen">
+        <!-- دوگمەی گۆڕینی زمان -->
+        <div class="lang-switcher">
+            <button onclick="setLanguage('en')" id="btn-en">EN</button>
+            <button onclick="setLanguage('ku')" id="btn-ku" class="active">KU</button>
+            <button onclick="setLanguage('ar')" id="btn-ar">AR</button>
+        </div>
+
+        <!-- دوگمەی ئاگەهداری بۆ دەسپێک -->
+        <div class="news-fab" id="newsFab" onclick="this.classList.toggle('expanded')">
+            <div class="fab-icon"><i class="fas fa-bell fa-shake"></i></div>
+            <div class="fab-content">
+                <span id="tickerText">ئاگەهداری دهێتە بارکرن...</span>
+            </div>
+        </div>
+
         <!-- تەنۆلکەی جووڵاو بۆ جوانی زیاتر -->
         <ul class="particles">
             <li></li><li></li><li></li><li></li><li></li>
@@ -447,13 +486,13 @@
 
         <div class="welcome-content" style="position: relative; z-index: 5;">
             <i class="fas fa-graduation-cap"></i>
-            <h1 class="shine-text">خێربێن بۆ ڕێبەرێ زانکۆیا<br>کارگێڕی و ئابووری</h1>
-            <p>بۆ دەسپێکرن، کلیک ل سەر دوگمێ بکە</p>
-            <button class="start-btn" onclick="startApp()">دەسپێک</button>
+            <h1 class="shine-text" id="welcomeTitle">خێربێن بۆ ڕێبەرێ کۆلێژا <br>کارگێڕی و ئابووری</h1>
+            <p id="welcomeDesc">بۆ دەسپێکرن، کلیک ل سەر دوگمێ بکە</p>
+            <button class="start-btn" id="startBtn" onclick="startApp()">دەسپێک</button>
 
             <div class="scroll-indicator" onclick="document.getElementById('history').scrollIntoView({behavior: 'smooth'})">
                 <i class="fas fa-chevron-down"></i>
-                <p style="font-size: 14px;">بۆ زانیاری زێدەتر بکێشە خوارێ</p>
+                <p style="font-size: 14px;" id="scrollText">بۆ زانیاری زێدەتر بکێشە خوارێ</p>
             </div>
         </div>
 
@@ -461,8 +500,8 @@
         <div class="bottom-info-section" id="history">
             <!-- ڕەخێ ڕاستێ: مێژوو -->
             <div class="history-section">
-                <h2><i class="fas fa-landmark"></i> مێژویا کۆلیژێ</h2>
-                <p id="history-text">ل ڤێرە دشیێ کورتەیەکێ ل سەر مێژویا دامەزراندنا کۆلیژێ، پشکێن وێ، و دەستکەفتێن وێ بنڤیسی. ئەڤ بەشە دێ هاریکار بیت بۆ قوتابیێن نووی کو پتر ئاشنا ببن ب زانکۆیێ. کۆلیژا مە ئێکە ژ کۆلیژێن پێشەنگ د بوارێ کارگێڕی و ئابووری دا، کو ب درێژاهیا سالان چەندین کادرێن لێهاتی پێشکێشی جڤاکی کرینە...</p>
+                <h2 id="historyTitle"><i class="fas fa-landmark"></i> مێژویا کۆلیژێ</h2>
+                <p id="history-text">ل ڤێرە دشیێ کورتەیەکێ ل سەر مێژویا دامەزراندنا کۆلیژێ، پشکێن وێ، و دەستکەفتێن وێ بنڤیسی. ئەڤ بەشە دێ هاریکار بیت بۆ قوتابیێن نووی کو پتر ئاشنا ببن ب کۆلێژێ. کۆلیژا مە ئێکە ژ کۆلیژێن پێشەنگ د بوارێ کارگێڕی و ئابووری دا، کو ب درێژاهیا سالان چەندین کادرێن لێهاتی پێشکێشی جڤاکی کرینە...</p>
             </div>
 
             <!-- ڕەخێ چەپێ: سۆشیاڵ میدیا و مافەکان -->
@@ -472,7 +511,7 @@
                     <a href="https://facebook.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
                     <a href="https://youtube.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
                 </div>
-                <p class="copyright-text">© هەمی ماف پاراستینە بۆ زانکۆیێ - ٢٠٢٦</p>
+                <p class="copyright-text">© هەمی ماف پاراستینە بۆ کۆلێژێ - ٢٠٢٦</p>
             </div>
         </div>
     </div>
@@ -486,8 +525,8 @@
         </button>
 
         <header>
-            <h1 class="main-title"><i class="fas fa-university"></i> ڕێبەرێ زانکۆیێ</h1>
-            <p> جهێ مەبەست هەلبژێرە</p>
+            <h1 class="main-title" id="mainTitle"><i class="fas fa-university"></i> ڕێبەرێ کۆلێژا کارگێڕی و ئابووری</h1>
+            <p id="mainDesc"> جهێ مەبەست هەلبژێرە</p>
             <div class="search-container">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" onkeyup="filterDepartments()" placeholder="لێ گەریانا بەشان...">
@@ -502,7 +541,7 @@
                 <a href="https://facebook.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
                 <a href="https://youtube.com/YourUsername" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
             </div>
-            <p class="copyright-text">© هەمی ماف پاراستینە بۆ زانکۆیێ - ٢٠٢٦</p>
+            <p class="copyright-text">© هەمی ماف پاراستینە بۆ کۆلێژێ - ٢٠٢٦</p>
         </footer>
     </div>
 
@@ -518,6 +557,119 @@
     </div>
 
     <script>
+        const translations = {
+            ku: {
+                title: "خێربێن بۆ ڕێبەرێ کۆلێژا کارگێڕی و ئابووری",
+                welcomeTitle: "خێربێن بۆ ڕێبەرێ کۆلێژا <br>کارگێڕی و ئابووری",
+                welcomeDesc: "بۆ دەسپێکرن، کلیک ل سەر دوگمێ بکە",
+                startBtn: "دەسپێک",
+                scrollText: "بۆ زانیاری زێدەتر بکێشە خوارێ",
+                historyTitle: "<i class='fas fa-landmark'></i> مێژویا کۆلیژێ",
+                historyDefault: "ل ڤێرە دشیێ کورتەیەکێ ل سەر مێژویا دامەزراندنا کۆلیژێ، پشکێن وێ، و دەستکەفتێن وێ بنڤیسی. ئەڤ بەشە دێ هاریکار بیت بۆ قوتابیێن نووی کو پتر ئاشنا ببن ب کۆلێژێ. کۆلیژا مە ئێکە ژ کۆلیژێن پێشەنگ د بوارێ کارگێڕی و ئابووری دا، کو ب درێژاهیا سالان چەندین کادرێن لێهاتی پێشکێشی جڤاکی کرینە...",
+                copyright: "© هەمی ماف پاراستینە بۆ کۆلێژێ - ٢٠٢٦",
+                mainTitle: "<i class='fas fa-university'></i> ڕێبەرێ کۆلێژا کارگێڕی و ئابووری",
+                mainDesc: "جهێ مەبەست هەلبژێرە",
+                searchPlaceholder: "لێ گەریانا بەشان...",
+                backBtnTitle: "گەڕانەوە بۆ سەرەتا",
+                themeBtnTitle: "گۆڕینی ڕەنگ",
+                loadingError: "خەلەتیەک ڕوویدا لە کاتی بارکردنی زانیارییەکان",
+                loadingTicker: "ئاگەهداری دهێتە بارکرن..."
+            },
+            en: {
+                title: "Welcome to Administration & Economics College Guide",
+                welcomeTitle: "Welcome to the Guide of <br>Administration & Economics College",
+                welcomeDesc: "Click the button below to start",
+                startBtn: "Start",
+                scrollText: "Scroll down for more information",
+                historyTitle: "<i class='fas fa-landmark'></i> College History",
+                historyDefault: "Here you can write a brief summary about the history of the college's establishment, its departments, and achievements. This section will help new students become more familiar with the college. Our college is one of the leading colleges in the field of administration and economics, which over the years has presented many qualified cadres to society...",
+                copyright: "© All rights reserved for the College - 2026",
+                mainTitle: "<i class='fas fa-university'></i> Admin & Econ College Guide",
+                mainDesc: "Choose your destination",
+                searchPlaceholder: "Search departments...",
+                backBtnTitle: "Back to Home",
+                themeBtnTitle: "Toggle Theme",
+                loadingError: "An error occurred while loading data",
+                loadingTicker: "Loading news..."
+            },
+            ar: {
+                title: "مرحباً بكم في دليل كلية الإدارة والاقتصاد",
+                welcomeTitle: "مرحباً بكم في دليل كلية <br>الإدارة والاقتصاد",
+                welcomeDesc: "للبدء، انقر على الزر أدناه",
+                startBtn: "البدء",
+                scrollText: "لمزيد من المعلومات اسحب للأسفل",
+                historyTitle: "<i class='fas fa-landmark'></i> تاريخ الكلية",
+                historyDefault: "هنا يمكنك كتابة نبذة مختصرة عن تاريخ تأسيس الكلية وأقسامها وإنجازاتها. هذا القسم سيساعد الطلاب الجدد على التعرف أكثر على الكلية. كليتنا هي واحدة من الكليات الرائدة في مجال الإدارة والاقتصاد، والتي قدمت على مر السنين العديد من الكوادر المؤهلة للمجتمع...",
+                copyright: "© جميع الحقوق محفوظة للكلية - ٢٠٢٦",
+                mainTitle: "<i class='fas fa-university'></i> دليل كلية الإدارة والاقتصاد",
+                mainDesc: "اختر وجهتك",
+                searchPlaceholder: "البحث عن الأقسام...",
+                backBtnTitle: "العودة للبداية",
+                themeBtnTitle: "تغيير المظهر",
+                loadingError: "حدث خطأ أثناء تحميل البيانات",
+                loadingTicker: "جاري تحميل الأخبار..."
+            }
+        };
+
+        // سڕینەوەی بیرگەی پێشوو بۆ ئەوەی هەمیشە سەرەتا بە کوردی بێت
+        localStorage.removeItem('appLang');
+        let currentLang = sessionStorage.getItem('appLang') || 'ku';
+        window.dbNewsText = null;
+        window.dbHistoryText = null;
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            sessionStorage.setItem('appLang', lang);
+            
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
+            
+            document.getElementById('btn-ku').classList.toggle('active', lang === 'ku');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+            
+            document.title = translations[lang].title;
+            document.getElementById('welcomeTitle').innerHTML = translations[lang].welcomeTitle;
+            document.getElementById('welcomeDesc').innerText = translations[lang].welcomeDesc;
+            document.getElementById('startBtn').innerText = translations[lang].startBtn;
+            document.getElementById('scrollText').innerText = translations[lang].scrollText;
+            document.getElementById('historyTitle').innerHTML = translations[lang].historyTitle;
+            
+            const copyrights = document.querySelectorAll('.copyright-text');
+            copyrights.forEach(el => el.innerText = translations[lang].copyright);
+            
+            document.getElementById('mainTitle').innerHTML = translations[lang].mainTitle;
+            document.getElementById('mainDesc').innerText = translations[lang].mainDesc;
+            document.getElementById('searchInput').placeholder = translations[lang].searchPlaceholder;
+            document.getElementById('backBtn').title = translations[lang].backBtnTitle;
+            document.getElementById('themeToggle').title = translations[lang].themeBtnTitle;
+            
+            const historyEl = document.getElementById('history-text');
+            if (window.dbHistoryText) {
+                historyEl.innerText = window.dbHistoryText;
+            } else {
+                historyEl.innerText = translations[lang].historyDefault;
+            }
+
+            const tickerEl = document.getElementById('tickerText');
+            if (window.dbNewsText) {
+                tickerEl.innerText = window.dbNewsText;
+            } else {
+                tickerEl.innerText = translations[lang].loadingTicker;
+            }
+
+            // گۆڕینی ناوی بەشەکان ئەگەر بارکرابن
+            const deptButtons = document.querySelectorAll('.dept-btn');
+            deptButtons.forEach(btn => {
+                const localizedName = btn.getAttribute('data-name-' + lang);
+                if (localizedName) {
+                    btn.querySelector('span').innerText = localizedName;
+                }
+            });
+        }
+
+        setLanguage(currentLang);
+
         const firebaseConfig = {
             apiKey: "AIzaSyAdBRnoL2f8XEPBhSmuc58C-LPpCtjc_Ik",
             authDomain: "administrationeconomics.firebaseapp.com",
@@ -540,13 +692,20 @@
                     welcomeScreen.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(26, 35, 126, 0.7)), url('${data.bgImageUrl}')`;
                 }
                 if (data.newsText) {
-                    document.querySelector('.news-ticker').style.display = 'flex';
-                    document.querySelector('.ticker-text').innerText = data.newsText;
+                    window.dbNewsText = data.newsText;
+                    document.getElementById('newsFab').style.display = 'flex';
+                    document.getElementById('tickerText').innerText = data.newsText;
                 } else {
-                    document.querySelector('.news-ticker').style.display = 'none';
+                    window.dbNewsText = null;
+                    document.getElementById('newsFab').style.display = 'none';
+                    document.getElementById('newsFab').classList.remove('expanded');
                 }
                 if (data.historyText) {
+                    window.dbHistoryText = data.historyText;
                     document.getElementById('history-text').innerText = data.historyText;
+                } else {
+                    window.dbHistoryText = null;
+                    document.getElementById('history-text').innerText = translations[currentLang].historyDefault;
                 }
             }
         }, err => console.log(err));
@@ -585,17 +744,27 @@
                     const videoToPlay = data.videoID || data.youtubeUrl;
                     if (!videoToPlay) return;
 
+                    // پاشکەوتکردنی ناوەکان بۆ هەرسێ زمانەکە لەسەر دوگمەکە
+                    btn.setAttribute('data-name-ku', data.name || '');
+                    btn.setAttribute('data-name-en', data.nameEn || data.name || '');
+                    btn.setAttribute('data-name-ar', data.nameAr || data.name || '');
+
                     btn.onclick = (e) => {
-                        playVideo(videoToPlay, data.name, data.desc);
+                        let n = btn.getAttribute('data-name-' + currentLang);
+                        let d = data.desc;
+                        if(currentLang === 'en' && data.descEn) d = data.descEn;
+                        if(currentLang === 'ar' && data.descAr) d = data.descAr;
+                        playVideo(videoToPlay, n, d);
                     };
                     
                     const iconClass = data.icon || 'fas fa-graduation-cap';
-                    btn.innerHTML = `<i class="${iconClass}"></i> <span>${data.name}</span>`;
+                    const displayLangName = btn.getAttribute('data-name-' + currentLang);
+                    btn.innerHTML = `<i class="${iconClass}"></i> <span>${displayLangName}</span>`;
                     grid.appendChild(btn);
                 });
             } catch (error) {
                 console.error("Error loading docs: ", error);
-                grid.innerHTML = '<p style="grid-column: 1 / span 2; text-align: center;">خەلەتیەک ڕوویدا لە کاتی بارکردنی زانیارییەکان</p>';
+                grid.innerHTML = '<p style="grid-column: 1 / span 2; text-align: center;">' + translations[currentLang].loadingError + '</p>';
             }
         }
 
@@ -632,11 +801,11 @@
         }
 
         function filterDepartments() {
-            const input = document.getElementById('searchInput').value;
+            const input = document.getElementById('searchInput').value.toLowerCase();
             const buttons = document.getElementsByClassName('dept-btn');
             
             for (let i = 0; i < buttons.length; i++) {
-                const name = buttons[i].getElementsByTagName('span')[0].innerText;
+                const name = buttons[i].getElementsByTagName('span')[0].innerText.toLowerCase();
                 if (name.includes(input)) {
                     buttons[i].style.display = "";
                 } else {
