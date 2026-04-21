@@ -10,6 +10,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -107,8 +108,9 @@
         .start-btn:hover {
             transform: scale(1.08) translateY(-5px);
             border-color: #ffd700;
-            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.5) inset;
             letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
         }
 
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -154,7 +156,7 @@
             border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 20px; 
             background: rgba(255, 255, 255, 0.65); color: #1a237e;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
+            cursor: grab;
             z-index: 15;
             position: relative;
             touch-action: manipulation;
@@ -184,9 +186,17 @@
             box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
         }
 
-        .dept-btn:hover { background: linear-gradient(135deg, #1a237e 0%, #283593 100%); color: white; transform: translateY(-12px) scale(1.05); box-shadow: 0 15px 35px rgba(26, 35, 126, 0.6), 0 0 20px rgba(255, 215, 0, 0.8); border-color: #ffd700; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+        .dept-btn:hover { background: linear-gradient(135deg, #1a237e 0%, #283593 100%); color: white; transform: translateY(-12px) scale(1.05) rotateZ(3deg); box-shadow: 0 18px 40px rgba(26, 35, 126, 0.7), 0 0 25px rgba(255, 215, 0, 0.9); border-color: #ffd700; text-shadow: 0 0 10px rgba(255,255,255,0.7); }
         .dept-btn:hover i { color: #ffd700; transform: scale(1.3) rotate(15deg); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
-        .dept-btn:active { transform: scale(0.95); }
+        .dept-btn:active { cursor: grabbing; transform: scale(0.95); }
+
+        /* ستایلی کێشان و بهێلان */
+        .sortable-ghost {
+            opacity: 0.4;
+            background: #e3f2fd;
+            border: 2px dashed #1a237e;
+            transform: scale(1.02);
+        }
 
         /* دوگمەی دارک مۆد */
         .theme-toggle {
@@ -230,6 +240,7 @@
         body.dark-mode .back-btn { background: rgba(0, 0, 0, 0.6); color: #ffd700; border-color: rgba(255, 215, 0, 0.5); }
         body.dark-mode .loader { border: 4px solid rgba(255, 215, 0, 0.2); border-top: 4px solid #ffd700; }
         body.dark-mode .bg-shape { opacity: 0.2; }
+        body.dark-mode .sortable-ghost { background: rgba(0,0,0,0.3); border-color: #ffd700; }
         body.dark-mode .news-fab { background: rgba(0, 0, 0, 0.85); border-color: #ffd700; }
         body.dark-mode ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
         body.dark-mode ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #ffd700, #ffb300); }
@@ -569,6 +580,9 @@
             <div class="history-section">
                 <h2 id="historyTitle"><i class="fas fa-landmark"></i> مێژویا کۆلیژێ</h2>
                 <p id="history-text">ل ڤێرە دشیێ کورتەیەکێ ل سەر مێژویا دامەزراندنا کۆلیژێ، پشکێن وێ، و دەستکەفتێن وێ بنڤیسی. ئەڤ بەشە دێ هاریکار بیت بۆ قوتابیێن نووی کو پتر ئاشنا ببن ب کۆلێژێ. کۆلیژا مە ئێکە ژ کۆلیژێن پێشەنگ د بوارێ کارگێڕی و ئابووری دا، کو ب درێژاهیا سالان چەندین کادرێن لێهاتی پێشکێشی جڤاکی کرینە...</p>
+                <button class="start-btn" style="margin-top: 25px; padding: 12px 30px; font-size: 18px; border-radius: 25px; display: inline-flex; align-items: center; gap: 10px;" onclick="window.open('https://maps.app.goo.gl/gFKPA3qs6jJ2V4ZQ7', '_blank')">
+                    <i class="fas fa-map-marked-alt" style="font-size: 22px; margin: 0; animation: none; color: white;"></i> <span id="mapWelcomeBtnText">نەخشە</span>
+                </button>
             </div>
 
             <!-- ڕەخێ چەپێ: سۆشیاڵ میدیا و مافەکان -->
@@ -654,7 +668,8 @@
                 themeBtnTitle: "گۆڕینی ڕەنگ",
                 loadingError: "خەلەتیەک ڕوویدا لە کاتی بارکردنی زانیارییەکان",
                 loadingTicker: "ئاگەهداری دهێتە بارکرن...",
-                devText: "دروستکرن و گەشەپێدان:"
+                devText: "دروستکرن و گەشەپێدان:",
+                mapButton: "نەخشە"
             },
             en: {
                 title: "Welcome to Administration & Economics College Guide",
@@ -672,7 +687,8 @@
                 themeBtnTitle: "Toggle Theme",
                 loadingError: "An error occurred while loading data",
                 loadingTicker: "Loading news...",
-                devText: "Developed by:"
+                devText: "Developed by:",
+                mapButton: "Map"
             },
             ar: {
                 title: "مرحباً بكم في دليل كلية الإدارة والاقتصاد",
@@ -690,7 +706,8 @@
                 themeBtnTitle: "تغيير المظهر",
                 loadingError: "حدث خطأ أثناء تحميل البيانات",
                 loadingTicker: "جاري تحميل الأخبار...",
-                devText: "تطوير وبرمجة:"
+                devText: "تطوير وبرمجة:",
+                mapButton: "الخريطة"
             }
         };
 
@@ -752,6 +769,11 @@
                     btn.querySelector('span').innerText = localizedName;
                 }
             });
+
+            const mapWelcomeBtnText = document.getElementById('mapWelcomeBtnText');
+            if (mapWelcomeBtnText) {
+                mapWelcomeBtnText.innerText = translations[lang].mapButton;
+            }
         }
 
         setLanguage(currentLang);
@@ -828,31 +850,46 @@
         async function loadDepartments() {
             const grid = document.getElementById('buttonsGrid');
             grid.innerHTML = '<div class="loader"></div>';
-              try {
+            try {
                 const snapshot = await db.collection('departments').orderBy('createdAt', 'desc').get();
+                let departments = [];
+                snapshot.forEach(doc => {
+                    departments.push({ id: doc.id, ...doc.data() });
+                });
+
+                // بارکرنا ڕێکخستنا تایبەت ژ بیرگەیێ
+                const customOrder = JSON.parse(localStorage.getItem('departmentOrder'));
+                if (customOrder) {
+                    departments.sort((a, b) => {
+                        const indexA = customOrder.indexOf(a.id);
+                        const indexB = customOrder.indexOf(b.id);
+                        if (indexA === -1) return 1;
+                        if (indexB === -1) return -1;
+                        return indexA - indexB;
+                    });
+                }
+
                 grid.innerHTML = '';
                 let delay = 0;
-                snapshot.forEach(doc => {
-                    const data = doc.data();
+                departments.forEach(data => {
                     const btn = document.createElement('button');
                     btn.className = 'dept-btn';
+                    btn.setAttribute('data-id', data.id); // بۆ پاشکەفتکرنا ڕێکخستنێ
                     btn.style.animation = `fadeInUp 0.6s ease forwards ${delay}s`;
                     delay += 0.1;
                     
-                    // ل ڤێرە نیشانا || درست هاتە کرن
                     const videoToPlay = data.videoID || data.youtubeUrl;
                     if (!videoToPlay) return;
 
-                    // پاشکەوتکردنی ناوەکان بۆ هەرسێ زمانەکە لەسەر دوگمەکە
                     btn.setAttribute('data-name-ku', data.name || '');
                     btn.setAttribute('data-name-en', data.nameEn || data.name || '');
                     btn.setAttribute('data-name-ar', data.nameAr || data.name || '');
 
                     btn.onclick = (e) => {
                         let n = btn.getAttribute('data-name-' + currentLang);
-                        let d = data.desc;
-                        if(currentLang === 'en' && data.descEn) d = data.descEn;
-                        if(currentLang === 'ar' && data.descAr) d = data.descAr;
+                        let d = data.desc || '';
+                        if (currentLang === 'en' && data.descEn) d = data.descEn;
+                        if (currentLang === 'ar' && data.descAr) d = data.descAr;
                         playVideo(videoToPlay, n, d);
                     };
                     
@@ -860,6 +897,16 @@
                     const displayLangName = btn.getAttribute('data-name-' + currentLang);
                     btn.innerHTML = `<i class="${iconClass}"></i> <span>${displayLangName}</span>`;
                     grid.appendChild(btn);
+                });
+
+                // چالاککرنا تایبەتمەندیا کێشان و بهێلانێ
+                new Sortable(grid, {
+                    animation: 200,
+                    ghostClass: 'sortable-ghost',
+                    onEnd: function () {
+                        const newOrder = Array.from(grid.children).map(btn => btn.getAttribute('data-id'));
+                        localStorage.setItem('departmentOrder', JSON.stringify(newOrder));
+                    }
                 });
             } catch (error) {
                 console.error("Error loading docs: ", error);
