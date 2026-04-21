@@ -10,6 +10,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
     <style>
@@ -789,6 +790,9 @@
         };
 
         firebase.initializeApp(firebaseConfig);
+        // ئەڤە گرنگترین دێڕە بۆ ئەنەلیتیکێ
+        firebase.analytics(); 
+
         const db = firebase.firestore();
 
         // هێنانی ڕێکخستنەکان (وێنە و ئاگەهداری) ب شێوەیەکێ ڕاستەوخۆ (Real-time)
