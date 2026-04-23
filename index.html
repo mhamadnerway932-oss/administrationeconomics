@@ -193,10 +193,12 @@
 
         /* ستایلی کێشان و بهێلان */
         .sortable-ghost {
-            opacity: 0.4;
-            background: #e3f2fd;
+            opacity: 0.6;
+            background: #c8d8f3;
             border: 2px dashed #1a237e;
-            transform: scale(1.02);
+            border-radius: 20px;
+            transform: scale(1.05) rotate(3deg);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         }
 
         /* دوگمەی دارک مۆد */
@@ -237,12 +239,12 @@
         body.dark-mode .dept-btn i { color: #ffd700; }
         body.dark-mode .social-icon { background: rgba(0, 0, 0, 0.5); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
         body.dark-mode .social-icon:hover { background: #ffd700; color: #121212; }
-        body.dark-mode .theme-toggle { background: rgba(0, 0, 0, 0.6); color: #ffd700; border-color: rgba(255, 215, 0, 0.5); }
-        body.dark-mode .back-btn { background: rgba(0, 0, 0, 0.6); color: #ffd700; border-color: rgba(255, 215, 0, 0.5); }
+        body.dark-mode .theme-toggle, body.dark-mode .back-btn { background: rgba(0, 0, 0, 0.6); color: #ffd700; border-color: rgba(255, 215, 0, 0.5); }
         body.dark-mode .loader { border: 4px solid rgba(255, 215, 0, 0.2); border-top: 4px solid #ffd700; }
         body.dark-mode .bg-shape { opacity: 0.2; }
-        body.dark-mode .sortable-ghost { background: rgba(0,0,0,0.3); border-color: #ffd700; }
-        body.dark-mode .news-fab { background: rgba(0, 0, 0, 0.85); border-color: #ffd700; }
+        body.dark-mode .sortable-ghost { background: rgba(255, 215, 0, 0.15); border-color: #ffd700; box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+        body.dark-mode .news-fab { background: linear-gradient(145deg, #212121, #424242); border-color: rgba(255, 215, 0, 0.8); }
+        body.dark-mode .news-fab.expanded { background: linear-gradient(145deg, #313131, #525252); }
         body.dark-mode ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
         body.dark-mode ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #ffd700, #ffb300); }
         body.dark-mode ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #fff, #ddd); }
@@ -277,39 +279,50 @@
         html[dir="ltr"] .theme-toggle { left: auto; right: 20px; }
         html[dir="ltr"] .back-btn { right: auto; left: 20px; }
         html[dir="ltr"] .welcome-footer { align-items: flex-start; }
-        html[dir="ltr"] .history-section, html[dir="ltr"] .history-section h2 { text-align: left; }
+        html[dir="ltr"] .history-section, html[dir="ltr"] .history-section h2 { text-align: left; }        
+        html[dir="ltr"] .news-fab { right: auto; left: 20px; }
+        html[dir="ltr"] .news-fab .fab-content { padding: 15px 0 15px 15px; }
 
         /* ئاگەهداری بۆ شاشەی دەسپێک (News Fab) */
         .news-fab {
             position: absolute; top: 20px; right: 20px;
-            background: rgba(26, 35, 126, 0.85); color: #fff;
-            border: 2px solid #ffd700; border-radius: 25px;
-            width: 50px; max-height: 50px;
-            display: none; flex-direction: row; align-items: flex-start;
+            background: linear-gradient(145deg, #1a237e, #3949ab);
+            color: #fff;
+            border: 1px solid rgba(255, 215, 0, 0.6);
+            border-radius: 50px;
+            width: 50px; height: 50px;
+            display: none; flex-direction: row; align-items: center;
             cursor: pointer; overflow: hidden; z-index: 2500;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: max-height 0.5s ease, width 0.5s ease, border-radius 0.5s ease;
-            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 0 0px rgba(255,215,0,0);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
             -webkit-tap-highlight-color: transparent !important;
             -webkit-user-select: none; user-select: none; outline: none;
         }
+        .news-fab:hover:not(.expanded) {
+            box-shadow: 0 8px 25px rgba(26, 35, 126, 0.5), 0 0 0 2px rgba(255,215,0,1);
+            transform: translateY(-2px);
+        }
         .news-fab.expanded {
-            width: 320px; max-width: calc(100% - 40px);
-            max-height: 180px; border-radius: 15px;
+            width: 340px; max-width: calc(100% - 40px);
+            height: auto; max-height: 200px;
+            border-radius: 20px;
+            align-items: flex-start;
+            background: linear-gradient(145deg, #1f2b94, #3f51b5);
         }
         .news-fab .fab-icon {
-            flex: 0 0 46px; height: 46px;
+            flex: 0 0 50px; height: 50px;
             display: flex; align-items: center; justify-content: center;
             color: #ffd700; font-size: 22px;
+            transition: transform 0.4s ease;
         }
+        .news-fab.expanded .fab-icon { transform: rotate(-15deg); }
         .news-fab .fab-content {
-            flex: 1; padding: 12px 10px 12px 15px;
-            white-space: pre-wrap; font-size: 15px; line-height: 1.6;
-            opacity: 0; transition: opacity 0.4s ease 0.2s;
+            flex: 1; padding: 15px 15px 15px 0; white-space: pre-wrap; font-size: 15px; line-height: 1.6;
+            opacity: 0; transform: translateX(-10px);
+            transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
         }
-        .news-fab.expanded .fab-content {
-            opacity: 1;
-        }
+        .news-fab.expanded .fab-content { opacity: 1; transform: translateX(0); }
 
         /* شێوەکانی باکگراوند بۆ جوانی */
         .bg-shape { position: absolute; filter: blur(80px); z-index: 1; opacity: 0.6; animation: floatShape 12s infinite alternate ease-in-out; pointer-events: none; }
@@ -354,25 +367,31 @@
         
         /* بەشی خوارەوە (مێژوو و سۆشیاڵ میدیا) */
         .bottom-info-section {
-            background: linear-gradient(to bottom, rgba(26, 35, 126, 0.8), rgba(10, 15, 40, 0.95));
-            width: 100%; padding: 50px 5%; margin-top: auto;
+            background: rgba(0, 0, 0, 0.4);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            width: 100%; padding: 40px 5%; margin-top: auto;
             display: flex; justify-content: space-between; align-items: center;
-            gap: 30px; border-top: 2px solid #ffd700;
+            gap: 30px; border-top: 1px solid rgba(255, 215, 0, 0.5);
             position: relative; z-index: 5;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.3);
         }
         .history-section {
             flex: 1; max-width: 60%; text-align: right; line-height: 1.8; font-size: 17px;
+        }
+        .history-section p {
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
         .history-section h2 { color: #ffd700; text-align: right; margin-bottom: 15px; font-size: 26px; }
 
         .scroll-indicator {
             margin-top: 60px; color: rgba(255,255,255,0.7); cursor: pointer;
             display: flex; flex-direction: column; align-items: center;
-        transition: color 0.3s ease;
-    }
-    .scroll-indicator:hover {
-        color: #ffd700;
+            transition: color 0.3s ease;
+        }
+        .scroll-indicator:hover {
+            color: #ffd700;
         }
         .scroll-indicator i {
             font-size: 35px !important; margin-bottom: 5px !important; color: rgba(255,255,255,0.7) !important;
@@ -380,6 +399,26 @@
         }
 
     @keyframes floatDown { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+        /* ستایلی دوگمەی نەخشە */
+        .map-btn {
+            margin-top: 25px; padding: 12px 30px; font-size: 18px;
+            color: white; border: 1px solid #ffd700; border-radius: 25px;
+            cursor: pointer;
+            background: rgba(255, 215, 0, 0.15);
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: all 0.3s ease;
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+        .map-btn:hover {
+            background: #ffd700;
+            color: #1a237e;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+        }
+        .map-btn i { font-size: 22px; transition: transform 0.3s ease; }
+        .map-btn:hover i { transform: scale(1.1) rotate(-10deg); }
 
         /* فوتەری شاشەی سەرەتا */
         .welcome-footer {
@@ -520,18 +559,45 @@
         }
 
         @media (max-width: 800px) {
-            .bottom-info-section { flex-direction: column; padding: 40px 20px; }
-            .history-section { max-width: 100%; text-align: center; }
-            .history-section h2 { text-align: center; }
-            .welcome-footer { max-width: 100%; align-items: center; margin-top: 20px; }
+            .bottom-info-section { flex-direction: column; padding: 40px 20px; text-align: center; }
+            .history-section { max-width: 100%; text-align: center !important; }
+            .history-section h2 { text-align: center !important; }
+            .welcome-footer { max-width: 100%; align-items: center; margin-top: 30px; }
+            html[dir="ltr"] .history-section { text-align: center !important; }
         }
 
         @media (max-width: 600px) {
+            .welcome-content i { font-size: 70px; }
+            .shine-text { font-size: 28px; }
+            .start-btn { padding: 15px 45px; font-size: 22px; }
+            .scroll-indicator { margin-top: 40px; }
+
             .buttons-grid { gap: 10px; }
             .dept-btn { padding: 25px 5px; font-size: 16px; min-height: 120px; }
             .dept-btn i { font-size: 28px; }
             .main-title { font-size: 24px; }
             #youtubePlayer { width: 100%; height: 56vw; min-height: 220px; }
+
+            .developer-badge { flex-direction: column; gap: 10px; padding: 10px 15px; }
+            .developer-badge .dev-socials { border: none; padding: 0; }
+            html[dir="ltr"] .developer-badge .dev-socials { border: none; padding: 0; }
+        }
+
+        @media (max-width: 420px) {
+            .buttons-grid { grid-template-columns: 1fr; gap: 12px; padding-bottom: 20px; }
+            .dept-btn { flex-direction: row; justify-content: flex-start; padding: 15px 20px; min-height: auto; }
+            .dept-btn i, .dept-btn img { margin-bottom: 0; margin-left: 15px; font-size: 24px; }
+            html[dir="rtl"] .dept-btn i, html[dir="rtl"] .dept-btn img { margin-left: 0; margin-right: 15px; }
+            .dept-btn img { width: 45px; height: 45px; }
+            .dept-btn:hover { transform: translateY(-5px) scale(1.02) rotateZ(0); }
+            .main-title { font-size: 22px; }
+            .shine-text { font-size: 24px; }
+            .start-btn { padding: 12px 40px; font-size: 20px; }
+            .close-btn { top: 10px; left: 10px; width: 40px; height: 40px; font-size: 24px; }
+            .lang-switcher { top: 10px; left: 10px; }
+            .news-fab { top: 10px; right: 10px; }
+            html[dir="ltr"] .news-fab { left: 10px; right: auto; }
+            .back-btn, .theme-toggle { top: 55px; }
         }
     </style>
 </head>
@@ -581,8 +647,8 @@
             <div class="history-section">
                 <h2 id="historyTitle"><i class="fas fa-landmark"></i> مێژویا کۆلیژێ</h2>
                 <p id="history-text">ل ڤێرە دشیێ کورتەیەکێ ل سەر مێژویا دامەزراندنا کۆلیژێ، پشکێن وێ، و دەستکەفتێن وێ بنڤیسی. ئەڤ بەشە دێ هاریکار بیت بۆ قوتابیێن نووی کو پتر ئاشنا ببن ب کۆلێژێ. کۆلیژا مە ئێکە ژ کۆلیژێن پێشەنگ د بوارێ کارگێڕی و ئابووری دا، کو ب درێژاهیا سالان چەندین کادرێن لێهاتی پێشکێشی جڤاکی کرینە...</p>
-                <button class="start-btn" style="margin-top: 25px; padding: 12px 30px; font-size: 18px; border-radius: 25px; display: inline-flex; align-items: center; gap: 10px;" onclick="window.open('https://maps.app.goo.gl/gFKPA3qs6jJ2V4ZQ7', '_blank')">
-                    <i class="fas fa-map-marked-alt" style="font-size: 22px; margin: 0; animation: none; color: white;"></i> <span id="mapWelcomeBtnText">نەخشە</span>
+                <button class="map-btn" onclick="window.open('https://maps.app.goo.gl/gFKPA3qs6jJ2V4ZQ7', '_blank')">
+                    <i class="fas fa-map-marked-alt"></i> <span id="mapWelcomeBtnText">نەخشە</span>
                 </button>
             </div>
 
