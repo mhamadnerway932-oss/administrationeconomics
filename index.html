@@ -559,45 +559,22 @@
         }
 
         @media (max-width: 800px) {
-            .bottom-info-section { flex-direction: column; padding: 40px 20px; text-align: center; }
-            .history-section { max-width: 100%; text-align: center !important; }
-            .history-section h2 { text-align: center !important; }
-            .welcome-footer { max-width: 100%; align-items: center; margin-top: 30px; }
-            html[dir="ltr"] .history-section { text-align: center !important; }
+            .bottom-info-section { flex-direction: column; padding: 40px 20px; }
+            .history-section { max-width: 100%; text-align: center; }
+            .history-section h2 { text-align: center; }
+            .welcome-footer { max-width: 100%; align-items: center; margin-top: 20px; }
         }
 
         @media (max-width: 600px) {
-            .welcome-content i { font-size: 70px; }
-            .shine-text { font-size: 28px; }
-            .start-btn { padding: 15px 45px; font-size: 22px; }
-            .scroll-indicator { margin-top: 40px; }
-
             .buttons-grid { gap: 10px; }
             .dept-btn { padding: 25px 5px; font-size: 16px; min-height: 120px; }
             .dept-btn i { font-size: 28px; }
             .main-title { font-size: 24px; }
             #youtubePlayer { width: 100%; height: 56vw; min-height: 220px; }
-
-            .developer-badge { flex-direction: column; gap: 10px; padding: 10px 15px; }
-            .developer-badge .dev-socials { border: none; padding: 0; }
-            html[dir="ltr"] .developer-badge .dev-socials { border: none; padding: 0; }
-        }
-
-        @media (max-width: 420px) {
-            .buttons-grid { grid-template-columns: 1fr; gap: 12px; padding-bottom: 20px; }
-            .dept-btn { flex-direction: row; justify-content: flex-start; padding: 15px 20px; min-height: auto; }
-            .dept-btn i, .dept-btn img { margin-bottom: 0; margin-left: 15px; font-size: 24px; }
-            html[dir="rtl"] .dept-btn i, html[dir="rtl"] .dept-btn img { margin-left: 0; margin-right: 15px; }
-            .dept-btn img { width: 45px; height: 45px; }
-            .dept-btn:hover { transform: translateY(-5px) scale(1.02) rotateZ(0); }
-            .main-title { font-size: 22px; }
-            .shine-text { font-size: 24px; }
-            .start-btn { padding: 12px 40px; font-size: 20px; }
-            .close-btn { top: 10px; left: 10px; width: 40px; height: 40px; font-size: 24px; }
-            .lang-switcher { top: 10px; left: 10px; }
-            .news-fab { top: 10px; right: 10px; }
-            html[dir="ltr"] .news-fab { left: 10px; right: auto; }
-            .back-btn, .theme-toggle { top: 55px; }
+            .back-btn, .theme-toggle {
+                top: 20px;
+                width: 40px; height: 40px; font-size: 18px;
+            }
         }
     </style>
 </head>
