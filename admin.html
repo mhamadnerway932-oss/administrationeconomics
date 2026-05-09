@@ -94,6 +94,46 @@
         <div id="feedbackList">باردکەت...</div>
     </div>
 
+    <!-- DUHOK ECONOMIC DASHBOARD SECTION -->
+    <div style="background: #f3e5f5; padding: 20px; border-radius: 10px; margin-bottom: 30px; border: 1px solid #e1bee7;">
+        <h2 style="color: #6a1b9a; font-size: 20px; margin-bottom: 15px; border-bottom: 1px solid #ce93d8; padding-bottom: 10px;">ئامارا گەشەپێدانا دهۆکێ (Economic Dashboard)</h2>
+        
+        <!-- Economic Stats -->
+        <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+            <h3 style="font-size: 16px; color: #6a1b9a;">١. ئامارێن گشتی (وەکی بێکاری، گەشە)</h3>
+            <div class="form-group"><input type="text" id="statTitle" placeholder="ناڤێ ئامارێ (بۆ نموونە: ڕێژەیا بێکاریێ)"></div>
+            <div class="form-group"><input type="text" id="statValue" placeholder="بها (بۆ نموونە: %12)"></div>
+            <button onclick="addEconomicStat()" style="background: #6a1b9a; padding: 10px; font-size: 14px;">زێدەکرن</button>
+            <div id="statsList" style="margin-top: 15px;"></div>
+        </div>
+
+        <!-- Market Prices -->
+        <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+            <h3 style="font-size: 16px; color: #6a1b9a;">٢. بهایێ بازارێ</h3>
+            <div class="form-group"><input type="text" id="priceItem" placeholder="ناڤێ تشتێ بازارێ"></div>
+            <div class="form-group"><input type="text" id="priceValue" placeholder="بها (بۆ نموونە: 15,000 دینار)"></div>
+            <div class="form-group">
+                <label>ئاراستە (Trend)</label>
+                <select id="priceTrend">
+                    <option value="up">بەرزبوویە (Up) 📈</option>
+                    <option value="down">نزمبوویە (Down) 📉</option>
+                    <option value="stable">جێگیرە (Stable) ➖</option>
+                </select>
+            </div>
+            <button onclick="addMarketPrice()" style="background: #7b1fa2; padding: 10px; font-size: 14px;">زێدەکرن</button>
+            <div id="pricesList" style="margin-top: 15px;"></div>
+        </div>
+
+        <!-- Chart Data -->
+        <div style="background: white; padding: 15px; border-radius: 8px;">
+            <h3 style="font-size: 16px; color: #6a1b9a;">٣. داتایێن گرافێ (گەشەیا سالانە)</h3>
+            <div class="form-group"><input type="text" id="chartYear" placeholder="سال (بۆ نموونە: 2024)"></div>
+            <div class="form-group"><input type="number" id="chartValue" placeholder="ڕێژەیا گەشەیێ (ژمارە)"></div>
+            <button onclick="addChartData()" style="background: #8e24aa; padding: 10px; font-size: 14px;">زێدەکرن بۆ گرافێ</button>
+            <div id="chartDataList" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+
     <h1>زێدەکرنا بەشان</h1>
 
     <form id="addForm">
@@ -144,6 +184,9 @@
             loadDepts();
             loadSettings();
             loadFeedbacks();
+            loadEconomicStats();
+            loadMarketPrices();
+            loadChartData();
         } else {
             document.getElementById('login-container').style.display = 'block';
             document.getElementById('admin-container').style.display = 'none';
@@ -386,6 +429,87 @@
         if (confirm("ئەڤێ ڕاپۆرتێ ڕەش بکەم؟")) {
             db.collection('feedbacks').doc(id).delete();
         }
+    }
+
+    // --- ECONOMIC DASHBOARD FUNCTIONS ---
+    async function addEconomicStat() {
+        const title = document.getElementById('statTitle').value;
+        const value = document.getElementById('statValue').value;
+        if (!title || !value) return;
+        await db.collection('economic_stats').add({ title, value, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+        document.getElementById('statTitle').value = '';
+        document.getElementById('statValue').value = '';
+    }
+
+    function loadEconomicStats() {
+        db.collection('economic_stats').onSnapshot(snap => {
+            const list = document.getElementById('statsList');
+            list.innerHTML = '';
+            snap.forEach(doc => {
+                const d = doc.data();
+                list.innerHTML += `
+                    <div class="dept-item" style="padding: 10px; border-right-color: #6a1b9a;">
+                        <div><b>${d.title}</b>: ${d.value}</div>
+                        <button class="delete-btn" onclick="deleteDocById('economic_stats', '${doc.id}')" style="width:auto; padding: 5px 10px;">X</button>
+                    </div>`;
+            });
+        });
+    }
+
+    async function addMarketPrice() {
+        const item = document.getElementById('priceItem').value;
+        const value = document.getElementById('priceValue').value;
+        const trend = document.getElementById('priceTrend').value;
+        if (!item || !value) return;
+        await db.collection('market_prices').add({ item, value, trend, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+        document.getElementById('priceItem').value = '';
+        document.getElementById('priceValue').value = '';
+    }
+
+    function loadMarketPrices() {
+        db.collection('market_prices').onSnapshot(snap => {
+            const list = document.getElementById('pricesList');
+            list.innerHTML = '';
+            snap.forEach(doc => {
+                const d = doc.data();
+                list.innerHTML += `
+                    <div class="dept-item" style="padding: 10px; border-right-color: #7b1fa2;">
+                        <div><b>${d.item}</b>: ${d.value} (${d.trend})</div>
+                        <button class="delete-btn" onclick="deleteDocById('market_prices', '${doc.id}')" style="width:auto; padding: 5px 10px;">X</button>
+                    </div>`;
+            });
+        });
+    }
+
+    async function addChartData() {
+        const year = document.getElementById('chartYear').value;
+        const value = document.getElementById('chartValue').value;
+        if (!year || !value) return;
+        await db.collection('economic_chart').add({ year, value: parseFloat(value), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+        document.getElementById('chartYear').value = '';
+        document.getElementById('chartValue').value = '';
+    }
+
+    function loadChartData() {
+        db.collection('economic_chart').onSnapshot(snap => {
+            const list = document.getElementById('chartDataList');
+            list.innerHTML = '';
+            // Sort by year
+            let data = [];
+            snap.forEach(doc => data.push({id: doc.id, ...doc.data()}));
+            data.sort((a,b) => a.year - b.year);
+            data.forEach(d => {
+                list.innerHTML += `
+                    <div class="dept-item" style="padding: 10px; border-right-color: #8e24aa;">
+                        <div><b>${d.year}</b>: ${d.value}%</div>
+                        <button class="delete-btn" onclick="deleteDocById('economic_chart', '${d.id}')" style="width:auto; padding: 5px 10px;">X</button>
+                    </div>`;
+            });
+        });
+    }
+
+    window.deleteDocById = (coll, id) => {
+        if(confirm("ڕەش بکەم؟")) db.collection(coll).doc(id).delete();
     }
 </script>
 </body>
