@@ -1,0 +1,392 @@
+ <!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel - کارگێڕیا داتایان</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; background-color: #f4f7f9; padding: 20px; padding-bottom: 80px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        h1 { color: #1a237e; text-align: center; margin-bottom: 30px; border-bottom: 2px solid #ffd700; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #1a237e; }
+        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Vazirmatn'; transition: all 0.3s; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #1a237e; box-shadow: 0 0 8px rgba(26, 35, 126, 0.2); }
+        button { width: 100%; padding: 15px; background: linear-gradient(135deg, #1a237e, #3949ab); color: white; border: none; border-radius: 8px; cursor: pointer; touch-action: manipulation; font-size: 16px; font-weight: bold; transition: all 0.3s; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3); }
+        .dept-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #fafafa; margin-bottom: 10px; border-radius: 8px; border-right: 5px solid #1a237e; transition: all 0.3s; }
+        .dept-item:hover { transform: translateX(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); background: #fff; }
+        .delete-btn { background: #d32f2f; color: white; padding: 8px 15px; border-radius: 5px; cursor: pointer; border: none; touch-action: manipulation; transition: all 0.3s; }
+        .delete-btn:hover { background: #b71c1c; transform: scale(1.05); }
+        .edit-btn { background: #4caf50; color: white; padding: 8px 15px; border-radius: 5px; cursor: pointer; border: none; touch-action: manipulation; transition: all 0.3s; margin-left: 5px; }
+        .edit-btn:hover { background: #2e7d32; transform: scale(1.05); }
+        #login-container { max-width: 400px; margin: 80px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        #admin-container { display: none; }
+        .logout-btn { background: #d32f2f; color: white; padding: 8px 15px; border-radius: 5px; cursor: pointer; border: none; font-family: 'Vazirmatn'; transition: all 0.3s; }
+        .logout-btn:hover { background: #b71c1c; transform: translateY(-2px); }
+        
+        .feedback-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-right: 5px solid #ff4b2b;
+            position: relative;
+        }
+        .feedback-time {
+            font-size: 11px;
+            color: #777;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .feedback-msg {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div id="login-container">
+    <h1>چوونە ژوورەوە</h1>
+    <form id="loginForm">
+        <div class="form-group"><label>ئیمەیل</label><input type="email" id="email" required></div>
+        <div class="form-group"><label>پاسۆرد</label><input type="password" id="password" required></div>
+        <button type="submit">چوونە ژوورەوە</button>
+    </form>
+</div>
+
+<div class="container" id="admin-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <a href="index.html" style="text-decoration: none; color: #1a237e;">← ڤەگەر بۆ سایتێ سەرەکی</a>
+        <button class="logout-btn" onclick="logout()">دەرچوون</button>
+    </div>
+
+    <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-bottom: 30px; border: 1px solid #bbdefb;">
+        <h2 style="color: #1a237e; font-size: 20px; margin-bottom: 15px; border-bottom: 1px solid #90caf9; padding-bottom: 10px;">گۆڕینا وێنێ دەسپێکێ (باکگراوند)</h2>
+        <div class="form-group"><input type="text" id="bgImageUrlInput" placeholder="لینکا وێنەی ل ڤێرە دانیە (نموونە: https://...)" style="background: white; text-align: left;" dir="ltr"></div>
+        <button onclick="updateBackgroundImage()" id="bgSubmitBtn" style="background: linear-gradient(135deg, #f57c00, #ffb74d);">گۆڕینا وێنەی</button>
+    </div>
+
+    <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin-bottom: 30px; border: 1px solid #ffe0b2;">
+        <h2 style="color: #e65100; font-size: 20px; margin-bottom: 15px; border-bottom: 1px solid #ffcc80; padding-bottom: 10px;">گۆڕینا ئاگەهداریێ (دەنگوباس)</h2>
+        <div class="form-group"><textarea id="newsInput" rows="2" placeholder="ئاگەهداریێ ل ڤێرە بنڤیسە... (ئەگەر ڤاڵا بهێلی دێ ژ سایتێ هێتە شاردنەوە)" style="background: white;"></textarea></div>
+        <button onclick="updateNews()" id="newsSubmitBtn" style="background: linear-gradient(135deg, #e65100, #ff9800);">پاشکەفتکرنا ئاگەهداریێ</button>
+    </div>
+
+    <div style="background: #e8f5e9; padding: 20px; border-radius: 10px; margin-bottom: 30px; border: 1px solid #c8e6c9;">
+        <h2 style="color: #2e7d32; font-size: 20px; margin-bottom: 15px; border-bottom: 1px solid #a5d6a7; padding-bottom: 10px;">گۆڕینا مێژویا کۆلیژێ</h2>
+        <div class="form-group"><textarea id="historyInput" rows="4" placeholder="مێژویا کۆلیژێ ل ڤێرە بنڤیسە..." style="background: white;"></textarea></div>
+        <button onclick="updateHistory()" id="historySubmitBtn" style="background: linear-gradient(135deg, #2e7d32, #4caf50);">پاشکەفتکرنا مێژوویێ</button>
+    </div>
+
+    <div style="background: #fce4ec; padding: 20px; border-radius: 10px; margin-bottom: 30px; border: 1px solid #f8bbd0;">
+        <h2 style="color: #c2185b; font-size: 20px; margin-bottom: 15px; border-bottom: 1px solid #f48fb1; padding-bottom: 10px;">ڕاپۆرتێن ئاریشەیان (Feedbacks)</h2>
+        <div id="feedbackList">باردکەت...</div>
+    </div>
+
+    <h1>زێدەکرنا بەشان</h1>
+
+    <form id="addForm">
+        <div class="form-group"><label>ناڤێ بەشی (کوردی)</label><input type="text" id="name" required></div>
+        <div class="form-group"><label>ناڤێ بەشی (English)</label><input type="text" id="nameEn" dir="ltr" placeholder="Department Name..."></div>
+        <div class="form-group"><label>ناڤێ بەشی (عربي)</label><input type="text" id="nameAr" placeholder="اسم القسم..."></div>
+        <div class="form-group"><label>وەسف (کوردی)</label><textarea id="desc" rows="2" required></textarea></div>
+        <div class="form-group"><label>وەسف (English)</label><textarea id="descEn" rows="2" dir="ltr" placeholder="Description..."></textarea></div>
+        <div class="form-group"><label>وەسف (عربي)</label><textarea id="descAr" rows="2" placeholder="وصف القسم..."></textarea></div>
+        <div class="form-group"><label>لینکا یوتیوبێ (Shorts یان Watch)</label><input type="text" id="youtubeUrl" required placeholder="لینکی ل ڤێرە دانیە..."></div>
+        <div class="form-group"><label>لینکا وێنێ بەشی (هەڵبژاردنە - دێ ل جهێ ئایکۆنی دیار بیت)</label><input type="text" id="deptImageUrl" placeholder="لینکا وێنەی..." dir="ltr" style="text-align: left;"></div>
+        <div class="form-group">
+            <label>ئایکۆن</label>
+            <select id="icon">
+                <option value="fas fa-graduation-cap">تومارا کولیژێ</option>
+                <option value="fas fa-calculator">پشکا ژمێریاری </option>
+                <option value="fas fa-chart-line">ئامار</option>
+                <option value="fas fa-university">بانک</option>
+                <option value="fas fa-briefcase">پشکا کارگێڕی کار</option>
+                <option value="fas fa-book">پەرتوکخانە</option>
+                <option value="fas fa-building-columns">ڕاگریا کۆلێژێ</option>
+            </select>
+        </div>
+        <button type="submit" id="submitBtn">پاشکەفتکرن</button>
+    </form>
+
+    <div id="itemsContainer" style="margin-top: 30px;"></div>
+</div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAdBRnoL2f8XEPBhSmuc58C-LPpCtjc_Ik",
+        authDomain: "administrationeconomics.firebaseapp.com",
+        projectId: "administrationeconomics",
+        storageBucket: "administrationeconomics.firebasestorage.app",
+        messagingSenderId: "45463459254",
+        appId: "1:45463459254:web:f9137c2700634eecf51d17",
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+    const storage = firebase.storage();
+
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('admin-container').style.display = 'block';
+            loadDepts();
+            loadSettings();
+            loadFeedbacks();
+        } else {
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('admin-container').style.display = 'none';
+        }
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+        } catch (error) {
+            alert("ئیمەیل یان پاسۆرد خەلەتە!");
+        }
+    });
+
+    window.logout = () => { auth.signOut(); };
+
+    function loadSettings() {
+        db.collection('settings').doc('main').get().then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                if(data.bgImageUrl) document.getElementById('bgImageUrlInput').value = data.bgImageUrl;
+                if(data.newsText) document.getElementById('newsInput').value = data.newsText;
+                if(data.historyText) document.getElementById('historyInput').value = data.historyText;
+            }
+        });
+    }
+
+    function extractID(url) {
+        const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?v=)|(shorts\/))([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[8].length == 11) ? match[8] : url;
+    }
+ 
+    async function updateBackgroundImage() {
+        const urlInput = document.getElementById('bgImageUrlInput').value;
+        if (!urlInput) { alert("تکایە لینکا وێنەی بنڤیسە!"); return; }
+        const btn = document.getElementById('bgSubmitBtn');
+        btn.innerText = "وێنە دهێتە گۆڕین...";
+        btn.disabled = true;
+        try {
+            await db.collection('settings').doc('main').set({ bgImageUrl: urlInput }, { merge: true });
+            alert("وێنێ باکگراوندی ب سەرکەفتیانە هاتە گۆڕین!");
+            document.getElementById('bgImageUrlInput').value = '';
+        } catch (error) {
+            console.error(error);
+            alert("خەلەتیەک ڕوویدا د کاتیێ پاشکەفتکرنێدا!");
+        }
+        btn.innerText = "گۆڕینا وێنەی";
+        btn.disabled = false;
+    }
+
+    async function updateNews() {
+        const newsText = document.getElementById('newsInput').value;
+        const btn = document.getElementById('newsSubmitBtn');
+        btn.innerText = "دهێتە پاشکەفتکرن...";
+        btn.disabled = true;
+        try {
+            await db.collection('settings').doc('main').set({ newsText: newsText }, { merge: true });
+            if (newsText) alert("ئاگەهداری ب سەرکەفتیانە هاتە گۆڕین!");
+            else alert("ئاگەهداری هاتە شاردنەوە!");
+        } catch (error) {
+            console.error(error);
+            alert("خەلەتیەک ڕوویدا د کاتیێ پاشکەفتکرنێدا!");
+        }
+        btn.innerText = "پاشکەفتکرنا ئاگەهداریێ";
+        btn.disabled = false;
+    }
+
+    async function updateHistory() {
+        const historyText = document.getElementById('historyInput').value;
+        if (!historyText) { alert("تکایە مێژویا کۆلیژێ بنڤیسە!"); return; }
+        const btn = document.getElementById('historySubmitBtn');
+        btn.innerText = "دهێتە پاشکەفتکرن...";
+        btn.disabled = true;
+        try {
+            await db.collection('settings').doc('main').set({ historyText: historyText }, { merge: true });
+            alert("مێژویا کۆلیژێ ب سەرکەفتیانە هاتە گۆڕین!");
+        } catch (error) {
+            console.error(error);
+            alert("خەلەتیەک ڕوویدا د کاتیێ پاشکەفتکرنێدا!");
+        }
+        btn.innerText = "پاشکەفتکرنا مێژوویێ";
+        btn.disabled = false;
+    }
+
+    let unsubscribeDepts = null;
+    function loadDepts() {
+        if (unsubscribeDepts) unsubscribeDepts();
+        // Remove orderBy to prevent index errors
+        unsubscribeDepts = db.collection('departments').onSnapshot(snap => {
+            const container = document.getElementById('itemsContainer');
+            if (snap.empty) {
+                container.innerHTML = '<p style="text-align:center; color:#888;">چ بەش نینن.</p>';
+                return;
+            }
+            
+            // Sort in JS instead of Firestore to avoid index requirements
+            let depts = [];
+            snap.forEach(doc => depts.push({id: doc.id, ...doc.data()}));
+            depts.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+            container.innerHTML = '<h3>بەشێن هەیی:</h3>';
+            depts.forEach(d => {
+                container.innerHTML += `
+                    <div class="dept-item">
+                        <div><b>${d.name}</b><br><small>${d.videoID || d.youtubeUrl}</small></div>
+                        <div>
+                            <button class="edit-btn" onclick="editDoc('${d.id}')">دەستکاری</button>
+                            <button class="delete-btn" onclick="deleteDoc('${d.id}')">ڕەشکرن</button>
+                        </div>
+                    </div>`;
+            });
+        }, err => {
+            console.error("Firestore Error:", err);
+            document.getElementById('itemsContainer').innerHTML = '<p style="color:red;">خەلەتیەک ڕوویدا د بارکرنا بەشان دا.</p>';
+        });
+    }
+
+    let editingId = null;
+
+    window.editDoc = async (id) => {
+        const doc = await db.collection('departments').doc(id).get();
+        if (doc.exists) {
+            const d = doc.data();
+            document.getElementById('name').value = d.name || '';
+            document.getElementById('nameEn').value = d.nameEn || '';
+            document.getElementById('nameAr').value = d.nameAr || '';
+            document.getElementById('desc').value = d.desc || '';
+            document.getElementById('descEn').value = d.descEn || '';
+            document.getElementById('descAr').value = d.descAr || '';
+            document.getElementById('youtubeUrl').value = d.youtubeUrl || (d.videoID ? 'https://youtube.com/watch?v=' + d.videoID : '');
+            document.getElementById('deptImageUrl').value = d.imageUrl || '';
+            document.getElementById('icon').value = d.icon || 'fas fa-graduation-cap';
+            
+            editingId = id;
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = 'نوێکرنەوەی بەش (Update)';
+            btn.style.background = 'linear-gradient(135deg, #4caf50, #2e7d32)';
+            
+            window.scrollTo({ top: document.getElementById('addForm').offsetTop - 20, behavior: 'smooth' });
+        }
+    };
+
+    document.getElementById('addForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const vUrl = document.getElementById('youtubeUrl').value;
+        const vID = extractID(vUrl);
+        
+        let imageUrl = document.getElementById('deptImageUrl').value || null;
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.innerText = "باردکەت...";
+        submitBtn.disabled = true;
+
+        const deptData = {
+            name: document.getElementById('name').value,
+            nameEn: document.getElementById('nameEn').value || '',
+            nameAr: document.getElementById('nameAr').value || '',
+            desc: document.getElementById('desc').value,
+            descEn: document.getElementById('descEn').value || '',
+            descAr: document.getElementById('descAr').value || '',
+            videoID: vID,
+            youtubeUrl: vUrl,
+            icon: document.getElementById('icon').value,
+            imageUrl: imageUrl
+        };
+
+        if (editingId) {
+            await db.collection('departments').doc(editingId).update(deptData);
+            alert("بەشەکە بە سەرکەوتوویی نوێکرایەوە!");
+            editingId = null;
+            submitBtn.innerText = "پاشکەفتکرن";
+            submitBtn.style.background = ''; 
+        } else {
+            deptData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+            await db.collection('departments').add(deptData);
+            alert("هاتە زێدەکرن!");
+        }
+
+        document.getElementById('addForm').reset();
+        if (!editingId) submitBtn.innerText = "پاشکەفتکرن";
+        submitBtn.disabled = false;
+    });
+
+    window.deleteDoc = (id) => { if(confirm("ڕەش بکەم؟")) db.collection('departments').doc(id).delete(); }
+
+    function loadFeedbacks() {
+        // Remove orderBy to avoid index requirement and handle permissions
+        db.collection('feedbacks').onSnapshot(snap => {
+            const list = document.getElementById('feedbackList');
+            if (snap.empty) {
+                list.innerHTML = '<p style="text-align:center; color:#888;">چ ڕاپۆرت نینە.</p>';
+                return;
+            }
+
+            // Sort in JS with safety checks
+            let feedbacks = [];
+            snap.forEach(doc => {
+                const data = doc.data();
+                feedbacks.push({id: doc.id, ...data});
+            });
+            
+            feedbacks.sort((a, b) => {
+                const timeA = a.timestamp?.seconds || 0;
+                const timeB = b.timestamp?.seconds || 0;
+                return timeB - timeA;
+            });
+
+            list.innerHTML = '';
+            feedbacks.forEach(f => {
+                let timeStr = '---';
+                try {
+                    if (f.timestamp && typeof f.timestamp.toDate === 'function') {
+                        timeStr = f.timestamp.toDate().toLocaleString('ku-IQ');
+                    }
+                } catch(e) { console.log("Time error"); }
+
+                list.innerHTML += `
+                    <div class="feedback-card">
+                        <span class="feedback-time">${timeStr}</span>
+                        <p class="feedback-msg">${f.message || ''}</p>
+                        <div style="text-align: left; margin-top: 10px;">
+                            <button class="delete-btn" onclick="deleteFeedback('${f.id}')" style="width: auto; padding: 5px 12px; font-size: 12px;">ڕەشکرن</button>
+                        </div>
+                    </div>`;
+            });
+        }, err => {
+            console.error("Feedback Load Error:", err);
+            let msg = "خەلەتیەک ڕوویدا د بارکرنا ڕاپۆرتان دا.";
+            if (err.code === 'permission-denied') {
+                msg = "تۆ ڕێپێدای نینى (Permission Denied). هیڤییە Rules یێن داتابەیسێ پشکنین بکە.";
+            }
+            document.getElementById('feedbackList').innerHTML = `<p style="color:red; font-size:14px;">${msg}</p>`;
+        });
+    }
+
+    window.deleteFeedback = (id) => {
+        if (confirm("ئەڤێ ڕاپۆرتێ ڕەش بکەم؟")) {
+            db.collection('feedbacks').doc(id).delete();
+        }
+    }
+</script>
+</body>
+</html>
