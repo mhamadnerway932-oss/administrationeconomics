@@ -1971,8 +1971,8 @@
                         </div>
 
                         <!-- ئاگەهداری -->
-                        <div class="menu-row"
-                            onclick="alert(document.getElementById('tickerText').innerText); toggleNews();">
+                        <div class="menu-row" id="menuNewsRow"
+                            onclick="showNewsAlert(); toggleNews();">
                             <span id="menuNews">ئاگەهداری (News)</span>
                             <i class="fas fa-bullhorn icon-gold"></i>
                         </div>
@@ -2004,7 +2004,7 @@
 
                         <!-- ڕێکخستن (Hidden-ish) -->
                         <a href="portal.html" class="menu-row hidden-portal-row">
-                            <span>ڕێکخستن (Settings)</span>
+                            <span id="settingsText">ڕێکخستن (Settings)</span>
                             <i class="fas fa-cog icon-gold"></i>
                         </a>
                     </div>
@@ -2563,12 +2563,12 @@
                         }
                         if (data.newsText) {
                             window.dbNewsText = data.newsText;
-                            document.getElementById('newsFab').style.display = 'flex';
-                            document.getElementById('tickerText').innerText = data.newsText;
+                            const ticker = document.getElementById('tickerText');
+                            if (ticker) ticker.innerText = data.newsText;
                         } else {
                             window.dbNewsText = null;
-                            document.getElementById('newsFab').style.display = 'none';
-                            document.getElementById('newsFab').classList.remove('expanded');
+                            const ticker = document.getElementById('tickerText');
+                            if (ticker) ticker.innerText = '';
                         }
                         if (data.historyText) {
                             window.dbHistoryText = data.historyText;
@@ -2587,6 +2587,15 @@
         initFirebase();
 
         let idleTimer;
+
+        function showNewsAlert() {
+            if (window.dbNewsText && window.dbNewsText.trim()) {
+                alert(window.dbNewsText);
+            } else {
+                const msg = currentLang === 'ku' ? 'چ ئاگەهداری نینن د نوکەدا.' : (currentLang === 'ar' ? 'لا توجد إعلانات حالياً.' : 'No announcements currently.');
+                alert(msg);
+            }
+        }
 
         function toggleNews() {
             const fab = document.getElementById('newsFab');
