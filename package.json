@@ -1,0 +1,13 @@
+{
+  "name": "university-app",
+  "version": "1.0.0",
+  "description": "University Web Portal with Secure Backend Config",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["university", "firebase", "portal"],
+  "author": "",
+  "license": "ISC"
+}
