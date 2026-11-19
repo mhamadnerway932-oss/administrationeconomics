@@ -3357,739 +3357,12 @@
         // سڕینەوەی بیرگەی پێشوو بۆ ئەوەی هەمیشە سەرەتا بە کوردی بێت
         localStorage.removeItem('appLang');
         let currentLang = sessionStorage.getItem('appLang') || 'ku';
-        window.dbNewsText = null;
-        window.dbHistoryText = null;
 
-        function safeSetText(id, text) {
-            const el = document.getElementById(id);
-            if (el) el.innerText = text;
-        }
+        var db = null;
+        var idleTimer = null;
+        var currentDeptId = null;
+        var currentDeptName = null;
 
-        function safeSetHTML(id, html) {
-            const el = document.getElementById(id);
-            if (el) el.innerHTML = html;
-        }
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            sessionStorage.setItem('appLang', lang);
-
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
-
-            const btnKu = document.getElementById('btn-ku');
-            const btnEn = document.getElementById('btn-en');
-            const btnAr = document.getElementById('btn-ar');
-            if (btnKu) btnKu.classList.toggle('active', lang === 'ku');
-            if (btnEn) btnEn.classList.toggle('active', lang === 'en');
-            if (btnAr) btnAr.classList.toggle('active', lang === 'ar');
-
-            const btnKuExt = document.getElementById('btn-ku-ext');
-            const btnEnExt = document.getElementById('btn-en-ext');
-            const btnArExt = document.getElementById('btn-ar-ext');
-            if (btnKuExt) btnKuExt.classList.toggle('active', lang === 'ku');
-            if (btnEnExt) btnEnExt.classList.toggle('active', lang === 'en');
-            if (btnArExt) btnArExt.classList.toggle('active', lang === 'ar');
-
-            const menuLangBtnsKu = document.querySelectorAll('.lang-btn-ku');
-            const menuLangBtnsEn = document.querySelectorAll('.lang-btn-en');
-            const menuLangBtnsAr = document.querySelectorAll('.lang-btn-ar');
-            menuLangBtnsKu.forEach(b => b.classList.toggle('active', lang === 'ku'));
-            menuLangBtnsEn.forEach(b => b.classList.toggle('active', lang === 'en'));
-            menuLangBtnsAr.forEach(b => b.classList.toggle('active', lang === 'ar'));
-
-            safeSetText('menuDashboard', translations[lang].menuDashboard);
-            safeSetText('dashTitle', translations[lang].dashTitle);
-            safeSetText('dashStatsTitle', translations[lang].dashStatsTitle);
-            safeSetText('dashPricesTitle', translations[lang].dashPricesTitle);
-            safeSetText('dashChartTitle', translations[lang].dashChartTitle);
-
-            document.title = translations[lang].title;
-            safeSetHTML('welcomeTitle', translations[lang].welcomeTitle);
-            safeSetText('welcomeDesc', translations[lang].welcomeDesc);
-            const startBtnEl = document.getElementById('startBtn');
-            if (startBtnEl) {
-                const span = document.getElementById('startBtnText');
-                if (span) span.innerText = translations[lang].startBtn;
-                else startBtnEl.innerText = translations[lang].startBtn;
-            }
-            updateDeptShowcaseLanguage(lang);
-            safeSetText('scrollText', translations[lang].scrollText);
-            safeSetHTML('historyTitle', translations[lang].historyTitle);
-
-            const copyrights = document.querySelectorAll('.copyright-text');
-            copyrights.forEach(el => el.innerText = translations[lang].copyright);
-
-            const devTexts = document.querySelectorAll('.dev-text');
-            devTexts.forEach(el => el.innerText = translations[lang].devText);
-
-            safeSetHTML('mainTitle', translations[lang].mainTitle);
-            safeSetText('mainDesc', translations[lang].mainDesc);
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) searchInput.placeholder = translations[lang].searchPlaceholder;
-
-            const backBtn = document.getElementById('backBtn');
-            if (backBtn) backBtn.title = translations[lang].backBtnTitle;
-
-            const themeToggle = document.getElementById('themeToggle');
-            if (themeToggle) themeToggle.title = translations[lang].themeBtnTitle;
-
-            const historyEl = document.getElementById('history-text');
-            if (historyEl) {
-                if (window.dbHistoryText) historyEl.innerText = window.dbHistoryText;
-                else historyEl.innerText = translations[lang].historyDefault;
-            }
-
-            const tickerEl = document.getElementById('tickerText');
-            if (tickerEl) {
-                if (window.dbNewsText) tickerEl.innerText = window.dbNewsText;
-                else tickerEl.innerText = translations[lang].loadingTicker;
-            }
-
-            // گۆڕینی ناوی بەشەکان ئەگەر بارکرابن
-            const deptButtons = document.querySelectorAll('.dept-btn');
-            deptButtons.forEach(btn => {
-                const localizedName = btn.getAttribute('data-name-' + lang);
-                const span = btn.querySelector('span');
-                if (localizedName && span) {
-                    span.innerText = localizedName;
-                }
-            });
-
-            const mapBtnText = document.getElementById('mapWelcomeBtnText');
-            if (mapBtnText) mapBtnText.innerText = translations[lang].mapButton;
-
-            const meetBtnText = document.getElementById('meetTeachersText');
-            if (meetBtnText) meetBtnText.innerText = translations[lang].meetTeachers;
-
-            safeSetText('settingsText', translations[lang].settings);
-            safeSetText('shareText', translations[lang].share);
-            safeSetText('menuTheme', translations[lang].themeChange);
-            safeSetText('menuShare', translations[lang].share);
-            safeSetText('menuNews', translations[lang].newsTitle);
-            safeSetText('menuContactRow', translations[lang].contact);
-            safeSetText('menuTermsRow', translations[lang].terms);
-            safeSetText('menuDev', translations[lang].aboutDev);
-
-            // Update Feedback Modal
-            const fTitle = document.getElementById('feedbackTitle');
-            const fDesc = document.getElementById('feedbackDesc');
-            const fTextarea = document.getElementById('feedbackTextarea');
-            const fBtn = document.getElementById('sendFeedbackBtn');
-            const sMsg = document.getElementById('successMsg');
-            const sSub = document.getElementById('successSub');
-
-            if (lang === 'en') {
-                if (fTitle) fTitle.innerText = "Report a Problem";
-                if (fDesc) fDesc.innerText = "This form is specifically for reporting issues. If you found a problem, please write to us here so we can fix it as soon as possible.";
-                if (fTextarea) fTextarea.placeholder = "Write a short summary of the issue or error here...";
-                if (fBtn) fBtn.innerText = "Send Report";
-                if (sMsg) sMsg.innerText = translations[lang].feedbackSuccessMsg;
-                if (sSub) sSub.innerText = translations[lang].feedbackSuccessSub;
-            } else if (lang === 'ar') {
-                if (fTitle) fTitle.innerText = "الإبلاغ عن مشكلة";
-                if (fDesc) fDesc.innerText = "هذا النموذج مخصص للإبلاغ عن المشكلات. إذا وجدت مشكلة، يرجى الكتابة إلينا هنا حتى نتمكن من حلها في أقرب وقت ممكن.";
-                if (fTextarea) fTextarea.placeholder = "اكتب ملخصاً قصيراً للمشكلة أو الخطأ هنا...";
-                if (fBtn) fBtn.innerText = "إرسال التقرير";
-                if (sMsg) sMsg.innerText = translations[lang].feedbackSuccessMsg;
-                if (sSub) sSub.innerText = translations[lang].feedbackSuccessSub;
-            } else {
-                if (fTitle) fTitle.innerText = "ڕاپۆرتکرنا ئاریشەیێ";
-                if (fDesc) fDesc.innerText = "ئەڤ فۆرمە یا تایبەتە بۆ گەهاندنا ئاریشەیان. ئەگەر تە ئاریشەیەک دیت، هیڤییە ل ڤێرێ بۆ مە بنڤیسە و فرێکە داکو ئەم زووتر چارەسەر بکەین.";
-                if (fTextarea) fTextarea.placeholder = "کورتییا ئاریشەیێ یان پەیڤا خەلەت ل ڤێرێ بنڤیسە...";
-                if (fBtn) fBtn.innerText = "فرێکرنا ڕاپۆرتێ";
-                if (sMsg) sMsg.innerText = translations[lang].feedbackSuccessMsg;
-                if (sSub) sSub.innerText = translations[lang].feedbackSuccessSub;
-            }
-
-            const fLinks = document.querySelectorAll('.footer-link');
-            fLinks.forEach((link, index) => {
-                if (index % 2 === 0) link.innerText = translations[lang].terms;
-                else link.innerText = translations[lang].contact;
-            });
-        }
-
-        setLanguage(currentLang);
-
-        let db;
-
-        async function initFirebase() {
-            try {
-                const res = await fetch('/api/config');
-                if (!res.ok) throw new Error('Failed to fetch config');
-                const firebaseConfig = await res.json();
-
-                firebase.initializeApp(firebaseConfig);
-                try { firebase.analytics(); } catch (e) { console.log("Analytics error"); }
-
-                db = firebase.firestore();
-
-                // هێنانی ڕێکخستنەکان (وێنە و ئاگەهداری) ب شێوەیەکێ ڕاستەوخۆ (Real-time)
-                db.collection('settings').doc('main').onSnapshot(doc => {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        if (data.bgImageUrl) {
-                            const welcomeScreen = document.getElementById('welcome-screen');
-                            welcomeScreen.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(26, 35, 126, 0.7)), url('${data.bgImageUrl}')`;
-                        }
-                        if (data.newsText) {
-                            window.dbNewsText = data.newsText;
-                            const ticker = document.getElementById('tickerText');
-                            if (ticker) ticker.innerText = data.newsText;
-                        } else {
-                            window.dbNewsText = null;
-                            const ticker = document.getElementById('tickerText');
-                            if (ticker) ticker.innerText = '';
-                        }
-                        if (data.historyText) {
-                            window.dbHistoryText = data.historyText;
-                            document.getElementById('history-text').innerText = data.historyText;
-                        } else {
-                            window.dbHistoryText = null;
-                            document.getElementById('history-text').innerText = translations[currentLang].historyDefault;
-                        }
-                    }
-                }, err => console.log(err));
-            } catch (err) {
-                console.error("Firebase initialization failed:", err);
-            }
-        }
-
-        initFirebase();
-
-        let idleTimer;
-
-        function showNewsAlert() {
-            if (window.dbNewsText && window.dbNewsText.trim()) {
-                alert(window.dbNewsText);
-            } else {
-                const msg = currentLang === 'ku' ? 'چ ئاگەهداری نینن د نوکەدا.' : (currentLang === 'ar' ? 'لا توجد إعلانات حالياً.' : 'No announcements currently.');
-                alert(msg);
-            }
-        }
-
-        function toggleNews() {
-            const fab = document.getElementById('newsFab');
-            const icon = fab.querySelector('.fab-icon i');
-            fab.classList.toggle('expanded');
-
-            if (fab.classList.contains('expanded')) {
-                icon.className = 'fas fa-times';
-            } else {
-                icon.className = 'fas fa-bars';
-            }
-        }
-
-        function openFeedbackModal() {
-            document.getElementById('feedbackForm').style.display = 'block';
-            document.getElementById('feedbackSuccess').style.display = 'none';
-            document.getElementById('feedbackModal').style.display = 'flex';
-        }
-
-        function closeFeedbackModal() {
-            document.getElementById('feedbackModal').style.display = 'none';
-        }
-
-        async function submitFeedback() {
-            const text = document.getElementById('feedbackTextarea').value;
-            const btn = document.getElementById('submitFeedbackBtn');
-
-            if (!text.trim()) {
-                alert(currentLang === 'ku' ? 'هیڤییە ئاریشێ بنڤیسە!' : 'Please write the issue!');
-                return;
-            }
-
-            btn.disabled = true;
-            btn.style.opacity = '0.7';
-
-            try {
-                await db.collection('feedbacks').add({
-                    message: text,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    device: navigator.userAgent
-                });
-
-                // Show Success State
-                document.getElementById('feedbackForm').style.display = 'none';
-                document.getElementById('feedbackSuccess').style.display = 'flex';
-
-                // Reset errors if any
-                const sMsg = document.getElementById('successMsg');
-                const sIcon = document.querySelector('.success-icon i');
-                const sCard = document.querySelector('.success-icon');
-                if (sMsg) sMsg.style.color = "#fff";
-                if (sIcon) sIcon.className = "fas fa-check";
-                if (sCard) sCard.style.color = "#2af598";
-                if (sCard) sCard.style.background = "rgba(42, 245, 152, 0.1)";
-
-                // Auto-close after 3 seconds
-                setTimeout(() => {
-                    closeFeedbackModal();
-                    document.getElementById('feedbackTextarea').value = '';
-                    btn.disabled = false;
-                    btn.style.opacity = '1';
-                }, 4000);
-
-            } catch (error) {
-                console.error("Error sending feedback: ", error);
-                // Show error in the same success state but with different icon
-                document.getElementById('feedbackForm').style.display = 'none';
-                document.getElementById('feedbackSuccess').style.display = 'flex';
-
-                const sMsg = document.getElementById('successMsg');
-                const sSub = document.getElementById('successSub');
-                const sIcon = document.querySelector('.success-icon i');
-                const sCard = document.querySelector('.success-icon');
-
-                if (sMsg) sMsg.innerText = currentLang === 'ku' ? "خەلەتیەک ڕوویدا" : "An Error Occurred";
-                if (sMsg) sMsg.style.color = "#ff4b2b";
-                if (sSub) sSub.innerText = currentLang === 'ku' ? "هیڤییە جارەکا دی هەول بدە یان ئینتەرنێتا خۆ پشکنین بکە" : "Please try again later or check your internet.";
-                if (sIcon) sIcon.className = "fas fa-times";
-                if (sCard) sCard.style.color = "#ff4b2b";
-                if (sCard) sCard.style.background = "rgba(255, 75, 43, 0.1)";
-                if (sCard) sCard.style.borderColor = "rgba(255, 75, 43, 0.3)";
-
-                setTimeout(() => {
-                    document.getElementById('feedbackForm').style.display = 'block';
-                    document.getElementById('feedbackSuccess').style.display = 'none';
-                    btn.disabled = false;
-                    btn.style.opacity = '1';
-                }, 5000);
-            }
-        }
-
-        function openMenuSection(sectionId) {
-            const fab = document.getElementById('newsFab');
-            if (!fab.classList.contains('expanded')) {
-                toggleNews();
-            }
-            // وەکو پێشتر نامێنیت چونکە بووەتە لیست، بۆیە دەتوانین تەنها نیشانی بدەین
-            document.getElementById('newsFab').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function shareProject(event) {
-            if (event) event.stopPropagation();
-            document.getElementById('shareModal').style.display = 'flex';
-
-            // Update modal text based on language
-            const title = document.getElementById('shareModalTitle');
-            const desc = document.getElementById('shareModalDesc');
-            const copyText = document.getElementById('copyBtnText');
-
-            if (currentLang === 'en') {
-                title.innerText = "Share Project";
-                desc.innerText = "Send the project link to your friends or copy it.";
-                copyText.innerText = "Copy Link";
-            } else if (currentLang === 'ar') {
-                title.innerText = "مشاركة المشروع";
-                desc.innerText = "أرسل رابط المشروع إلى أصدقائك أو قم بنسخه.";
-                copyText.innerText = "نسخ الرابط";
-            } else {
-                title.innerText = "پڕۆژەی بەشدار بکە";
-                desc.innerText = "لینکی پڕۆژەی بۆ هەڤاڵێن خۆ بفڕیکە یان کۆپی بکە.";
-                copyText.innerText = "کۆپی لینک";
-            }
-        }
-
-        function closeShareModal() {
-            document.getElementById('shareModal').style.display = 'none';
-        }
-
-        async function shareTo(platform) {
-            const url = window.location.href;
-            const text = "سەیری ڕێبەرێ کۆلێژا کارگێڕی و ئابووری بکە: ";
-
-            if (platform === 'whatsapp') {
-                window.open(`https://wa.me/?text=${encodeURIComponent(text + url)}`, '_blank');
-            } else if (platform === 'telegram') {
-                window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
-            } else if (platform === 'copy') {
-                try {
-                    await navigator.clipboard.writeText(url);
-                    const btnText = document.getElementById('copyBtnText');
-                    const originalText = btnText.innerText;
-                    btnText.innerText = currentLang === 'en' ? "Copied!" : (currentLang === 'ar' ? "تم النسخ!" : "لینک هاتە کۆپی کرن!");
-                    setTimeout(() => { btnText.innerText = originalText; }, 2000);
-                } catch (err) {
-                    console.error('Failed to copy: ', err);
-                }
-            }
-        }
-
-        function openTermsModal() {
-            const body = document.getElementById('termsModalBody');
-            body.innerHTML = '';
-
-            translations[currentLang].termsContent.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'term-item';
-                div.innerHTML = `<strong>${item.title}</strong><span>${item.desc}</span>`;
-                body.appendChild(div);
-            });
-
-            document.getElementById('termsModalTitle').innerText = translations[currentLang].terms;
-            document.getElementById('termsAgreeBtn').innerText = translations[currentLang].termsAgree;
-            document.getElementById('termsModal').style.display = 'flex';
-        }
-
-        function closeTermsModal() {
-            document.getElementById('termsModal').style.display = 'none';
-        }
-
-        function startApp() {
-            const welcome = document.getElementById('welcome-screen');
-            welcome.style.transform = 'translateY(-100%)';
-            setTimeout(() => {
-                welcome.style.visibility = 'hidden'; // بۆ هندێ ل سەر مۆبایلێ ڕێگری ل کلیکێ نەکەت
-                const appContent = document.getElementById('app-content');
-                appContent.style.opacity = '1';
-                appContent.style.transform = 'scale(1)';
-                appContent.classList.add('active');
-                loadDepartments();
-                resetTimer();
-            }, 800);
-        }
-
-        async function loadDepartments() {
-            const grid = document.getElementById('buttonsGrid');
-            grid.innerHTML = '<div class="loader"></div>';
-            try {
-                // Removing orderBy just in case it requires an index or fails due to missing fields
-                const snapshot = await db.collection('departments').get();
-                let departments = [];
-                snapshot.forEach(doc => {
-                    departments.push({ id: doc.id, ...doc.data() });
-                });
-
-                // بارکرنا ڕێکخستنا تایبەت ژ بیرگەیێ
-                let customOrder = null;
-                try {
-                    const savedOrder = localStorage.getItem('departmentOrder');
-                    if (savedOrder) customOrder = JSON.parse(savedOrder);
-                } catch (e) { console.log("Sort error"); }
-
-                if (customOrder && Array.isArray(customOrder)) {
-                    departments.sort((a, b) => {
-                        const indexA = customOrder.indexOf(a.id);
-                        const indexB = customOrder.indexOf(b.id);
-                        if (indexA === -1) return 1;
-                        if (indexB === -1) return -1;
-                        return indexA - indexB;
-                    });
-                }
-
-                grid.innerHTML = '';
-                let delay = 0;
-                departments.forEach(data => {
-                    const btn = document.createElement('button');
-                    btn.className = 'dept-btn';
-                    btn.setAttribute('data-id', data.id); // بۆ پاشکەفتکرنا ڕێکخستنێ
-                    btn.style.animation = `fadeInUp 0.6s ease forwards ${delay}s`;
-                    delay += 0.1;
-
-                    const videoToPlay = data.videoID || data.youtubeUrl;
-                    if (!videoToPlay) return;
-
-                    btn.setAttribute('data-name-ku', data.name || '');
-                    btn.setAttribute('data-name-en', data.nameEn || data.name || '');
-                    btn.setAttribute('data-name-ar', data.nameAr || data.name || '');
-
-                    btn.onclick = (e) => {
-                        let n = btn.getAttribute('data-name-' + currentLang);
-                        let d = data.desc || '';
-                        if (currentLang === 'en' && data.descEn) d = data.descEn;
-                        if (currentLang === 'ar' && data.descAr) d = data.descAr;
-                        playVideo(videoToPlay, n, d, data.id);
-                    };
-
-                    const iconClass = data.icon || 'fas fa-graduation-cap';
-                    const displayLangName = btn.getAttribute('data-name-' + currentLang);
-                    btn.innerHTML = `<i class="${iconClass}"></i> <span>${displayLangName}</span>`;
-                    grid.appendChild(btn);
-                });
-
-                // چالاککرنا تایبەتمەندیا کێشان و بهێلانێ
-                if (typeof Sortable !== 'undefined') {
-                    new Sortable(grid, {
-                        animation: 200,
-                        ghostClass: 'sortable-ghost',
-                        onEnd: function () {
-                            const newOrder = Array.from(grid.children).map(btn => btn.getAttribute('data-id'));
-                            localStorage.setItem('departmentOrder', JSON.stringify(newOrder));
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error("Error loading docs: ", error);
-                grid.innerHTML = '<p style="grid-column: 1 / span 2; text-align: center;">' + translations[currentLang].loadingError + '</p>';
-            }
-        }
-
-        function extractVideoID(url) {
-            if (!url) return null;
-            let cleanUrl = String(url).trim();
-            if (cleanUrl.length === 11) return cleanUrl;
-
-            let match = cleanUrl.match(/[?&]v=([^&#]+)/) ||
-                cleanUrl.match(/youtu\.be\/([^?#]+)/) ||
-                cleanUrl.match(/shorts\/([^?#]+)/) ||
-                cleanUrl.match(/embed\/([^?#]+)/);
-            return (match && match[1]) ? match[1].substring(0, 11) : cleanUrl;
-        }
-
-        let currentDeptId = null;
-        let currentDeptName = "";
-
-        function playVideo(videoData, name, desc, deptId) {
-            currentDeptId = deptId;
-            currentDeptName = name;
-            
-            // Set translation text for the button
-            const meetBtnText = document.getElementById('meetTeachersText');
-            if (meetBtnText) {
-                meetBtnText.innerText = translations[currentLang].meetTeachers;
-            }
-
-            const modal = document.getElementById('videoModal');
-            const player = document.getElementById('youtubePlayer');
-
-            let videoId = extractVideoID(videoData);
-
-            let hostOrigin = (window.location.protocol === "file:") ? "https://www.youtube.com" : window.location.origin;
-            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1&origin=${hostOrigin}`;
-
-            document.getElementById('dept-name').innerText = name;
-            document.getElementById('dept-desc').innerText = desc;
-            modal.style.display = "flex";
-        }
-
-        function closeVideo() {
-            const player = document.getElementById('youtubePlayer');
-            player.src = "";
-            document.getElementById('videoModal').style.display = "none";
-        }
-
-        function filterDepartments() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
-            const buttons = document.getElementsByClassName('dept-btn');
-
-            for (let i = 0; i < buttons.length; i++) {
-                const name = buttons[i].getElementsByTagName('span')[0].innerText.toLowerCase();
-                if (name.includes(input)) {
-                    buttons[i].style.display = "";
-                } else {
-                    buttons[i].style.display = "none";
-                }
-            }
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            const icon = document.querySelector('#themeToggle i');
-            body.classList.toggle('dark-mode');
-
-            if (body.classList.contains('dark-mode')) {
-                icon.className = 'fas fa-sun';
-            } else {
-                icon.className = 'fas fa-moon';
-            }
-        }
-
-        function goHome() {
-            closeVideo();
-            const welcome = document.getElementById('welcome-screen');
-            welcome.style.visibility = 'visible';
-            welcome.style.transform = 'translateY(0)';
-            welcome.scrollTop = 0;
-            const appContent = document.getElementById('app-content');
-            appContent.style.opacity = '0';
-            appContent.style.transform = 'scale(0.95)';
-            appContent.classList.remove('active');
-
-            // پاککردنەوەی بۆکسی گەڕیان لە کاتی گەڕانەوە بۆ شاشەی سەرەتا
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.value = '';
-                filterDepartments();
-            }
-        }
-
-        function resetTimer() {
-            clearTimeout(idleTimer);
-            idleTimer = setTimeout(() => {
-                closeVideo();
-                const welcome = document.getElementById('welcome-screen');
-                welcome.style.visibility = 'visible';
-                welcome.style.transform = 'translateY(0)';
-                const appContent = document.getElementById('app-content');
-                appContent.style.opacity = '0';
-                appContent.style.transform = 'scale(0.95)';
-                appContent.classList.remove('active');
-
-                // پاککردنەوەی بۆکسی گەڕیان لە کاتی گەڕانەوە بۆ شاشەی سەرەتا
-                const searchInput = document.getElementById('searchInput');
-                if (searchInput) {
-                    searchInput.value = '';
-                    filterDepartments();
-                }
-                goHome();
-            }, 120000);
-        }
-
-        // زیادکردنی ڕووداوی کلیک و لەمس بە شێوەیەکی دروستتر بۆ مۆبایل
-        document.addEventListener('click', resetTimer);
-        document.addEventListener('touchstart', resetTimer, { passive: true });
-
-        // --- DASHBOARD LOGIC ---
-        let myChart = null;
-
-        window.openDashboard = () => {
-            document.getElementById('dashboardModal').classList.add('active');
-            loadDashboardData();
-        };
-
-        window.closeDashboard = () => {
-            document.getElementById('dashboardModal').classList.remove('active');
-        };
-
-        function loadDashboardData() {
-            // Load Stats
-            db.collection('economic_stats').get().then(snap => {
-                const container = document.getElementById('dashStatsContainer');
-                if (snap.empty) { container.innerHTML = 'داتا نینە'; return; }
-                container.innerHTML = '';
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    container.innerHTML += `
-                        <div style="margin-bottom: 15px;">
-                            <span style="display:block; color:#aaa; font-size:13px;">${d.title}</span>
-                            <span style="font-size:22px; font-weight:bold; color:#ffd700;">${d.value}</span>
-                        </div>`;
-                });
-            });
-
-            // Load Prices
-            db.collection('market_prices').get().then(snap => {
-                const container = document.getElementById('dashPricesContainer');
-                if (snap.empty) { container.innerHTML = 'داتا نینە'; return; }
-                container.innerHTML = '';
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    const trendIcon = d.trend === 'up' ? '📈' : (d.trend === 'down' ? '📉' : '➖');
-                    const trendClass = d.trend === 'up' ? 'trend-up' : (d.trend === 'down' ? 'trend-down' : 'trend-stable');
-                    container.innerHTML += `
-                        <li class="price-item">
-                            <span>${d.item}</span>
-                            <span class="${trendClass}">${d.value} ${trendIcon}</span>
-                        </li>`;
-                });
-            });
-
-            // Load Chart
-            db.collection('economic_chart').get().then(snap => {
-                if (snap.empty) return;
-                let labels = [];
-                let values = [];
-                let data = [];
-                snap.forEach(doc => data.push(doc.data()));
-                data.sort((a, b) => a.year - b.year);
-                data.forEach(d => {
-                    labels.push(d.year);
-                    values.push(d.value);
-                });
-
-                renderChart(labels, values);
-            });
-        }
-
-        function renderChart(labels, values) {
-            const ctx = document.getElementById('growthChart').getContext('2d');
-            if (myChart) myChart.destroy();
-
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Economic Growth %',
-                        data: values,
-                        borderColor: '#60a5fa',
-                        backgroundColor: 'rgba(96, 165, 250, 0.2)',
-                        borderWidth: 3,
-                        tension: 0.4,
-                        fill: true,
-                        pointBackgroundColor: '#fff',
-                        pointRadius: 5
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#aaa' } },
-                        x: { grid: { display: false }, ticks: { color: '#aaa' } }
-                    }
-                }
-            });
-        }
-
-        // Close modals on click outside
-        window.onclick = function (event) {
-            const termsModal = document.getElementById('termsModal');
-            if (event.target == termsModal) closeTermsModal();
-            const feedbackModal = document.getElementById('feedbackModal');
-            if (event.target == feedbackModal) closeFeedbackModal();
-            const dashModal = document.getElementById('dashboardModal');
-            if (event.target == dashModal) closeDashboard();
-            const teachersModal = document.getElementById('teachersModal');
-            if (event.target == teachersModal) closeTeachersModal();
-        }
-
-        window.openTeachersModal = () => {
-            const titleEl = document.getElementById('teachersModalTitle');
-            if (titleEl) {
-                titleEl.innerHTML = `<i class="fas fa-chalkboard-teacher"></i> ${translations[currentLang].teachersTitle} (${currentDeptName})`;
-            }
-
-            const listContainer = document.getElementById('teachersModalList');
-            if (listContainer) {
-                listContainer.innerHTML = '<div class="loader"></div>';
-            }
-
-            document.getElementById('teachersModal').style.display = 'flex';
-
-            db.collection('teachers').where('deptId', '==', currentDeptId).get().then(snap => {
-                if (snap.empty) {
-                    listContainer.innerHTML = `<p style="text-align: center; color: #aaa; width: 100%; font-family: 'Vazirmatn';">${translations[currentLang].noTeachers}</p>`;
-                    return;
-                }
-
-                listContainer.innerHTML = '';
-                snap.forEach(doc => {
-                    const t = doc.data();
-                    listContainer.innerHTML += `
-                        <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px; direction: ${currentLang === 'en' ? 'ltr' : 'rtl'}; text-align: ${currentLang === 'en' ? 'left' : 'right'};">
-                            <div style="background: rgba(255, 215, 0, 0.1); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #ffd700; flex-shrink: 0;">
-                                <i class="fas fa-user-tie"></i>
-                            </div>
-                            <div style="flex-grow: 1;">
-                                <h4 style="margin: 0; color: #ffd700; font-size: 16px; font-family: 'Vazirmatn';">${t.name}</h4>
-                                <p style="margin: 5px 0 0 0; color: rgba(255, 255, 255, 0.7); font-size: 13px; line-height: 1.5; font-family: 'Vazirmatn';">${t.info}</p>
-                            </div>
-                        </div>`;
-                });
-            }).catch(err => {
-                console.error("Error loading teachers:", err);
-                listContainer.innerHTML = `<p style="text-align: center; color: red; width: 100%;">${translations[currentLang].loadingError}</p>`;
-            });
-        };
-
-        window.closeTeachersModal = () => {
-            document.getElementById('teachersModal').style.display = 'none';
-        };
-    
-        
         /* --- DEPARTMENT SHOWCASE LOGIC & COMPLETE MULTILINGUAL DATA --- */
         const deptDataTranslations = {
             ku: {
@@ -4400,6 +3673,794 @@
                 }
             });
         }
+
+        window.dbNewsText = null;
+        window.dbHistoryText = null;
+
+        function safeSetText(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = text;
+        }
+
+        function safeSetHTML(id, html) {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = html;
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            sessionStorage.setItem('appLang', lang);
+
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
+
+            const btnKu = document.getElementById('btn-ku');
+            const btnEn = document.getElementById('btn-en');
+            const btnAr = document.getElementById('btn-ar');
+            if (btnKu) btnKu.classList.toggle('active', lang === 'ku');
+            if (btnEn) btnEn.classList.toggle('active', lang === 'en');
+            if (btnAr) btnAr.classList.toggle('active', lang === 'ar');
+
+            const btnKuExt = document.getElementById('btn-ku-ext');
+            const btnEnExt = document.getElementById('btn-en-ext');
+            const btnArExt = document.getElementById('btn-ar-ext');
+            if (btnKuExt) btnKuExt.classList.toggle('active', lang === 'ku');
+            if (btnEnExt) btnEnExt.classList.toggle('active', lang === 'en');
+            if (btnArExt) btnArExt.classList.toggle('active', lang === 'ar');
+
+            const menuLangBtnsKu = document.querySelectorAll('.lang-btn-ku');
+            const menuLangBtnsEn = document.querySelectorAll('.lang-btn-en');
+            const menuLangBtnsAr = document.querySelectorAll('.lang-btn-ar');
+            menuLangBtnsKu.forEach(b => b.classList.toggle('active', lang === 'ku'));
+            menuLangBtnsEn.forEach(b => b.classList.toggle('active', lang === 'en'));
+            menuLangBtnsAr.forEach(b => b.classList.toggle('active', lang === 'ar'));
+
+            safeSetText('menuDashboard', translations[lang].menuDashboard);
+            safeSetText('dashTitle', translations[lang].dashTitle);
+            safeSetText('dashStatsTitle', translations[lang].dashStatsTitle);
+            safeSetText('dashPricesTitle', translations[lang].dashPricesTitle);
+            safeSetText('dashChartTitle', translations[lang].dashChartTitle);
+
+            document.title = translations[lang].title;
+            safeSetHTML('welcomeTitle', translations[lang].welcomeTitle);
+            safeSetText('welcomeDesc', translations[lang].welcomeDesc);
+            const startBtnEl = document.getElementById('startBtn');
+            if (startBtnEl) {
+                const span = document.getElementById('startBtnText');
+                if (span) span.innerText = translations[lang].startBtn;
+                else startBtnEl.innerText = translations[lang].startBtn;
+            }
+            updateDeptShowcaseLanguage(lang);
+            safeSetText('scrollText', translations[lang].scrollText);
+            safeSetHTML('historyTitle', translations[lang].historyTitle);
+
+            const copyrights = document.querySelectorAll('.copyright-text');
+            copyrights.forEach(el => el.innerText = translations[lang].copyright);
+
+            const devTexts = document.querySelectorAll('.dev-text');
+            devTexts.forEach(el => el.innerText = translations[lang].devText);
+
+            safeSetHTML('mainTitle', translations[lang].mainTitle);
+            safeSetText('mainDesc', translations[lang].mainDesc);
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) searchInput.placeholder = translations[lang].searchPlaceholder;
+
+            const backBtn = document.getElementById('backBtn');
+            if (backBtn) backBtn.title = translations[lang].backBtnTitle;
+
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) themeToggle.title = translations[lang].themeBtnTitle;
+
+            const historyEl = document.getElementById('history-text');
+            if (historyEl) {
+                if (window.dbHistoryText) historyEl.innerText = window.dbHistoryText;
+                else historyEl.innerText = translations[lang].historyDefault;
+            }
+
+            const tickerEl = document.getElementById('tickerText');
+            if (tickerEl) {
+                if (window.dbNewsText) tickerEl.innerText = window.dbNewsText;
+                else tickerEl.innerText = translations[lang].loadingTicker;
+            }
+
+            // گۆڕینی ناوی بەشەکان ئەگەر بارکرابن
+            const deptButtons = document.querySelectorAll('.dept-btn');
+            deptButtons.forEach(btn => {
+                const localizedName = btn.getAttribute('data-name-' + lang);
+                const span = btn.querySelector('span');
+                if (localizedName && span) {
+                    span.innerText = localizedName;
+                }
+            });
+
+            const mapBtnText = document.getElementById('mapWelcomeBtnText');
+            if (mapBtnText) mapBtnText.innerText = translations[lang].mapButton;
+
+            const meetBtnText = document.getElementById('meetTeachersText');
+            if (meetBtnText) meetBtnText.innerText = translations[lang].meetTeachers;
+
+            safeSetText('settingsText', translations[lang].settings);
+            safeSetText('shareText', translations[lang].share);
+            safeSetText('menuTheme', translations[lang].themeChange);
+            safeSetText('menuShare', translations[lang].share);
+            safeSetText('menuNews', translations[lang].newsTitle);
+            safeSetText('menuContactRow', translations[lang].contact);
+            safeSetText('menuTermsRow', translations[lang].terms);
+            safeSetText('menuDev', translations[lang].aboutDev);
+
+            // Update Feedback Modal
+            const fTitle = document.getElementById('feedbackTitle');
+            const fDesc = document.getElementById('feedbackDesc');
+            const fTextarea = document.getElementById('feedbackTextarea');
+            const fBtn = document.getElementById('sendFeedbackBtn');
+            const sMsg = document.getElementById('successMsg');
+            const sSub = document.getElementById('successSub');
+
+            if (lang === 'en') {
+                if (fTitle) fTitle.innerText = "Report a Problem";
+                if (fDesc) fDesc.innerText = "This form is specifically for reporting issues. If you found a problem, please write to us here so we can fix it as soon as possible.";
+                if (fTextarea) fTextarea.placeholder = "Write a short summary of the issue or error here...";
+                if (fBtn) fBtn.innerText = "Send Report";
+                if (sMsg) sMsg.innerText = translations[lang].feedbackSuccessMsg;
+                if (sSub) sSub.innerText = translations[lang].feedbackSuccessSub;
+            } else if (lang === 'ar') {
+                if (fTitle) fTitle.innerText = "الإبلاغ عن مشكلة";
+                if (fDesc) fDesc.innerText = "هذا النموذج مخصص للإبلاغ عن المشكلات. إذا وجدت مشكلة، يرجى الكتابة إلينا هنا حتى نتمكن من حلها في أقرب وقت ممكن.";
+                if (fTextarea) fTextarea.placeholder = "اكتب ملخصاً قصيراً للمشكلة أو الخطأ هنا...";
+                if (fBtn) fBtn.innerText = "إرسال التقرير";
+                if (sMsg) sMsg.innerText = translations[lang].feedbackSuccessMsg;
+                if (sSub) sSub.innerText = translations[lang].feedbackSuccessSub;
+            } else {
+                if (fTitle) fTitle.innerText = "ڕاپۆرتکرنا ئاریشەیێ";
+                if (fDesc) fDesc.innerText = "ئەڤ فۆرمە یا تایبەتە بۆ گەهاندنا ئاریشەیان. ئەگەر تە ئاریشەیەک دیت، هیڤییە ل ڤێرێ بۆ مە بنڤیسە و فرێکە داکو ئەم زووتر چارەسەر بکەین.";
+                if (fTextarea) fTextarea.placeholder = "کورتییا ئاریشەیێ یان پەیڤا خەلەت ل ڤێرێ بنڤیسە...";
+                if (fBtn) fBtn.innerText = "فرێکرنا ڕاپۆرتێ";
+                if (sMsg) sMsg.innerText = translations[lang].feedbackSuccessMsg;
+                if (sSub) sSub.innerText = translations[lang].feedbackSuccessSub;
+            }
+
+            const fLinks = document.querySelectorAll('.footer-link');
+            fLinks.forEach((link, index) => {
+                if (index % 2 === 0) link.innerText = translations[lang].terms;
+                else link.innerText = translations[lang].contact;
+            });
+        }
+
+        setLanguage(currentLang);
+
+        // db declared at top
+
+        async function initFirebase() {
+            try {
+                let res;
+                try {
+                    res = await fetch('/api/config');
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                } catch (err) {
+                    // Resilient fallback: Try local backend server at port 3000 if opened on file:// or another port (like Live Server)
+                    try {
+                        res = await fetch('http://localhost:3000/api/config');
+                        if (!res.ok) throw new Error('HTTP ' + res.status);
+                    } catch (err2) {
+                        throw err;
+                    }
+                }
+                if (!res || !res.ok) throw new Error('Failed to fetch backend configuration');
+                const firebaseConfig = await res.json();
+                if (!firebaseConfig.apiKey) throw new Error('No API key provided by backend');
+
+                if (!firebase.apps || firebase.apps.length === 0) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                try { firebase.analytics(); } catch (e) {}
+
+                db = firebase.firestore();
+
+                // هێنانی ڕێکخستنەکان (وێنە و ئاگەهداری) ب شێوەیەکێ ڕاستەوخۆ (Real-time)
+                db.collection('settings').doc('main').onSnapshot(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.bgImageUrl) {
+                            const welcomeScreen = document.getElementById('welcome-screen');
+                            if (welcomeScreen) {
+                                welcomeScreen.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(26, 35, 126, 0.7)), url('${data.bgImageUrl}')`;
+                            }
+                        }
+                        if (data.newsText) {
+                            window.dbNewsText = data.newsText;
+                            const ticker = document.getElementById('tickerText');
+                            if (ticker) ticker.innerText = data.newsText;
+                        } else {
+                            window.dbNewsText = null;
+                            const ticker = document.getElementById('tickerText');
+                            if (ticker) ticker.innerText = '';
+                        }
+                        if (data.historyText) {
+                            window.dbHistoryText = data.historyText;
+                            const hist = document.getElementById('history-text');
+                            if (hist) hist.innerText = data.historyText;
+                        } else {
+                            window.dbHistoryText = null;
+                            const hist = document.getElementById('history-text');
+                            if (hist) hist.innerText = translations[currentLang].historyDefault;
+                        }
+                    }
+                }, err => console.warn("Settings snapshot warning:", err));
+            } catch (err) {
+                console.error("Firebase initialization failed:", err);
+            }
+        }
+
+        window.firebaseInitPromise = initFirebase();
+
+        // idleTimer declared at top
+
+        function showNewsAlert() {
+            if (window.dbNewsText && window.dbNewsText.trim()) {
+                alert(window.dbNewsText);
+            } else {
+                const msg = currentLang === 'ku' ? 'چ ئاگەهداری نینن د نوکەدا.' : (currentLang === 'ar' ? 'لا توجد إعلانات حالياً.' : 'No announcements currently.');
+                alert(msg);
+            }
+        }
+
+        function toggleNews() {
+            const fab = document.getElementById('newsFab');
+            const icon = fab.querySelector('.fab-icon i');
+            fab.classList.toggle('expanded');
+
+            if (fab.classList.contains('expanded')) {
+                icon.className = 'fas fa-times';
+            } else {
+                icon.className = 'fas fa-bars';
+            }
+        }
+
+        function openFeedbackModal() {
+            document.getElementById('feedbackForm').style.display = 'block';
+            document.getElementById('feedbackSuccess').style.display = 'none';
+            document.getElementById('feedbackModal').style.display = 'flex';
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedbackModal').style.display = 'none';
+        }
+
+        async function submitFeedback() {
+            const text = document.getElementById('feedbackTextarea').value;
+            const btn = document.getElementById('submitFeedbackBtn');
+
+            if (!text.trim()) {
+                alert(currentLang === 'ku' ? 'هیڤییە ئاریشێ بنڤیسە!' : 'Please write the issue!');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+
+            try {
+                await db.collection('feedbacks').add({
+                    message: text,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    device: navigator.userAgent
+                });
+
+                // Show Success State
+                document.getElementById('feedbackForm').style.display = 'none';
+                document.getElementById('feedbackSuccess').style.display = 'flex';
+
+                // Reset errors if any
+                const sMsg = document.getElementById('successMsg');
+                const sIcon = document.querySelector('.success-icon i');
+                const sCard = document.querySelector('.success-icon');
+                if (sMsg) sMsg.style.color = "#fff";
+                if (sIcon) sIcon.className = "fas fa-check";
+                if (sCard) sCard.style.color = "#2af598";
+                if (sCard) sCard.style.background = "rgba(42, 245, 152, 0.1)";
+
+                // Auto-close after 3 seconds
+                setTimeout(() => {
+                    closeFeedbackModal();
+                    document.getElementById('feedbackTextarea').value = '';
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                }, 4000);
+
+            } catch (error) {
+                console.error("Error sending feedback: ", error);
+                // Show error in the same success state but with different icon
+                document.getElementById('feedbackForm').style.display = 'none';
+                document.getElementById('feedbackSuccess').style.display = 'flex';
+
+                const sMsg = document.getElementById('successMsg');
+                const sSub = document.getElementById('successSub');
+                const sIcon = document.querySelector('.success-icon i');
+                const sCard = document.querySelector('.success-icon');
+
+                if (sMsg) sMsg.innerText = currentLang === 'ku' ? "خەلەتیەک ڕوویدا" : "An Error Occurred";
+                if (sMsg) sMsg.style.color = "#ff4b2b";
+                if (sSub) sSub.innerText = currentLang === 'ku' ? "هیڤییە جارەکا دی هەول بدە یان ئینتەرنێتا خۆ پشکنین بکە" : "Please try again later or check your internet.";
+                if (sIcon) sIcon.className = "fas fa-times";
+                if (sCard) sCard.style.color = "#ff4b2b";
+                if (sCard) sCard.style.background = "rgba(255, 75, 43, 0.1)";
+                if (sCard) sCard.style.borderColor = "rgba(255, 75, 43, 0.3)";
+
+                setTimeout(() => {
+                    document.getElementById('feedbackForm').style.display = 'block';
+                    document.getElementById('feedbackSuccess').style.display = 'none';
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                }, 5000);
+            }
+        }
+
+        function openMenuSection(sectionId) {
+            const fab = document.getElementById('newsFab');
+            if (!fab.classList.contains('expanded')) {
+                toggleNews();
+            }
+            // وەکو پێشتر نامێنیت چونکە بووەتە لیست، بۆیە دەتوانین تەنها نیشانی بدەین
+            document.getElementById('newsFab').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function shareProject(event) {
+            if (event) event.stopPropagation();
+            document.getElementById('shareModal').style.display = 'flex';
+
+            // Update modal text based on language
+            const title = document.getElementById('shareModalTitle');
+            const desc = document.getElementById('shareModalDesc');
+            const copyText = document.getElementById('copyBtnText');
+
+            if (currentLang === 'en') {
+                title.innerText = "Share Project";
+                desc.innerText = "Send the project link to your friends or copy it.";
+                copyText.innerText = "Copy Link";
+            } else if (currentLang === 'ar') {
+                title.innerText = "مشاركة المشروع";
+                desc.innerText = "أرسل رابط المشروع إلى أصدقائك أو قم بنسخه.";
+                copyText.innerText = "نسخ الرابط";
+            } else {
+                title.innerText = "پڕۆژەی بەشدار بکە";
+                desc.innerText = "لینکی پڕۆژەی بۆ هەڤاڵێن خۆ بفڕیکە یان کۆپی بکە.";
+                copyText.innerText = "کۆپی لینک";
+            }
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        async function shareTo(platform) {
+            const url = window.location.href;
+            const text = "سەیری ڕێبەرێ کۆلێژا کارگێڕی و ئابووری بکە: ";
+
+            if (platform === 'whatsapp') {
+                window.open(`https://wa.me/?text=${encodeURIComponent(text + url)}`, '_blank');
+            } else if (platform === 'telegram') {
+                window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+            } else if (platform === 'copy') {
+                try {
+                    await navigator.clipboard.writeText(url);
+                    const btnText = document.getElementById('copyBtnText');
+                    const originalText = btnText.innerText;
+                    btnText.innerText = currentLang === 'en' ? "Copied!" : (currentLang === 'ar' ? "تم النسخ!" : "لینک هاتە کۆپی کرن!");
+                    setTimeout(() => { btnText.innerText = originalText; }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy: ', err);
+                }
+            }
+        }
+
+        function openTermsModal() {
+            const body = document.getElementById('termsModalBody');
+            body.innerHTML = '';
+
+            translations[currentLang].termsContent.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'term-item';
+                div.innerHTML = `<strong>${item.title}</strong><span>${item.desc}</span>`;
+                body.appendChild(div);
+            });
+
+            document.getElementById('termsModalTitle').innerText = translations[currentLang].terms;
+            document.getElementById('termsAgreeBtn').innerText = translations[currentLang].termsAgree;
+            document.getElementById('termsModal').style.display = 'flex';
+        }
+
+        function closeTermsModal() {
+            document.getElementById('termsModal').style.display = 'none';
+        }
+
+        function startApp() {
+            const welcome = document.getElementById('welcome-screen');
+            welcome.style.transform = 'translateY(-100%)';
+            setTimeout(() => {
+                welcome.style.visibility = 'hidden'; // بۆ هندێ ل سەر مۆبایلێ ڕێگری ل کلیکێ نەکەت
+                const appContent = document.getElementById('app-content');
+                appContent.style.opacity = '1';
+                appContent.style.transform = 'scale(1)';
+                appContent.classList.add('active');
+                loadDepartments();
+                resetTimer();
+            }, 800);
+        }
+
+        async function loadDepartments() {
+            const grid = document.getElementById('buttonsGrid');
+            grid.innerHTML = '<div class="loader"></div>';
+
+            if (!db && window.firebaseInitPromise) {
+                try {
+                    await Promise.race([
+                        window.firebaseInitPromise,
+                        new Promise(r => setTimeout(r, 4000))
+                    ]);
+                } catch (e) {}
+            }
+
+            let departments = [];
+            if (db) {
+                try {
+                    const fetchPromise = db.collection('departments').get();
+                    const timeoutPromise = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('Firestore timeout')), 6000)
+                    );
+                    const snapshot = await Promise.race([fetchPromise, timeoutPromise]);
+                    snapshot.forEach(doc => {
+                        departments.push({ id: doc.id, ...doc.data() });
+                    });
+                } catch (error) {
+                    console.warn("Could not load departments from Firestore:", error);
+                }
+            }
+
+            // Local storage cache: restores last known departments if offline or slow
+            if (departments.length > 0) {
+                try { localStorage.setItem('cachedDepartmentsData', JSON.stringify(departments)); } catch (e) {}
+            } else {
+                try {
+                    const cached = localStorage.getItem('cachedDepartmentsData');
+                    if (cached) departments = JSON.parse(cached);
+                } catch (e) {}
+            }
+
+            // If still no departments, stop loader and show friendly retry message
+            if (!departments || departments.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px 15px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 38px; color: #f59e0b; margin-bottom: 15px;"></i>
+                        <p style="font-size: 16px; color: #1a237e; margin-bottom: 20px;">${translations[currentLang].loadingError}</p>
+                        <button onclick="loadDepartments()" style="padding: 10px 24px; border-radius: 25px; background: #1a237e; color: white; border: none; font-size: 14px; font-weight: bold; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-redo-alt"></i> دوبارە هەوڵبدە
+                        </button>
+                    </div>`;
+                return;
+            }
+
+            // بارکرنا ڕێکخستنا تایبەت ژ بیرگەیێ
+            let customOrder = null;
+            try {
+                const savedOrder = localStorage.getItem('departmentOrder');
+                if (savedOrder) customOrder = JSON.parse(savedOrder);
+            } catch (e) { console.log("Sort error"); }
+
+            if (customOrder && Array.isArray(customOrder)) {
+                departments.sort((a, b) => {
+                    const indexA = customOrder.indexOf(a.id);
+                    const indexB = customOrder.indexOf(b.id);
+                    if (indexA === -1) return 1;
+                    if (indexB === -1) return -1;
+                    return indexA - indexB;
+                });
+            }
+
+            grid.innerHTML = '';
+            let delay = 0;
+            departments.forEach(data => {
+                const btn = document.createElement('button');
+                btn.className = 'dept-btn';
+                btn.setAttribute('data-id', data.id);
+                btn.style.animation = `fadeInUp 0.6s ease forwards ${delay}s`;
+                delay += 0.08;
+
+                const videoToPlay = data.videoID || data.youtubeUrl;
+                if (!videoToPlay) return;
+
+                btn.setAttribute('data-name-ku', data.name || '');
+                btn.setAttribute('data-name-en', data.nameEn || data.name || '');
+                btn.setAttribute('data-name-ar', data.nameAr || data.name || '');
+
+                btn.onclick = (e) => {
+                    let n = btn.getAttribute('data-name-' + currentLang);
+                    let d = data.desc || '';
+                    if (currentLang === 'en' && data.descEn) d = data.descEn;
+                    if (currentLang === 'ar' && data.descAr) d = data.descAr;
+                    playVideo(videoToPlay, n, d, data.id);
+                };
+
+                const iconClass = data.icon || 'fas fa-graduation-cap';
+                const displayLangName = btn.getAttribute('data-name-' + currentLang);
+                btn.innerHTML = `<i class="${iconClass}"></i> <span>${displayLangName}</span>`;
+                grid.appendChild(btn);
+            });
+
+            // چالاککرنا تایبەتمەندیا کێشان و بهێلانێ
+            if (typeof Sortable !== 'undefined') {
+                new Sortable(grid, {
+                    animation: 200,
+                    ghostClass: 'sortable-ghost',
+                    onEnd: function () {
+                        const newOrder = Array.from(grid.children).map(btn => btn.getAttribute('data-id'));
+                        localStorage.setItem('departmentOrder', JSON.stringify(newOrder));
+                    }
+                });
+            }
+        }
+
+        function extractVideoID(url) {
+            if (!url) return null;
+            let cleanUrl = String(url).trim();
+            if (cleanUrl.length === 11) return cleanUrl;
+
+            let match = cleanUrl.match(/[?&]v=([^&#]+)/) ||
+                cleanUrl.match(/youtu\.be\/([^?#]+)/) ||
+                cleanUrl.match(/shorts\/([^?#]+)/) ||
+                cleanUrl.match(/embed\/([^?#]+)/);
+            return (match && match[1]) ? match[1].substring(0, 11) : cleanUrl;
+        }
+
+        function playVideo(videoData, name, desc, deptId) {
+            currentDeptId = deptId;
+            currentDeptName = name;
+            
+            // Set translation text for the button
+            const meetBtnText = document.getElementById('meetTeachersText');
+            if (meetBtnText) {
+                meetBtnText.innerText = translations[currentLang].meetTeachers;
+            }
+
+            const modal = document.getElementById('videoModal');
+            const player = document.getElementById('youtubePlayer');
+
+            let videoId = extractVideoID(videoData);
+
+            let hostOrigin = (window.location.protocol === "file:") ? "https://www.youtube.com" : window.location.origin;
+            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1&origin=${hostOrigin}`;
+
+            document.getElementById('dept-name').innerText = name;
+            document.getElementById('dept-desc').innerText = desc;
+            modal.style.display = "flex";
+        }
+
+        function closeVideo() {
+            const player = document.getElementById('youtubePlayer');
+            player.src = "";
+            document.getElementById('videoModal').style.display = "none";
+        }
+
+        function filterDepartments() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const buttons = document.getElementsByClassName('dept-btn');
+
+            for (let i = 0; i < buttons.length; i++) {
+                const name = buttons[i].getElementsByTagName('span')[0].innerText.toLowerCase();
+                if (name.includes(input)) {
+                    buttons[i].style.display = "";
+                } else {
+                    buttons[i].style.display = "none";
+                }
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.querySelector('#themeToggle i');
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        }
+
+        function goHome() {
+            closeVideo();
+            const welcome = document.getElementById('welcome-screen');
+            welcome.style.visibility = 'visible';
+            welcome.style.transform = 'translateY(0)';
+            welcome.scrollTop = 0;
+            const appContent = document.getElementById('app-content');
+            appContent.style.opacity = '0';
+            appContent.style.transform = 'scale(0.95)';
+            appContent.classList.remove('active');
+
+            // پاککردنەوەی بۆکسی گەڕیان لە کاتی گەڕانەوە بۆ شاشەی سەرەتا
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.value = '';
+                filterDepartments();
+            }
+        }
+
+        function resetTimer() {
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(() => {
+                closeVideo();
+                const welcome = document.getElementById('welcome-screen');
+                welcome.style.visibility = 'visible';
+                welcome.style.transform = 'translateY(0)';
+                const appContent = document.getElementById('app-content');
+                appContent.style.opacity = '0';
+                appContent.style.transform = 'scale(0.95)';
+                appContent.classList.remove('active');
+
+                // پاککردنەوەی بۆکسی گەڕیان لە کاتی گەڕانەوە بۆ شاشەی سەرەتا
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.value = '';
+                    filterDepartments();
+                }
+                goHome();
+            }, 120000);
+        }
+
+        // زیادکردنی ڕووداوی کلیک و لەمس بە شێوەیەکی دروستتر بۆ مۆبایل
+        document.addEventListener('click', resetTimer);
+        document.addEventListener('touchstart', resetTimer, { passive: true });
+
+        // --- DASHBOARD LOGIC ---
+        let myChart = null;
+
+        window.openDashboard = () => {
+            document.getElementById('dashboardModal').classList.add('active');
+            loadDashboardData();
+        };
+
+        window.closeDashboard = () => {
+            document.getElementById('dashboardModal').classList.remove('active');
+        };
+
+        function loadDashboardData() {
+            // Load Stats
+            db.collection('economic_stats').get().then(snap => {
+                const container = document.getElementById('dashStatsContainer');
+                if (snap.empty) { container.innerHTML = 'داتا نینە'; return; }
+                container.innerHTML = '';
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    container.innerHTML += `
+                        <div style="margin-bottom: 15px;">
+                            <span style="display:block; color:#aaa; font-size:13px;">${d.title}</span>
+                            <span style="font-size:22px; font-weight:bold; color:#ffd700;">${d.value}</span>
+                        </div>`;
+                });
+            });
+
+            // Load Prices
+            db.collection('market_prices').get().then(snap => {
+                const container = document.getElementById('dashPricesContainer');
+                if (snap.empty) { container.innerHTML = 'داتا نینە'; return; }
+                container.innerHTML = '';
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    const trendIcon = d.trend === 'up' ? '📈' : (d.trend === 'down' ? '📉' : '➖');
+                    const trendClass = d.trend === 'up' ? 'trend-up' : (d.trend === 'down' ? 'trend-down' : 'trend-stable');
+                    container.innerHTML += `
+                        <li class="price-item">
+                            <span>${d.item}</span>
+                            <span class="${trendClass}">${d.value} ${trendIcon}</span>
+                        </li>`;
+                });
+            });
+
+            // Load Chart
+            db.collection('economic_chart').get().then(snap => {
+                if (snap.empty) return;
+                let labels = [];
+                let values = [];
+                let data = [];
+                snap.forEach(doc => data.push(doc.data()));
+                data.sort((a, b) => a.year - b.year);
+                data.forEach(d => {
+                    labels.push(d.year);
+                    values.push(d.value);
+                });
+
+                renderChart(labels, values);
+            });
+        }
+
+        function renderChart(labels, values) {
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            if (myChart) myChart.destroy();
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Economic Growth %',
+                        data: values,
+                        borderColor: '#60a5fa',
+                        backgroundColor: 'rgba(96, 165, 250, 0.2)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#fff',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#aaa' } },
+                        x: { grid: { display: false }, ticks: { color: '#aaa' } }
+                    }
+                }
+            });
+        }
+
+        // Close modals on click outside
+        window.onclick = function (event) {
+            const termsModal = document.getElementById('termsModal');
+            if (event.target == termsModal) closeTermsModal();
+            const feedbackModal = document.getElementById('feedbackModal');
+            if (event.target == feedbackModal) closeFeedbackModal();
+            const dashModal = document.getElementById('dashboardModal');
+            if (event.target == dashModal) closeDashboard();
+            const teachersModal = document.getElementById('teachersModal');
+            if (event.target == teachersModal) closeTeachersModal();
+        }
+
+        window.openTeachersModal = () => {
+            const titleEl = document.getElementById('teachersModalTitle');
+            if (titleEl) {
+                titleEl.innerHTML = `<i class="fas fa-chalkboard-teacher"></i> ${translations[currentLang].teachersTitle} (${currentDeptName})`;
+            }
+
+            const listContainer = document.getElementById('teachersModalList');
+            if (listContainer) {
+                listContainer.innerHTML = '<div class="loader"></div>';
+            }
+
+            document.getElementById('teachersModal').style.display = 'flex';
+
+            db.collection('teachers').where('deptId', '==', currentDeptId).get().then(snap => {
+                if (snap.empty) {
+                    listContainer.innerHTML = `<p style="text-align: center; color: #aaa; width: 100%; font-family: 'Vazirmatn';">${translations[currentLang].noTeachers}</p>`;
+                    return;
+                }
+
+                listContainer.innerHTML = '';
+                snap.forEach(doc => {
+                    const t = doc.data();
+                    listContainer.innerHTML += `
+                        <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px; direction: ${currentLang === 'en' ? 'ltr' : 'rtl'}; text-align: ${currentLang === 'en' ? 'left' : 'right'};">
+                            <div style="background: rgba(255, 215, 0, 0.1); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #ffd700; flex-shrink: 0;">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <h4 style="margin: 0; color: #ffd700; font-size: 16px; font-family: 'Vazirmatn';">${t.name}</h4>
+                                <p style="margin: 5px 0 0 0; color: rgba(255, 255, 255, 0.7); font-size: 13px; line-height: 1.5; font-family: 'Vazirmatn';">${t.info}</p>
+                            </div>
+                        </div>`;
+                });
+            }).catch(err => {
+                console.error("Error loading teachers:", err);
+                listContainer.innerHTML = `<p style="text-align: center; color: red; width: 100%;">${translations[currentLang].loadingError}</p>`;
+            });
+        };
+
+        window.closeTeachersModal = () => {
+            document.getElementById('teachersModal').style.display = 'none';
+        };
+    
+        
+        
 
         function initDeptShowcaseObserver() {
             const welcomeScreen = document.getElementById('welcome-screen');
