@@ -73,6 +73,7 @@
                 url('zanko.jpg');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -1086,6 +1087,719 @@
             font-size: 26px;
         }
 
+        
+        
+        
+        /* --- MODERN CLEAN DEPARTMENT SHOWCASE & MOBILE OPTIMIZED --- */
+        .dept-showcase-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            z-index: 5;
+            padding: 20px 0;
+        }
+
+        /* Modern Hero Explore Button (No Mouse Icon, Sleek & Mobile Friendly) */
+        .hero-explore-btn {
+            margin-top: 35px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            cursor: pointer;
+            padding: 14px 28px;
+            border-radius: 50px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1.5px solid rgba(255, 215, 0, 0.5);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.15) inset;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #ffffff;
+            font-family: inherit;
+        }
+
+        .hero-explore-btn:hover {
+            transform: translateY(4px) scale(1.03);
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #ffd700;
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.25) inset;
+        }
+
+        .hero-explore-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .explore-arrow-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f172a;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+            animation: arrowBounce 1.6s infinite ease-in-out;
+            flex-shrink: 0;
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
+        }
+
+        /* Department Section Layout */
+        .dept-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 6%;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .dept-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            width: 100%;
+            max-width: 1150px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .dept-container.reversed {
+            flex-direction: row-reverse;
+        }
+
+        /* Animation Box Container */
+        .dept-anim-box {
+            flex: 1;
+            min-width: 280px;
+            max-width: 480px;
+            height: 360px;
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 26px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.02) inset;
+            transition: all 0.5s ease;
+        }
+
+        .dept-section:hover .dept-anim-box {
+            border-color: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.1) inset;
+            transform: translateY(-4px);
+        }
+
+        /* Definition Side */
+        .dept-text-box {
+            flex: 1;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        [dir="ltr"] .dept-text-box {
+            text-align: left;
+        }
+
+        .dept-index-chip {
+            align-self: flex-start;
+            font-size: 13px;
+            font-weight: 800;
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            padding: 5px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        [dir="ltr"] .dept-index-chip {
+            align-self: flex-start;
+        }
+
+        .dept-heading {
+            font-size: clamp(26px, 3.8vw, 38px);
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+            line-height: 1.3;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .dept-definition {
+            font-size: clamp(15px, 1.8vw, 17px);
+            line-height: 1.9;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            font-weight: 400;
+        }
+
+        .dept-key-points {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .dept-key-points span {
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 20px;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+        }
+
+        .dept-key-points span:hover {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: rgba(255, 215, 0, 0.4);
+            color: #ffd700;
+        }
+
+        /* --- DYNAMIC SVG ANIMATIONS --- */
+
+        /* 1. Statistics */
+        .stats-graphic {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+        }
+
+        .stats-bars-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 170px;
+            padding: 0 15px 15px 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-bar {
+            width: 28px;
+            border-radius: 6px 6px 0 0;
+            background: linear-gradient(180deg, #38bdf8, #1e40af);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.5);
+            animation: barPulse 3s infinite ease-in-out alternate;
+        }
+
+        .stat-bar:nth-child(1) { height: 45%; animation-delay: 0s; }
+        .stat-bar:nth-child(2) { height: 75%; animation-delay: 0.4s; background: linear-gradient(180deg, #60a5fa, #2563eb); }
+        .stat-bar:nth-child(3) { height: 55%; animation-delay: 0.8s; }
+        .stat-bar:nth-child(4) { height: 95%; animation-delay: 1.2s; background: linear-gradient(180deg, #ffd700, #ea580c); box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
+        .stat-bar:nth-child(5) { height: 68%; animation-delay: 1.6s; }
+
+        @keyframes barPulse {
+            0% { transform: scaleY(0.7); }
+            100% { transform: scaleY(1.08); }
+        }
+
+        .stats-svg-curve {
+            position: absolute;
+            top: 40px;
+            left: 15px;
+            right: 15px;
+            height: 130px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .stats-svg-curve path {
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: drawCurve 3.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes drawCurve {
+            0% { stroke-dashoffset: 600; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .floating-pill {
+            position: absolute;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            color: #38bdf8;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            animation: floatSlow 3.5s ease-in-out infinite;
+            z-index: 5;
+            white-space: nowrap;
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* 2. Accounting */
+        .accounting-graphic {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .ledger-board {
+            width: 85%;
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .ledger-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .ledger-row.highlight {
+            color: #ffd700;
+            font-weight: bold;
+            border-bottom: none;
+            padding-top: 12px;
+            font-size: 15px;
+        }
+
+        .floating-coin {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #1a237e;
+            font-weight: 900;
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.5);
+            animation: coinSpin 4s infinite ease-in-out;
+        }
+
+        @keyframes coinSpin {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(180deg); }
+        }
+
+        /* 3. Marketing */
+        .marketing-graphic {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .radar-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(236, 72, 153, 0.35);
+            animation: radarPulse 3.5s infinite linear;
+        }
+
+        .radar-c1 { width: 80px; height: 80px; animation-delay: 0s; }
+        .radar-c2 { width: 150px; height: 150px; animation-delay: 0.9s; }
+        .radar-c3 { width: 220px; height: 220px; animation-delay: 1.8s; }
+
+        @keyframes radarPulse {
+            0% { transform: scale(0.6); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        .radar-center-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #a855f7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #ffffff;
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.7);
+            position: relative;
+            z-index: 5;
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(236, 72, 153, 0.5); }
+            50% { transform: scale(1.08); box-shadow: 0 0 45px rgba(236, 72, 153, 0.8); }
+        }
+
+        /* 4. Business Admin */
+        .management-graphic {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .gear-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+        }
+
+        .gear-main {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 95px;
+            color: #10b981;
+            animation: spinClockwise 10s infinite linear;
+            text-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .gear-secondary {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            font-size: 65px;
+            color: #34d399;
+            animation: spinAntiClockwise 7.5s infinite linear;
+            text-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+        }
+
+        @keyframes spinClockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spinAntiClockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+        }
+
+        /* 5. Banking */
+        .banking-graphic {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .glass-credit-card {
+            width: 240px;
+            height: 145px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.45), rgba(30, 27, 75, 0.85));
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(99, 102, 241, 0.4);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #ffffff;
+            animation: cardFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
+        }
+
+        .card-chip {
+            width: 34px;
+            height: 25px;
+            background: linear-gradient(135deg, #ffd700, #ffb300);
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        /* 6. Economics */
+        .economics-graphic {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .globe-wrapper {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.2), rgba(15, 23, 42, 0.8));
+            border: 2px solid rgba(249, 115, 22, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 35px rgba(249, 115, 22, 0.35);
+            animation: globePulse 3s infinite ease-in-out;
+            position: relative;
+        }
+
+        .globe-wrapper i {
+            font-size: 72px;
+            color: #f97316;
+            animation: spinClockwise 25s infinite linear;
+        }
+
+        @keyframes globePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Final Start CTA Section */
+        .start-action-section {
+            min-height: 75vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .start-action-card {
+            max-width: 620px;
+            width: 92%;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1.5px solid rgba(255, 215, 0, 0.45);
+            border-radius: 30px;
+            padding: 50px 30px;
+            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(25px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(255, 215, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .start-action-card h2 {
+            font-size: clamp(24px, 4vw, 34px);
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+            background: linear-gradient(135deg, #ffffff 40%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .start-action-card p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            margin: 0;
+        }
+
+        .btn-start-luxury {
+            margin-top: 15px;
+            padding: 16px 65px;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #101828;
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .btn-start-luxury:hover {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.85);
+        }
+
+        /* --- MOBILE & TABLET OPTIMIZATIONS (100% RESPONSIVE) --- */
+        @media (max-width: 900px) {
+            .dept-section {
+                min-height: auto;
+                padding: 40px 18px;
+            }
+
+            .dept-container {
+                flex-direction: column !important;
+                text-align: center;
+                gap: 25px;
+            }
+
+            .dept-anim-box {
+                width: 100%;
+                max-width: 350px;
+                height: 250px;
+                padding: 18px;
+            }
+
+            .dept-text-box {
+                text-align: center !important;
+                align-items: center;
+            }
+
+            .dept-index-chip {
+                align-self: center !important;
+            }
+
+            .dept-heading {
+                font-size: 26px;
+            }
+
+            .dept-definition {
+                font-size: 15px;
+                line-height: 1.8;
+            }
+
+            .dept-key-points {
+                justify-content: center;
+            }
+
+            .hero-explore-btn {
+                padding: 12px 22px;
+                gap: 10px;
+                max-width: 90%;
+            }
+
+            .hero-explore-text {
+                font-size: 14px;
+            }
+
+            .explore-arrow-circle {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+
+            .start-action-card {
+                padding: 40px 20px;
+            }
+
+            .btn-start-luxury {
+                padding: 14px 45px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dept-section {
+                padding: 30px 12px;
+            }
+
+            .dept-anim-box {
+                max-width: 100%;
+                height: 230px;
+                padding: 15px;
+            }
+
+            .dept-heading {
+                font-size: 23px;
+            }
+
+            .dept-definition {
+                font-size: 14px;
+                line-height: 1.75;
+            }
+
+            .floating-pill {
+                padding: 5px 10px;
+                font-size: 11px;
+            }
+
+            .stat-bar {
+                width: 20px;
+            }
+
+            .stats-bars-container {
+                height: 120px;
+            }
+
+            .glass-credit-card {
+                width: 200px;
+                height: 125px;
+                padding: 14px;
+            }
+
+            .gear-container {
+                width: 140px;
+                height: 140px;
+            }
+
+            .gear-main { font-size: 70px; }
+            .gear-secondary { font-size: 48px; }
+
+            .globe-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+
+            .globe-wrapper i {
+                font-size: 55px;
+            }
+
+            .ledger-board {
+                width: 95%;
+                padding: 12px;
+            }
+
+            .ledger-row {
+                font-size: 11px;
+            }
+
+            .ledger-row.highlight {
+                font-size: 13px;
+            }
+        }
+
         .scroll-indicator {
             margin-top: 60px;
             color: rgba(255, 255, 255, 0.7);
@@ -2021,17 +2735,268 @@
             <li></li>
         </ul>
 
+        
+        
+        
         <div class="welcome-content" style="position: relative; z-index: 5;">
             <i class="fas fa-graduation-cap"></i>
             <h1 class="shine-text" id="welcomeTitle">خێربێن بۆ ڕێبەرێ کۆلێژا <br>کارگێڕی و ئابووری</h1>
-            <p id="welcomeDesc">بۆ دەسپێکرن، کلیک ل سەر دوگمێ بکە</p>
-            <button class="start-btn" id="startBtn" onclick="startApp()">دەسپێک</button>
+            <p id="welcomeDesc">بۆ نیاسینا پشکێن کۆلێژێ، بەرەڤ خوارێ بچە</p>
 
-            <div class="scroll-indicator"
-                onclick="document.getElementById('history').scrollIntoView({behavior: 'smooth'})">
-                <i class="fas fa-chevron-down"></i>
-                <p style="font-size: 14px;" id="scrollText">بۆ زانیاری زێدەتر بکێشە خوارێ</p>
-            </div>
+            <!-- دوگمەی ڕێبەریا چوون بۆ خوارێ بەبێ وێنەی ماوس (زۆر مۆدێرن و گونجاو لەگەڵ مۆبایل) -->
+            <button class="hero-explore-btn" id="heroExploreBtn" onclick="scrollToFirstDept()" title="بۆ نیاسینا بەشان دابەزە خوارێ">
+                <span class="hero-explore-text" id="scrollHeroCueText">بۆ نیاسینا پشکێن کۆلێژێ، بەرەڤ خوارێ بچە</span>
+                <div class="explore-arrow-circle">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </button>
+        </div>
+
+        <!-- بەشێ نیاسینا پشکێن کۆلێژێ ب ئەنیمەیشنا ل رەخەکی و پێناسێ ل رەخێ دی -->
+        <div class="dept-showcase-container" id="deptShowcase">
+
+            <!-- ١. بەشێ ئامارێ -->
+            <section class="dept-section" id="dept-0">
+                <div class="dept-container">
+                    <!-- رەخێ ئەنیمەیشنی -->
+                    <div class="dept-anim-box">
+                        <div class="floating-pill" id="pill-anim-0-top" style="top: 20px; right: 20px;">
+                            <i class="fas fa-brain"></i> <span id="text-anim-0-top">شیکاریا داتایان ٩٩.٤٪</span>
+                        </div>
+                        <div class="stats-graphic">
+                            <svg class="stats-svg-curve" viewBox="0 0 400 140" fill="none">
+                                <path d="M 20 120 Q 90 20, 180 80 T 380 20" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
+                            </svg>
+                            <div class="stats-bars-container">
+                                <div class="stat-bar"></div>
+                                <div class="stat-bar"></div>
+                                <div class="stat-bar"></div>
+                                <div class="stat-bar"></div>
+                                <div class="stat-bar"></div>
+                            </div>
+                        </div>
+                        <div class="floating-pill" id="pill-anim-0-bot" style="bottom: 20px; left: 20px; border-color: #ffd700; color: #ffd700;">
+                            <i class="fas fa-chart-line"></i> <span id="text-anim-0-bot">پێشبینیا بازاڕی 📈</span>
+                        </div>
+                    </div>
+
+                    <!-- رەخێ پێناسێ -->
+                    <div class="dept-text-box">
+                        <span class="dept-index-chip" id="badge-dept-0">بەشێ ٠١ • STATISTICS</span>
+                        <h2 class="dept-heading" id="title-dept-0">بەشێ ئامار و زانیاریاری</h2>
+                        <p class="dept-definition" id="desc-dept-0">
+                            زانستێ داتایێ و ئەندازیاریا بڕیاردانێ. ل ڤی بەشی قوتابی فێری چەوانیا کۆمکرن، رێکخستن، شیکاریکرن و شیڕڤەکرنا داتایێن ئاڵۆز دبیت ب بکارئینانا سەردەمیانەترین بەرنامێن ئاماری و ژیریێ دەستکرد، بۆ چارەسەرکرنا ئاریشەیێن ئابووری و جڤاکی و ئاڕاستەکرنا دروست یا کارگێڕیا کۆمپانیان.
+                        </p>
+                        <div class="dept-key-points" id="pills-dept-0">
+                            <span><i class="fas fa-database"></i> زانستێ داتایێ و شیکاری</span>
+                            <span><i class="fas fa-robot"></i> ژیریێ دەستکرد (AI)</span>
+                            <span><i class="fas fa-chart-pie"></i> مۆدێلێن پێشبینیێ</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ٢. بەشێ ژمێریاری -->
+            <section class="dept-section" id="dept-1">
+                <div class="dept-container reversed">
+                    <!-- رەخێ ئەنیمەیشنی -->
+                    <div class="dept-anim-box">
+                        <div class="floating-coin" style="top: 25px; left: 30px;">$</div>
+                        <div class="floating-coin" style="bottom: 25px; right: 30px; animation-delay: 1.5s; background: linear-gradient(135deg, #38bdf8, #1e40af); color: #fff;">€</div>
+                        <div class="accounting-graphic">
+                            <div class="ledger-board">
+                                <div class="ledger-row">
+                                    <span id="ledger-title-rev">داهاتێ گشتی (Revenue)</span>
+                                    <span style="color: #4ade80;">+$2,450,000</span>
+                                </div>
+                                <div class="ledger-row">
+                                    <span id="ledger-title-exp">تێچوون و خەرجی (Expenses)</span>
+                                    <span style="color: #f87171;">-$850,000</span>
+                                </div>
+                                <div class="ledger-row highlight">
+                                    <span id="ledger-title-net">قازانجێ سافی (Net Profit)</span>
+                                    <span>$1,600,000 ✓</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- رەخێ پێناسێ -->
+                    <div class="dept-text-box">
+                        <span class="dept-index-chip" id="badge-dept-1">بەشێ ٠٢ • ACCOUNTING</span>
+                        <h2 class="dept-heading" id="title-dept-1">بەشێ ژمێریاری</h2>
+                        <p class="dept-definition" id="desc-dept-1">
+                            زمانێ بازرگانیێ و کۆڵەکا سەرەکی یا دارایی د هەر ڕێکخراو و کۆمپانیەکێ دا. ئەڤ بەشە قوتابیان فێری سیستەمێن پێشکەفتی یێن دارایی، ووردبینی، باج، و چەوانیا ڕێکخستن و چاڤدێریکرنا بوودجە و داهاتی دکەت بۆ بەرهەڤکرنا کادرێن لێهاتی د کەرتێ گشتی، تایبەت، بانک و کۆمپانیێن نێودەوڵەتی دا.
+                        </p>
+                        <div class="dept-key-points" id="pills-dept-1">
+                            <span><i class="fas fa-file-invoice-dollar"></i> ڕێبەریا دارایی و ووردبینی</span>
+                            <span><i class="fas fa-laptop-code"></i> سیستەمێن ژمێریاریا ئەلیکترۆنی</span>
+                            <span><i class="fas fa-receipt"></i> ژمێریاریا باج و تێچوونان</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ٣. بەشێ بازاڕگەری -->
+            <section class="dept-section" id="dept-2">
+                <div class="dept-container">
+                    <!-- رەخێ ئەنیمەیشنی -->
+                    <div class="dept-anim-box">
+                        <div class="floating-pill" id="pill-anim-2-top" style="top: 20px; right: 20px; border-color: #ec4899; color: #ec4899;">
+                            <i class="fas fa-rocket"></i> <span id="text-anim-2-top">+450% گەهشتن (Reach)</span>
+                        </div>
+                        <div class="marketing-graphic">
+                            <div class="radar-circle radar-c1"></div>
+                            <div class="radar-circle radar-c2"></div>
+                            <div class="radar-circle radar-c3"></div>
+                            <div class="radar-center-icon">
+                                <i class="fas fa-bullhorn"></i>
+                            </div>
+                        </div>
+                        <div class="floating-pill" id="pill-anim-2-bot" style="bottom: 20px; left: 20px; border-color: #a855f7; color: #a855f7;">
+                            <i class="fas fa-bullseye"></i> <span id="text-anim-2-bot">ئارمانجگرتنا کڕیاران 🎯</span>
+                        </div>
+                    </div>
+
+                    <!-- رەخێ پێناسێ -->
+                    <div class="dept-text-box">
+                        <span class="dept-index-chip" id="badge-dept-2">بەشێ ٠٣ • MARKETING</span>
+                        <h2 class="dept-heading" id="title-dept-2">بەشێ بازاڕگەری</h2>
+                        <p class="dept-definition" id="desc-dept-2">
+                            هونەرێ داهێنانێ و پێشەنگیا بازاڕی د سەردەمێ نوو یێ بازرگانیا ئەلیکترۆنی دا. ئەڤ بەشە تیشک دئێخیتە سەر دروستکرنا براندێن ناودار و بهێز، شیکاریکرنا دەروونناسی و ڕەفتارێ کڕیاران، و دانانا ستراتیژیەتێن مۆدێرن بۆ گەهاندنا بەرهەمان ب بلندترین ئاستێ فرۆتنێ.
+                        </p>
+                        <div class="dept-key-points" id="pills-dept-2">
+                            <span><i class="fas fa-globe-americas"></i> بازاڕگەرییا دیجیتاڵی</span>
+                            <span><i class="fas fa-award"></i> دروستکرنا براند و ستراتیژی</span>
+                            <span><i class="fas fa-users-viewfinder"></i> شیکاریا حەزا کڕیاران</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ٤. بەشێ کارگێڕی کار -->
+            <section class="dept-section" id="dept-3">
+                <div class="dept-container reversed">
+                    <!-- رەخێ ئەنیمەیشنی -->
+                    <div class="dept-anim-box">
+                        <div class="floating-pill" id="pill-anim-3-top" style="top: 20px; left: 20px; border-color: #10b981; color: #10b981;">
+                            <i class="fas fa-tasks"></i> <span id="text-anim-3-top">پڕۆژەیێن ستراتیژی ١٠٠٪</span>
+                        </div>
+                        <div class="management-graphic">
+                            <div class="gear-container">
+                                <i class="fas fa-cog gear-main"></i>
+                                <i class="fas fa-cog gear-secondary"></i>
+                            </div>
+                        </div>
+                        <div class="floating-pill" id="pill-anim-3-bot" style="bottom: 20px; right: 20px; border-color: #34d399; color: #34d399;">
+                            <i class="fas fa-user-tie"></i> <span id="text-anim-3-bot">سەرکردایەتیا سەرکەفتی 👔</span>
+                        </div>
+                    </div>
+
+                    <!-- رەخێ پێناسێ -->
+                    <div class="dept-text-box">
+                        <span class="dept-index-chip" id="badge-dept-3">بەشێ ٠٤ • MANAGEMENT</span>
+                        <h2 class="dept-heading" id="title-dept-3">بەشێ کارگێڕی کار</h2>
+                        <p class="dept-definition" id="desc-dept-3">
+                            کارگەها چێکرنا سەرکردە و بەڕێوەبەرێن داهاتووی. قوتابی فێری هونەرێ بڕیاردانا ژیرانە، پلاندانانا ستراتیژی، سەرپەرشتیکرنا پڕۆژەیێن مەزن و گەشەپێدانا ژێدەرێن مرۆڤی (HR) دبن بۆ برێڤەبرنا سەرکەفتیانە یا هەر کۆمپانیا یان دامەزراوەیەکێ.
+                        </p>
+                        <div class="dept-key-points" id="pills-dept-3">
+                            <span><i class="fas fa-user-tie"></i> سەرکردایەتی و بڕیاردان</span>
+                            <span><i class="fas fa-tasks"></i> پلاندانانا پڕۆژە و دامەزراوان</span>
+                            <span><i class="fas fa-users-gear"></i> برێڤەبرنا ژێدەرێن مرۆڤی</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ٥. بەشێ دارایی و بانک -->
+            <section class="dept-section" id="dept-4">
+                <div class="dept-container">
+                    <!-- رەخێ ئەنیمەیشنی -->
+                    <div class="dept-anim-box">
+                        <div class="floating-pill" id="pill-anim-4-top" style="top: 20px; right: 20px; border-color: #818cf8; color: #818cf8;">
+                            <i class="fas fa-shield-alt"></i> <span id="text-anim-4-top">پاراستنا دارایی پاراستیە 🛡️</span>
+                        </div>
+                        <div class="banking-graphic">
+                            <div class="glass-credit-card">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div class="card-chip"></div>
+                                    <i class="fas fa-wifi" style="transform: rotate(90deg); font-size: 18px;"></i>
+                                </div>
+                                <div style="letter-spacing: 3px; font-size: 15px; font-family: monospace;">•••• •••• •••• 2026</div>
+                                <div style="display: flex; justify-content: space-between; font-size: 11px; opacity: 0.8;">
+                                    <span id="card-label-dept">BANKING & FINANCE</span>
+                                    <span>12/30</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="floating-pill" id="pill-anim-4-bot" style="bottom: 20px; left: 20px; border-color: #ffd700; color: #ffd700;">
+                            <i class="fas fa-bolt"></i> <span id="text-anim-4-bot">FinTech 4.0 ⚡</span>
+                        </div>
+                    </div>
+
+                    <!-- رەخێ پێناسێ -->
+                    <div class="dept-text-box">
+                        <span class="dept-index-chip" id="badge-dept-4">بەشێ ٠٥ • BANKING</span>
+                        <h2 class="dept-heading" id="title-dept-4">بەشێ دارایی و بانک</h2>
+                        <p class="dept-definition" id="desc-dept-4">
+                            ناڤەندا سەرەکی یا جموجۆڵێن دراڤی، بازاڕێن سەرمایەی و وەبەرهێنانێ. د ڤی بەشی دا قوتابی فێری برێڤەبرنا بانکێن نووژەن، بازاڕێن دارایی (پشک و سەند)، سیاسەتێن دراڤی، و تەکنەلۆژیایێن نوویێن بانکی (FinTech) دبن بۆ کەرتی بانکی و وەبەرهێنانێ.
+                        </p>
+                        <div class="dept-key-points" id="pills-dept-4">
+                            <span><i class="fas fa-building-columns"></i> برێڤەبرنا بانکێن نووژەن</span>
+                            <span><i class="fas fa-coins"></i> وەبەرهێنان و بازاڕێن دارایی</span>
+                            <span><i class="fas fa-bolt"></i> تەکنەلۆژیایا دارایی (FinTech)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ٦. بەشێ ئابووری -->
+            <section class="dept-section" id="dept-5">
+                <div class="dept-container reversed">
+                    <!-- رەخێ ئەنیمەیشنی -->
+                    <div class="dept-anim-box">
+                        <div class="floating-pill" id="pill-anim-5-top" style="top: 20px; left: 20px; border-color: #f97316; color: #f97316;">
+                            <i class="fas fa-globe"></i> <span id="text-anim-5-top">بازرگانیا جیهانی 🌍</span>
+                        </div>
+                        <div class="economics-graphic">
+                            <div class="globe-wrapper">
+                                <i class="fas fa-globe-americas"></i>
+                            </div>
+                        </div>
+                        <div class="floating-pill" id="pill-anim-5-bot" style="bottom: 20px; right: 20px; border-color: #4ade80; color: #4ade80;">
+                            <i class="fas fa-arrow-trend-up"></i> <span id="text-anim-5-bot">گەشەیا ئابووری 📈</span>
+                        </div>
+                    </div>
+
+                    <!-- رەخێ پێناسێ -->
+                    <div class="dept-text-box">
+                        <span class="dept-index-chip" id="badge-dept-5">بەشێ ٠٦ • ECONOMICS</span>
+                        <h2 class="dept-heading" id="title-dept-5">بەشێ ئابووری</h2>
+                        <p class="dept-definition" id="desc-dept-5">
+                            تێگەهشتن و پێشڤەبرنا ئابوورێ وەلات و جیهانێ. ئامادەکرنا کادرێن شارەزا د شیکاریا سیاسەتێن دارایی، گەشەپێدانا بەردەوام، هەڵئاوسان، بازرگانیا نێودەوڵەتی، و دروستکرنا چارەسەریێن ئابووری یێن کاریگەر بۆ جڤاکی.
+                        </p>
+                        <div class="dept-key-points" id="pills-dept-5">
+                            <span><i class="fas fa-hand-holding-dollar"></i> ئابووریێ نێودەوڵەتی و بازرگانی</span>
+                            <span><i class="fas fa-seedling"></i> گەشەپێدانا بەردەوام و سامان</span>
+                            <span><i class="fas fa-arrow-trend-up"></i> شیکاریا سیاسەت و قەیرانان</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ٧. دوگمەیا دەسپێک ل دووماهیێ -->
+            <section class="start-action-section" id="startSection">
+                <div class="start-action-card">
+                    <i class="fas fa-graduation-cap" style="font-size: 46px; color: #ffd700;"></i>
+                    <h2 id="startFinalHeading">ئامادەیی بۆ دەستپێکرنا گەشتێ؟</h2>
+                    <p id="startFinalDesc">نوکە کلیک بکە بۆ دیتنا خشتە، هۆل، مامۆستا و هەمی خزمەتگوزاریێن کۆلێژێ.</p>
+                    <button class="btn-start-luxury" id="startBtn" onclick="startApp()">
+                        <span id="startBtnText">دەسپێک</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </section>
         </div>
 
         <!-- بەشی خوارەوە: مێژوو و سۆشیاڵ میدیا -->
@@ -2442,7 +3407,13 @@
             document.title = translations[lang].title;
             safeSetHTML('welcomeTitle', translations[lang].welcomeTitle);
             safeSetText('welcomeDesc', translations[lang].welcomeDesc);
-            safeSetText('startBtn', translations[lang].startBtn);
+            const startBtnEl = document.getElementById('startBtn');
+            if (startBtnEl) {
+                const span = document.getElementById('startBtnText');
+                if (span) span.innerText = translations[lang].startBtn;
+                else startBtnEl.innerText = translations[lang].startBtn;
+            }
+            updateDeptShowcaseLanguage(lang);
             safeSetText('scrollText', translations[lang].scrollText);
             safeSetHTML('historyTitle', translations[lang].historyTitle);
 
@@ -2929,6 +3900,7 @@
             const welcome = document.getElementById('welcome-screen');
             welcome.style.visibility = 'visible';
             welcome.style.transform = 'translateY(0)';
+            welcome.scrollTop = 0;
             const appContent = document.getElementById('app-content');
             appContent.style.opacity = '0';
             appContent.style.transform = 'scale(0.95)';
@@ -3116,6 +4088,381 @@
         window.closeTeachersModal = () => {
             document.getElementById('teachersModal').style.display = 'none';
         };
+    
+        
+        /* --- DEPARTMENT SHOWCASE LOGIC & COMPLETE MULTILINGUAL DATA --- */
+        const deptDataTranslations = {
+            ku: {
+                welcomeDesc: "بۆ نیاسینا پشکێن کۆلێژێ، بەرەڤ خوارێ بچە",
+                scrollCue: "بۆ نیاسینا پشکێن کۆلێژێ، بەرەڤ خوارێ بچە",
+                startBtn: "دەسپێک",
+                finalHeading: "ئامادەیی بۆ دەستپێکرنا گەشتێ؟",
+                finalDesc: "نوکە کلیک بکە بۆ دیتنا خشتە، هۆل، مامۆستا و هەمی خزمەتگوزاریێن کۆلێژێ.",
+                animPills: {
+                    s0Top: "شیکاریا داتایان ٩٩.٤٪",
+                    s0Bot: "پێشبینیا بازاڕی 📈",
+                    revTitle: "داهاتێ گشتی (Revenue)",
+                    expTitle: "تێچوون و خەرجی (Expenses)",
+                    netTitle: "قازانجێ سافی (Net Profit)",
+                    s2Top: "+450% گەهشتن (Reach)",
+                    s2Bot: "ئارمانجگرتنا کڕیاران 🎯",
+                    s3Top: "پڕۆژەیێن ستراتیژی ١٠٠٪",
+                    s3Bot: "سەرکردایەتیا سەرکەفتی 👔",
+                    cardLabel: "BANKING & FINANCE",
+                    s4Top: "پاراستنا دارایی پاراستیە 🛡️",
+                    s4Bot: "FinTech 4.0 ⚡",
+                    s5Top: "بازرگانیا جیهانی 🌍",
+                    s5Bot: "گەشەیا ئابووری 📈"
+                },
+                depts: [
+                    {
+                        badge: "بەشێ ٠١ • STATISTICS",
+                        title: "بەشێ ئامار و زانیاریاری",
+                        desc: "زانستێ داتایێ و ئەندازیاریا بڕیاردانێ. ل ڤی بەشی قوتابی فێری چەوانیا کۆمکرن، رێکخستن، شیکاریکرن و شیڕڤەکرنا داتایێن ئاڵۆز دبیت ب بکارئینانا سەردەمیانەترین بەرنامێن ئاماری و ژیریێ دەستکرد، بۆ چارەسەرکرنا ئاریشەیێن ئابووری و جڤاکی و ئاڕاستەکرنا دروست یا کارگێڕیا کۆمپانیان.",
+                        pills: [
+                            "<i class='fas fa-database'></i> زانستێ داتایێ و شیکاری",
+                            "<i class='fas fa-robot'></i> ژیریێ دەستکرد (AI)",
+                            "<i class='fas fa-chart-pie'></i> مۆدێلێن پێشبینیێ"
+                        ]
+                    },
+                    {
+                        badge: "بەشێ ٠٢ • ACCOUNTING",
+                        title: "بەشێ ژمێریاری",
+                        desc: "زمانێ بازرگانیێ و کۆڵەکا سەرەکی یا دارایی د هەر ڕێکخراو و کۆمپانیەکێ دا. ئەڤ بەشە قوتابیان فێری سیستەمێن پێشکەفتی یێن دارایی، ووردبینی، باج، و چەوانیا ڕێکخستن و چاڤدێریکرنا بوودجە و داهاتی دکەت بۆ بەرهەڤکرنا کادرێن لێهاتی د کەرتێ گشتی، تایبەت، بانک و کۆمپانیێن نێودەوڵەتی دا.",
+                        pills: [
+                            "<i class='fas fa-file-invoice-dollar'></i> ڕێبەریا دارایی و ووردبینی",
+                            "<i class='fas fa-laptop-code'></i> سیستەمێن ژمێریاریا ئەلیکترۆنی",
+                            "<i class='fas fa-receipt'></i> ژمێریاریا باج و تێچوونان"
+                        ]
+                    },
+                    {
+                        badge: "بەشێ ٠٣ • MARKETING",
+                        title: "بەشێ بازاڕگەری",
+                        desc: "هونەرێ داهێنانێ و پێشەنگیا بازاڕی د سەردەمێ نوو یێ بازرگانیا ئەلیکترۆنی دا. ئەڤ بەشە تیشک دئێخیتە سەر دروستکرنا براندێن ناودار و بهێز، شیکاریکرنا دەروونناسی و ڕەفتارێ کڕیاران، و دانانا ستراتیژیەتێن مۆدێرن بۆ گەهاندنا بەرهەمان ب بلندترین ئاستێ فرۆتنێ.",
+                        pills: [
+                            "<i class='fas fa-globe-americas'></i> بازاڕگەرییا دیجیتاڵی",
+                            "<i class='fas fa-award'></i> دروستکرنا براند و ستراتیژی",
+                            "<i class='fas fa-users-viewfinder'></i> شیکاریا حەزا کڕیاران"
+                        ]
+                    },
+                    {
+                        badge: "بەشێ ٠٤ • MANAGEMENT",
+                        title: "بەشێ کارگێڕی کار",
+                        desc: "کارگەها چێکرنا سەرکردە و بەڕێوەبەرێن داهاتووی. قوتابی فێری هونەرێ بڕیاردانا ژیرانە، پلاندانانا ستراتیژی، سەرپەرشتیکرنا پڕۆژەیێن مەزن و گەشەپێدانا ژێدەرێن مرۆڤی (HR) دبن بۆ برێڤەبرنا سەرکەفتیانە یا هەر کۆمپانیا یان دامەزراوەیەکێ.",
+                        pills: [
+                            "<i class='fas fa-user-tie'></i> سەرکردایەتی و بڕیاردان",
+                            "<i class='fas fa-tasks'></i> پلاندانانا پڕۆژە و دامەزراوان",
+                            "<i class='fas fa-users-gear'></i> برێڤەبرنا ژێدەرێن مرۆڤی"
+                        ]
+                    },
+                    {
+                        badge: "بەشێ ٠٥ • BANKING",
+                        title: "بەشێ دارایی و بانک",
+                        desc: "ناڤەندا سەرەکی یا جموجۆڵێن دراڤی، بازاڕێن سەرمایەی و وەبەرهێنانێ. د ڤی بەشی دا قوتابی فێری برێڤەبرنا بانکێن نووژەن، بازاڕێن دارایی (پشک و سەند)، سیاسەتێن دراڤی، و تەکنەلۆژیایێن نوویێن بانکی (FinTech) دبن بۆ کەرتی بانکی و وەبەرهێنانێ.",
+                        pills: [
+                            "<i class='fas fa-building-columns'></i> برێڤەبرنا بانکێن نووژەن",
+                            "<i class='fas fa-coins'></i> وەبەرهێنان و بازاڕێن دارایی",
+                            "<i class='fas fa-bolt'></i> تەکنەلۆژیایا دارایی (FinTech)"
+                        ]
+                    },
+                    {
+                        badge: "بەشێ ٠٦ • ECONOMICS",
+                        title: "بەشێ ئابووری",
+                        desc: "تێگەهشتن و پێشڤەبرنا ئابوورێ وەلات و جیهانێ. ئامادەکرنا کادرێن شارەزا د شیکاریا سیاسەتێن دارایی، گەشەپێدانا بەردەوام، هەڵئاوسان، بازرگانیا نێودەوڵەتی، و دروستکرنا چارەسەریێن ئابووری یێن کاریگەر بۆ جڤاکی.",
+                        pills: [
+                            "<i class='fas fa-hand-holding-dollar'></i> ئابووریێ نێودەوڵەتی و بازرگانی",
+                            "<i class='fas fa-seedling'></i> گەشەپێدانا بەردەوام و سامان",
+                            "<i class='fas fa-arrow-trend-up'></i> شیکاریا سیاسەت و قەیرانان"
+                        ]
+                    }
+                ]
+            },
+            en: {
+                welcomeDesc: "Explore the college departments below",
+                scrollCue: "Explore College Departments",
+                startBtn: "Start",
+                finalHeading: "Ready to Begin Your Journey?",
+                finalDesc: "Start now to explore class schedules, lecture halls, faculty members, and all digital college services.",
+                animPills: {
+                    s0Top: "Data Analytics 99.4%",
+                    s0Bot: "Market Forecast 📈",
+                    revTitle: "Total Revenue",
+                    expTitle: "Operating Expenses",
+                    netTitle: "Net Profit ✓",
+                    s2Top: "+450% Reach",
+                    s2Bot: "Customer Targeting 🎯",
+                    s3Top: "Strategic Goals 100%",
+                    s3Bot: "Executive Leadership 👔",
+                    cardLabel: "BANKING & FINANCE",
+                    s4Top: "Secured Assets 🛡️",
+                    s4Bot: "FinTech 4.0 ⚡",
+                    s5Top: "Global Trade 🌍",
+                    s5Bot: "Economic Growth 📈"
+                },
+                depts: [
+                    {
+                        badge: "DEPT 01 • STATISTICS",
+                        title: "Statistics & Informatics",
+                        desc: "The science of data and precision decision-making. Students master data collection, modeling, analytics, and intelligent interpretation using modern statistical tools and Artificial Intelligence to solve complex economic and corporate challenges.",
+                        pills: [
+                            "<i class='fas fa-database'></i> Data Science & Analytics",
+                            "<i class='fas fa-robot'></i> Artificial Intelligence (AI)",
+                            "<i class='fas fa-chart-pie'></i> Predictive Modeling"
+                        ]
+                    },
+                    {
+                        badge: "DEPT 02 • ACCOUNTING",
+                        title: "Accounting Department",
+                        desc: "The language of business and the financial cornerstone of every organization. Equips students with expertise in financial reporting, auditing, taxation, and budget governance for impactful careers in public, private, and global corporate sectors.",
+                        pills: [
+                            "<i class='fas fa-file-invoice-dollar'></i> Financial Auditing & Assurance",
+                            "<i class='fas fa-laptop-code'></i> Digital Accounting Systems",
+                            "<i class='fas fa-receipt'></i> Tax & Cost Accounting"
+                        ]
+                    },
+                    {
+                        badge: "DEPT 03 • MARKETING",
+                        title: "Marketing Department",
+                        desc: "The art of innovation and market growth in the modern digital economy. Focuses on building high-impact brands, analyzing consumer psychology and market behavior, and crafting strategic growth campaigns to maximize sales and brand value.",
+                        pills: [
+                            "<i class='fas fa-globe-americas'></i> Digital Marketing",
+                            "<i class='fas fa-award'></i> Brand Strategy & Creation",
+                            "<i class='fas fa-users-viewfinder'></i> Consumer Behavior Analytics"
+                        ]
+                    },
+                    {
+                        badge: "DEPT 04 • MANAGEMENT",
+                        title: "Business Administration",
+                        desc: "The forge of visionary executives and organizational leaders. Students master executive decision-making, strategic planning, corporate project governance, and human capital development (HR) to lead organizations to peak excellence.",
+                        pills: [
+                            "<i class='fas fa-user-tie'></i> Executive Leadership & Decisions",
+                            "<i class='fas fa-tasks'></i> Project & Strategic Planning",
+                            "<i class='fas fa-users-gear'></i> Human Resource Management"
+                        ]
+                    },
+                    {
+                        badge: "DEPT 05 • BANKING",
+                        title: "Finance & Banking",
+                        desc: "The nexus of financial capital, investment banking, and monetary systems. Students master modern banking operations, securities and equity markets, monetary policy, and next-generation FinTech solutions.",
+                        pills: [
+                            "<i class='fas fa-building-columns'></i> Modern Bank Operations",
+                            "<i class='fas fa-coins'></i> Investment & Capital Markets",
+                            "<i class='fas fa-bolt'></i> Financial Technology (FinTech)"
+                        ]
+                    },
+                    {
+                        badge: "DEPT 06 • ECONOMICS",
+                        title: "Economics Department",
+                        desc: "Decoding and cultivating macroeconomic and microeconomic prosperity. Prepares graduates with analytical expertise in macroeconomic policy, sustainable development, inflation, and global trade dynamics to create impactful economic solutions.",
+                        pills: [
+                            "<i class='fas fa-hand-holding-dollar'></i> International Trade & Economics",
+                            "<i class='fas fa-seedling'></i> Sustainable Development & Resources",
+                            "<i class='fas fa-arrow-trend-up'></i> Policy & Crisis Analysis"
+                        ]
+                    }
+                ]
+            },
+            ar: {
+                welcomeDesc: "تعرّف على أقسام الكلية في الأسفل",
+                scrollCue: "استكشف أقسام الكلية",
+                startBtn: "البدء",
+                finalHeading: "هل أنت مستعد لبدء الجولة؟",
+                finalDesc: "ابدأ الآن لاستعراض الجداول الدراسية، قاعات المحاضرات، الهيئة التدريسية، وكافة الخدمات الإلكترونية للكلية.",
+                animPills: {
+                    s0Top: "تحليل البيانات ٩٩.٤٪",
+                    s0Bot: "تنبؤات السوق 📈",
+                    revTitle: "الإيرادات الإجمالية",
+                    expTitle: "المصروفات والتكاليف",
+                    netTitle: "صافي الأرباح ✓",
+                    s2Top: "+450% نسبة الوصول",
+                    s2Bot: "استهداف العملاء 🎯",
+                    s3Top: "المشاريع الاستراتيجية ١٠٠٪",
+                    s3Bot: "القيادة الناجحة 👔",
+                    cardLabel: "BANKING & FINANCE",
+                    s4Top: "حماية الأصول المالية 🛡️",
+                    s4Bot: "التكنولوجيا المالية 4.0 ⚡",
+                    s5Top: "التجارة العالمية 🌍",
+                    s5Bot: "النمو الاقتصادي 📈"
+                },
+                depts: [
+                    {
+                        badge: "القسم ٠١ • STATISTICS",
+                        title: "قسم الإحصاء والمعلوماتية",
+                        desc: "علم البيانات وهندسة اتخاذ القرار. يتعلم الطالب كيفية جمع وتنظيم وتحليل وتفسير البيانات المعقدة باستخدام أحدث البرمجيات الإحصائية والذكاء الاصطناعي لحل المشكلات الاقتصادية والمؤسسية وتوجيه الإدارة السليمة.",
+                        pills: [
+                            "<i class='fas fa-database'></i> علم البيانات والتحليل",
+                            "<i class='fas fa-robot'></i> الذكاء الاصطناعي (AI)",
+                            "<i class='fas fa-chart-pie'></i> النمذجة والتنبؤ"
+                        ]
+                    },
+                    {
+                        badge: "القسم ٠٢ • ACCOUNTING",
+                        title: "قسم المحاسبة",
+                        desc: "لغة الأعمال والركيزة المالية لأي منظمة. يؤهل الطلاب بأنظمة الرقابة والتدقيق المالي، الضرائب، وإدارة ومراقبة الميزانيات لإعداد كوادر محترفة في القطاعين العام والخاص والمصارف والشركات العالمية.",
+                        pills: [
+                            "<i class='fas fa-file-invoice-dollar'></i> التدقيق والرقابة المالية",
+                            "<i class='fas fa-laptop-code'></i> الأنظمة المحاسبية الرقمية",
+                            "<i class='fas fa-receipt'></i> محاسبة الضرائب والتكاليف"
+                        ]
+                    },
+                    {
+                        badge: "القسم ٠٣ • MARKETING",
+                        title: "قسم التسويق",
+                        desc: "فن الابتكار والريادة التسويقية في عصر التجارة الرقمية. يركز على بناء وتطوير العلامات التجارية الرائدة، تحليل سلوك المستهلك، ووضع استراتيجيات حديثة لتعظيم المبيعات والنمو المؤسسي.",
+                        pills: [
+                            "<i class='fas fa-globe-americas'></i> التسويق الرقمي الحديث",
+                            "<i class='fas fa-award'></i> بناء واستراتيجيات العلامة التجارية",
+                            "<i class='fas fa-users-viewfinder'></i> تحليل سلوك ورغبات المستهلك"
+                        ]
+                    },
+                    {
+                        badge: "القسم ٠٤ • MANAGEMENT",
+                        title: "قسم إدارة الأعمال",
+                        desc: "مصنع قادة ومدراء المستقبل. يتعلم الطلاب فنون اتخاذ القرار الحكيم، التخطيط الاستراتيجي، إدارة المشاريع الكبرى، وتطوير الموارد البشرية (HR) لقيادة المؤسسات بنجاح واقتدار.",
+                        pills: [
+                            "<i class='fas fa-user-tie'></i> القيادة وصنع القرار",
+                            "<i class='fas fa-tasks'></i> تخطيط المشاريع والمؤسسات",
+                            "<i class='fas fa-users-gear'></i> إدارة الموارد البشرية"
+                        ]
+                    },
+                    {
+                        badge: "القسم ٠٥ • BANKING",
+                        title: "قسم العلوم المالية والمصرفية",
+                        desc: "المركز الرئيسي لحركة الأموال وأسواق رأس المال والاستثمار. يدرس الطلاب إدارة المصارف الحديثة، أسواق الأسهم والسندات، السياسات النقدية، وأحدث تقنيات الخدمات المالية (FinTech).",
+                        pills: [
+                            "<i class='fas fa-building-columns'></i> إدارة المصارف الحديثة",
+                            "<i class='fas fa-coins'></i> الاستثمار وأسواق المال",
+                            "<i class='fas fa-bolt'></i> التكنولوجيا المالية (FinTech)"
+                        ]
+                    },
+                    {
+                        badge: "القسم ٠٦ • ECONOMICS",
+                        title: "قسم العلوم الاقتصادية",
+                        desc: "فهم وتطوير الاقتصاد الوطني والعالمي. إعداد كوادر متخصصة في تحليل السياسات المالية، التنمية المستدامة، التضخم، والتجارة الدولية لابتكار حلول اقتصادية تدعم المجتمع وتطور موارده.",
+                        pills: [
+                            "<i class='fas fa-hand-holding-dollar'></i> التجارة والاقتصاد الدولي",
+                            "<i class='fas fa-seedling'></i> التنمية المستدامة والموارد",
+                            "<i class='fas fa-arrow-trend-up'></i> تحليل السياسات والأزمات"
+                        ]
+                    }
+                ]
+            }
+        };
+
+        function scrollToFirstDept() {
+            const firstDept = document.getElementById('dept-0');
+            if (firstDept) {
+                firstDept.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function updateDeptShowcaseLanguage(lang) {
+            const t = deptDataTranslations[lang] || deptDataTranslations.ku;
+
+            safeSetText('welcomeDesc', t.welcomeDesc);
+            safeSetText('scrollHeroCueText', t.scrollCue);
+            safeSetText('startFinalHeading', t.finalHeading);
+            safeSetText('startFinalDesc', t.finalDesc);
+
+            const startBtn = document.getElementById('startBtn');
+            if (startBtn) {
+                const span = document.getElementById('startBtnText');
+                if (span) span.innerText = t.startBtn;
+            }
+
+            // Update Animation Floating Pills & Ledger
+            if (t.animPills) {
+                safeSetText('text-anim-0-top', t.animPills.s0Top);
+                safeSetText('text-anim-0-bot', t.animPills.s0Bot);
+                safeSetText('ledger-title-rev', t.animPills.revTitle);
+                safeSetText('ledger-title-exp', t.animPills.expTitle);
+                safeSetText('ledger-title-net', t.animPills.netTitle);
+                safeSetText('text-anim-2-top', t.animPills.s2Top);
+                safeSetText('text-anim-2-bot', t.animPills.s2Bot);
+                safeSetText('text-anim-3-top', t.animPills.s3Top);
+                safeSetText('text-anim-3-bot', t.animPills.s3Bot);
+                safeSetText('card-label-dept', t.animPills.cardLabel);
+                safeSetText('text-anim-4-top', t.animPills.s4Top);
+                safeSetText('text-anim-4-bot', t.animPills.s4Bot);
+                safeSetText('text-anim-5-top', t.animPills.s5Top);
+                safeSetText('text-anim-5-bot', t.animPills.s5Bot);
+            }
+
+            // Update each department slide
+            t.depts.forEach((dept, i) => {
+                safeSetText('badge-dept-' + i, dept.badge);
+                safeSetText('title-dept-' + i, dept.title);
+                safeSetText('desc-dept-' + i, dept.desc);
+
+                const pillsContainer = document.getElementById('pills-dept-' + i);
+                if (pillsContainer && dept.pills) {
+                    pillsContainer.innerHTML = dept.pills.map(p => '<span>' + p + '</span>').join('');
+                }
+            });
+        }
+
+        function initDeptShowcaseObserver() {
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const slides = document.querySelectorAll('.dept-slide');
+            const dots = document.querySelectorAll('.dept-dot');
+
+            if (!welcomeScreen || slides.length === 0) return;
+
+            // Trigger slides initially in view
+            setTimeout(() => {
+                slides.forEach(s => {
+                    const rect = s.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        s.classList.add('in-view');
+                    }
+                });
+            }, 300);
+
+            // IntersectionObserver for smooth entrance
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('in-view');
+                            const idx = parseInt(entry.target.getAttribute('data-index'));
+                            dots.forEach((dot, dIdx) => {
+                                dot.classList.toggle('active', dIdx === idx);
+                            });
+                        }
+                    });
+                }, {
+                    root: welcomeScreen,
+                    threshold: 0.35
+                });
+
+                slides.forEach(slide => observer.observe(slide));
+            }
+
+            // Reliable scroll fallback
+            welcomeScreen.addEventListener('scroll', () => {
+                const screenTop = welcomeScreen.scrollTop;
+                const screenHeight = welcomeScreen.clientHeight;
+
+                slides.forEach((slide, idx) => {
+                    const top = slide.offsetTop;
+                    const h = slide.offsetHeight;
+                    if (screenTop + screenHeight * 0.45 >= top && screenTop <= top + h) {
+                        slide.classList.add('in-view');
+                        dots.forEach((d, dIdx) => d.classList.toggle('active', dIdx === idx));
+                    }
+                });
+            }, { passive: true });
+        }
+
+        // Initialize Department Showcase
+        document.addEventListener("DOMContentLoaded", () => {
+            initDeptShowcaseObserver();
+            updateDeptShowcaseLanguage(currentLang);
+        });
+        setTimeout(() => {
+            initDeptShowcaseObserver();
+            updateDeptShowcaseLanguage(currentLang);
+        }, 500);
     </script>
 <script>
     // قەدەغەکردنی کلیکی ڕاست
